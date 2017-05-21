@@ -1,2 +1,14 @@
 5.6.0f3:3.1.0.0
 Android
+D:/Development/Editor/Data/Managed/UnityEngine.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/TestRunner/nunit.framework.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll
+D:/Development/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll
+D:/Development/Editor/Data/Managed/UnityEditor.dll
+D:/Development/Editor/Data/Managed/Mono.Cecil.dll
+D:/Development/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll
+D:/Development/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll
