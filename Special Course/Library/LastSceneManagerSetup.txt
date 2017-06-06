@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/The_Tests/Stroop_Effect.unity
+- path: Assets/Scenes/The_Tests/Digit_Span.unity
   isLoaded: 1
   isActive: 1

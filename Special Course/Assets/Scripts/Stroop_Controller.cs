@@ -1,16 +1,108 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Stroop_Controller : MonoBehaviour {
 
+	public Text taskText;
+	public Text colorText;
+	public Image check;
+	public GameObject endCanvas;
+	public Text shownText;
+	public Text correctText;
+
+	private int phase = 1;
+	private Color[] colors = {Color.green,Color.red,Color.blue,new Color(180f/255f,0,1f),
+		new Color(1f,140f/255f,0), Color.yellow};
+	private string[] words = {"Green", "Red", "Blue", "Purple", "Orange", "Yellow"};
+
+	private int ranColor = 0;
+	private int ranWord = 0;
+
+	private int correctMatches = 0;
+	private int shownWords = 0;
+
+	private bool active = false;
+		
 	// Use this for initialization
 	void Start () {
-		
+		UpdateWordAndColor ();
+
+		taskText.text = "Name the color of the letter";
+		StartCoroutine (PhaseShift ());
+	}
+
+	IEnumerator PhaseShift(){
+
+		yield return new WaitForSeconds (20);
+		taskText.text = "Name the color the letters spell out";
+		phase = 2;
+
+		yield return new WaitForSeconds (20);
+		taskText.text = "Name the color of the letter";
+		phase = 3;
+
+		yield return new WaitForSeconds (20);
+		// Activate canvas representiong the end of the test
+		// plus show motivation scores
+		endCanvas.SetActive (true);
+		shownText.text = shownWords.ToString();
+		correctText.text = correctMatches.ToString ();
+
+		yield return new WaitForSeconds(3);
+		// test end
+	}
+
+	public void CheckSelected(int col){
+		if (!active) {
+			if (phase == 1 || phase == 3) {
+				if (col == ranColor) {
+					correctMatches++;
+
+					check.sprite = Resources.Load<Sprite> ("checkmark");
+				} else {
+					check.sprite = Resources.Load<Sprite> ("failure");
+				}
+			} else {
+				if (col == ranWord) {
+					correctMatches++;
+					check.sprite = Resources.Load<Sprite> ("checkmark");
+				} else {
+					check.sprite = Resources.Load<Sprite> ("failure");
+				}
+			}
+
+			StartCoroutine (NextWord ());
+
+			StartCoroutine (ResetCheck ());
+		}
+	}
+
+	IEnumerator NextWord(){
+		active = true; // Spawning in progress
+
+		// Wait half a second
+		yield return new WaitForSeconds (0.5f);
+
+		UpdateWordAndColor ();
+		active = false; // Spawning done
+	}
+
+	IEnumerator ResetCheck(){
+		// Wait 0.3 seconds, then remove checkmark/X
+		yield return new WaitForSeconds (0.3f);
+		check.sprite = Resources.Load<Sprite> ("None"); 
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void UpdateWordAndColor(){
+
+		shownWords++;
+
+		ranColor = Random.Range (0, 6);
+		ranWord = Random.Range (0, 6);
+
+		colorText.text = words [ranWord];
+		colorText.color = colors [ranColor];
 	}
 }
