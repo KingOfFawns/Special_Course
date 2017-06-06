@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu_Manager : MonoBehaviour {
+public class Scene_Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	public void Load_Main_Menu () 
 	{
 		SceneManager.LoadScene (0);
