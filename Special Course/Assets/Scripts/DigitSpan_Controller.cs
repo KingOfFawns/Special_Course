@@ -10,8 +10,11 @@ public class DigitSpan_Controller : MonoBehaviour {
 	public GameObject startCanvas;
 	public GameObject canvas;
 	public GameObject endCanvas;
+	public Text sequenceLengthShow;
 	public Text shownText;
 	public Text correctText;
+
+	private int sequenceLength = 3;
 
 	private string digitNumber = "";
 	private string inputNumber = "";
@@ -22,9 +25,11 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		// Get digit length from local storage
+		// Get digit length from storage
 
 
+		// Set sequenceLength in startCanvas
+		sequenceLengthShow.text = sequenceLength.ToString();
 	}
 
 	public void StartButton(){
@@ -49,10 +54,19 @@ public class DigitSpan_Controller : MonoBehaviour {
 		correctText.text = correctSequences.ToString ();
 
 		// Calculate data to be stored
+		float percentage = correctSequences/numOfSequences * 100;
+		if (percentage >= 90) {
+			sequenceLength++;
+		} else if(percentage < 60) {
+			sequenceLength--;
+		}
+
+		// Store data
 
 
 		// Wait for 3 seconds before transitioning to the next test
 		yield return new WaitForSeconds (3f);
+
 		// Go to next test
 		Debug.Log("Transition");
 	}
@@ -100,8 +114,8 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 		// Calculate number
 		digitNumber = "";
-		// i should be changed accordingly to stored data
-		for (int i = 0; i < 3; i++) {
+
+		for (int i = 0; i < sequenceLength; i++) {
 			int ran = Random.Range (1, 10);
 
 			digitNumber = digitNumber + ran.ToString ();

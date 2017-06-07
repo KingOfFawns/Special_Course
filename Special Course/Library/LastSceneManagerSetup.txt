@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/The_Tests/Digit_Span.unity
+- path: Assets/Scenes/The_Tests/N_Back.unity
   isLoaded: 1
   isActive: 1

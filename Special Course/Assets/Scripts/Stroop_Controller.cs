@@ -26,11 +26,6 @@ public class Stroop_Controller : MonoBehaviour {
 	private int shownWords = 0;
 
 	private bool active = false;
-		
-	// Use this for initialization
-	void Start () {
-		
-	}
 
 	public void StartButton(){
 		startCanvas.SetActive(false);
@@ -54,7 +49,7 @@ public class Stroop_Controller : MonoBehaviour {
 		phase = 3;
 
 		yield return new WaitForSeconds (20);
-		// Activate canvas representiong the end of the test
+		// Activate canvas representing the end of the test
 		// plus show motivation scores
 		endCanvas.SetActive (true);
 		shownText.text = shownWords.ToString();
