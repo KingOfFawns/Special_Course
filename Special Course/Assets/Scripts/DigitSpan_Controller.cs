@@ -7,6 +7,8 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 	public Text digitText;
 	public Image check;
+	public GameObject startCanvas;
+	public GameObject canvas;
 	public GameObject endCanvas;
 	public Text shownText;
 	public Text correctText;
@@ -21,6 +23,15 @@ public class DigitSpan_Controller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// Get digit length from local storage
+
+
+	}
+
+	public void StartButton(){
+		// Stop start canvas
+		startCanvas.SetActive(false);
+
+		canvas.SetActive (true);
 
 		StartCoroutine(NextNumber ());
 

@@ -8,6 +8,8 @@ public class Stroop_Controller : MonoBehaviour {
 	public Text taskText;
 	public Text colorText;
 	public Image check;
+	public GameObject startCanvas;
+	public GameObject canvas;
 	public GameObject endCanvas;
 	public Text shownText;
 	public Text correctText;
@@ -15,7 +17,7 @@ public class Stroop_Controller : MonoBehaviour {
 	private int phase = 1;
 	private Color[] colors = {Color.green,Color.red,Color.blue,new Color(180f/255f,0,1f),
 		new Color(1f,140f/255f,0), Color.yellow};
-	private string[] words = {"Green", "Red", "Blue", "Purple", "Orange", "Yellow"};
+	private string[] words = {"Grøn", "Rød", "Blå", "Lilla", "Orange", "Gul"};
 
 	private int ranColor = 0;
 	private int ranWord = 0;
@@ -27,20 +29,28 @@ public class Stroop_Controller : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start () {
+		
+	}
+
+	public void StartButton(){
+		startCanvas.SetActive(false);
+
+		canvas.SetActive (true);
+
 		UpdateWordAndColor ();
 
-		taskText.text = "Name the color of the letter";
+		taskText.text = "Match farven på bogstaverne";
 		StartCoroutine (PhaseShift ());
 	}
 
 	IEnumerator PhaseShift(){
 
 		yield return new WaitForSeconds (20);
-		taskText.text = "Name the color the letters spell out";
+		taskText.text = "Match farven der skrives";
 		phase = 2;
 
 		yield return new WaitForSeconds (20);
-		taskText.text = "Name the color of the letter";
+		taskText.text = "Match farven på bogstaverne";
 		phase = 3;
 
 		yield return new WaitForSeconds (20);
