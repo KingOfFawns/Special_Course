@@ -73,6 +73,13 @@ public class NBack_Controller : MonoBehaviour {
 			N--;
 		}
 
+		// Limit N
+		if (N < 1) {
+			N = 1;
+		} else if (N > 9) {
+			N = 9;
+		}
+
 		// Store local data
 		AppControl.control.N = N;
 		AppControl.control.N_percentage_last = percentage;

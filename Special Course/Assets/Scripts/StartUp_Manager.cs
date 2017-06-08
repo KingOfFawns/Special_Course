@@ -5,10 +5,8 @@ using UnityEngine;
 public class StartUp_Manager : MonoBehaviour {
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		AppControl.control.Load ();
 		AppControl.control.Save ();
-
-		Debug.Log (Application.persistentDataPath);
 	}
 }

@@ -63,6 +63,13 @@ public class DigitSpan_Controller : MonoBehaviour {
 			sequenceLength--;
 		}
 
+		// Limit sequence length
+		if (sequenceLength < 2) {
+			sequenceLength = 2;
+		} else if (sequenceLength > 15) {
+			sequenceLength = 15;
+		}
+
 		// Store local data
 		AppControl.control.digitSpan_DigitLength = sequenceLength;
 		AppControl.control.Save ();
