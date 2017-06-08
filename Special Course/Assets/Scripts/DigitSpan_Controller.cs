@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DigitSpan_Controller : MonoBehaviour {
 
@@ -23,10 +24,11 @@ public class DigitSpan_Controller : MonoBehaviour {
 	private int correctSequences = 0;
 	private int numOfSequences = 0;
 
+
 	// Use this for initialization
 	void Start () {
 		// Get digit length from storage
-
+		sequenceLength = AppControl.control.digitSpan_DigitLength;
 
 		// Set sequenceLength in startCanvas
 		sequenceLengthShow.text = sequenceLength.ToString();
@@ -61,14 +63,27 @@ public class DigitSpan_Controller : MonoBehaviour {
 			sequenceLength--;
 		}
 
-		// Store data
-
+		// Store local data
+		AppControl.control.digitSpan_DigitLength = sequenceLength;
+		AppControl.control.Save ();
 
 		// Wait for 3 seconds before transitioning to the next test
 		yield return new WaitForSeconds (3f);
 
+		// Data to be stored
+		string name = "Digit Span";
+		string time = System.DateTime.Now.ToString();
+		string sLength = sequenceLength.ToString ();
+		string totalSequences = numOfSequences.ToString ();
+		string cSequences = correctSequences.ToString ();
+
+		// Store data
+		AppControl.control.dataString = "Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
+			", Num. of Sequences: " + totalSequences + ", Correct Matches: " + cSequences + "\n"; 
+		AppControl.control.SaveData ();
+
 		// Go to next test
-		Debug.Log("Transition");
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void InputDigit(string digit){
@@ -123,6 +138,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 		Debug.Log (digitNumber);
 
+		// Start showing digits
 		StartCoroutine (ShowDigits (digitNumber));
 
 	}
@@ -132,6 +148,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 		int length = number.Length;
 
+		// Cut string in chars and show in text field
 		for (int i = 0; i < length; i++) {
 			char digit = number [i];
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Stroop_Controller : MonoBehaviour {
 
@@ -56,7 +57,20 @@ public class Stroop_Controller : MonoBehaviour {
 		correctText.text = correctMatches.ToString ();
 
 		yield return new WaitForSeconds(3);
+
+		// Data to be stored
+		string name = "Stroop Effect";
+		string time = System.DateTime.Now.ToString();
+		string numOfWordDisp = shownWords.ToString ();
+		string cMatches = correctMatches.ToString ();
+
+		// Store data
+		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
+			", Words displayed: " + numOfWordDisp + ", Correct matches: " + cMatches + "\n"; 
+		AppControl.control.SaveData ();
+
 		// test end
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void CheckSelected(int col){

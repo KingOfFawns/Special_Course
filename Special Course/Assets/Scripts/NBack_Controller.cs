@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class NBack_Controller : MonoBehaviour {
 
@@ -30,8 +31,12 @@ public class NBack_Controller : MonoBehaviour {
 	private int numOfTP = 0;
 	private int numOfFP = 0;
 
+	private int numOfShown = -1;
+
+
 	void Start(){
 		// Get N from storage
+		N = AppControl.control.N;
 
 		// Show N in start
 		nTextStart.text = N.ToString();
@@ -60,13 +65,35 @@ public class NBack_Controller : MonoBehaviour {
 		textFP.text = numOfFP.ToString ();
 
 		// Calculate data to be stored
+		float percentage = numOfTP/numOfShown * 100f;
 
+		if (percentage >= 80f && AppControl.control.N_percentage_last >= 80f) {
+			N++;
+		} else if (percentage < 50f && AppControl.control.N_percentage_last < 50f){
+			N--;
+		}
 
-		// Store data
-
+		// Store local data
+		AppControl.control.N = N;
+		AppControl.control.N_percentage_last = percentage;
+		AppControl.control.Save ();
 
 		yield return new WaitForSeconds(3);
+
+		// Data to be stored
+		string name = "N-Back";
+		string time = System.DateTime.Now.ToString();
+		string FN = numOfFN.ToString();
+		string TP = numOfTP.ToString();
+		string FP = numOfFP.ToString ();
+
+		// Store data
+		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
+			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP + "\n"; 
+		AppControl.control.SaveData ();
+
 		// test end
+		SceneManager.LoadScene("MainMenu");
 
 	}
 	
@@ -77,6 +104,8 @@ public class NBack_Controller : MonoBehaviour {
 			shownImage.image.sprite = Resources.Load<Sprite> ("None");
 
 			checkSelection ();
+
+			numOfShown++;
 
 			yield return new WaitForSeconds (0.3f);
 
@@ -127,7 +156,7 @@ public class NBack_Controller : MonoBehaviour {
 				messageBox.text = "Forkert";
 				messageBox.color = Color.red;
 			}
-		} else if(sequenceIndex - N < 0 && pushed) {
+		} else if(pushed) {
 			// False positive
 			numOfFP++;
 
