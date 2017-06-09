@@ -9,16 +9,26 @@ public class AppControl : MonoBehaviour {
 
 	public static AppControl control;
 
+	// Storage for word recog start and end
 	public int word_Recog_Target = 10;
 	public float word_Last_Test = 0f;
+	public string[] words;
+	public string[] chosenWords;
+	public int identifiedWords = 0;
+	public int falseWords = 0;
+	public bool success = false;
 
+	// Storage for N-Back
 	public int N = 2;
 	public float N_percentage_last = 0f;
 
+	// Storage for Digit Span
 	public int digitSpan_DigitLength = 3;
 
+	// Boolean for a first time start up settings screen
 	public bool first_Time_Start = true;
 
+	// String used to store logged data
 	public string dataString = "";
 
 

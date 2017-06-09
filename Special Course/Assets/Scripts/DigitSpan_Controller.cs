@@ -55,6 +55,9 @@ public class DigitSpan_Controller : MonoBehaviour {
 		shownText.text = numOfSequences.ToString();
 		correctText.text = correctSequences.ToString ();
 
+		// Special data setting
+		string sLength = sequenceLength.ToString ();
+
 		// Calculate data to be stored
 		float percentage = correctSequences/numOfSequences * 100;
 		if (percentage >= 90) {
@@ -80,7 +83,6 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Data to be stored
 		string name = "Digit Span";
 		string time = System.DateTime.Now.ToString();
-		string sLength = sequenceLength.ToString ();
 		string totalSequences = numOfSequences.ToString ();
 		string cSequences = correctSequences.ToString ();
 
