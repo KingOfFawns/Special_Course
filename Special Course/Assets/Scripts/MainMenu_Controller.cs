@@ -9,8 +9,12 @@ public class MainMenu_Controller : MonoBehaviour {
 		SceneManager.LoadScene ("Temp_Test_Selector");
 	}
 
-	public void GoToSettings(){
+	private bool active = false;
 
+	public void GoToSettings(){
+		AndroidNotificationBuilder builder = new AndroidNotificationBuilder (SA.Common.Util.IdFactory.NextId, 
+				                                     "Test Notification", "The text is here", 5);
+		AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
 	}
 
 	public void GoToHelp(){
