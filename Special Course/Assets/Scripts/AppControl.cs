@@ -31,6 +31,11 @@ public class AppControl : MonoBehaviour {
 	// String used to store logged data
 	public string dataString = "";
 
+	// Variables to control time settings
+	public float wordRecogStart_WordTimer = 1f;
+	public float digitSpan_SequenceTimer = 1f;
+
+
 
 	void Awake () {
 		if (control == null) {

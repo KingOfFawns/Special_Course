@@ -126,7 +126,6 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	IEnumerator NextNumber(){
-		digitText.text = "";
 
 		yield return new WaitForSeconds (0.3f);
 
