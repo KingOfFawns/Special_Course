@@ -28,4 +28,8 @@ public class sceneManager : MonoBehaviour {
 	public void Load_Recog_End(){
 		SceneManager.LoadScene ("Word_Recog_End");
 	}
+
+	public void Load_Main_Menu(){
+		SceneManager.LoadScene ("MainMenu");
+	}
 }

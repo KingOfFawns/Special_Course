@@ -10,7 +10,7 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 	public void GoToSettings(){
-		
+		SceneManager.LoadScene ("Settings");
 	}
 
 	public void GoToHelp(){
@@ -18,6 +18,13 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 	public void Skip(){
+
+		// Log skip
+		string time = System.DateTime.Now.ToString ();
+		AppControl.control.dataString = "Skipped, " + "Time: " + time + "\n";
+		AppControl.control.SaveData ();
+
+
 		Application.Quit ();
 	}
 

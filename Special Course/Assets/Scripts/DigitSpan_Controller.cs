@@ -98,9 +98,9 @@ public class DigitSpan_Controller : MonoBehaviour {
 	public void InputDigit(string digit){
 		if (!active) {
 
-			digitText.text = digit;
-
 			inputNumber = inputNumber + digit;
+
+			digitText.text = inputNumber;
 
 			if (inputNumber.Length == digitNumber.Length) {
 
@@ -156,6 +156,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 		int length = number.Length;
 
+		/*
 		// Cut string in chars and show in text field
 		for (int i = 0; i < length; i++) {
 			char digit = number [i];
@@ -170,6 +171,11 @@ public class DigitSpan_Controller : MonoBehaviour {
 				yield return new WaitForSeconds (0.3f);
 			}
 		}
+		*/
+
+		digitText.text = number;
+		yield return new WaitForSeconds (AppControl.control.digitSpan_SequenceTimer);
+		digitText.text = "";
 
 		active = false;
 	}

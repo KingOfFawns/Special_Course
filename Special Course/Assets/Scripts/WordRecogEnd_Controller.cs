@@ -101,13 +101,19 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 	IEnumerator Timer(){
 
+		// Timer runs 1 second per word to guess (minimum is 30)
+		int timeEnd = numOFWords;
+
+		if (timeEnd < 30) {
+			timeEnd = 30;
+		}
+
 		int timer = 0;
-		while (timer < 30 && !AppControl.control.success) {
+		while (timer < timeEnd && !AppControl.control.success) {
 			yield return new WaitForSeconds (1);
 			timer++;
 		}
-
-
+			
 		// Activate end canvas ansd set visual data
 		endCanvas.SetActive (true);
 		targetWords.text = numOFWords.ToString ();
@@ -124,6 +130,10 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		} else if(AppControl.control.word_Last_Test < 4 && ratio < 4){
 			numOFWords--;
 		}
+
+		if (numOFWords < 2) {
+			numOFWords = 2;
+		}
 			
 		//Store local data
 		AppControl.control.word_Recog_Target = numOFWords;
@@ -132,7 +142,6 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 		yield return new WaitForSeconds (3);
 
-		// Data to be stored
 		// Data to be stored
 		string name = "Word Recognition";
 		string time = System.DateTime.Now.ToString();

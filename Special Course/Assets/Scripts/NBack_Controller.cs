@@ -131,7 +131,7 @@ public class NBack_Controller : MonoBehaviour {
 			sequence [sequenceIndex] = ran;
 
 			imageActive = true;
-			yield return new WaitForSeconds (1);
+			yield return new WaitForSeconds (AppControl.control.NBack_Timer);
 			imageActive = false;
 		}
 	}

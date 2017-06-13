@@ -29,6 +29,8 @@ public class Stroop_Controller : MonoBehaviour {
 	private bool active = false;
 
 	public void StartButton(){
+		check.enabled = false;
+
 		startCanvas.SetActive(false);
 
 		canvas.SetActive (true);
@@ -78,7 +80,6 @@ public class Stroop_Controller : MonoBehaviour {
 			if (phase == 1 || phase == 3) {
 				if (col == ranColor) {
 					correctMatches++;
-
 					check.sprite = Resources.Load<Sprite> ("checkmark");
 				} else {
 					check.sprite = Resources.Load<Sprite> ("failure");
@@ -91,6 +92,7 @@ public class Stroop_Controller : MonoBehaviour {
 					check.sprite = Resources.Load<Sprite> ("failure");
 				}
 			}
+			check.enabled = true;
 
 			StartCoroutine (NextWord ());
 
@@ -111,6 +113,7 @@ public class Stroop_Controller : MonoBehaviour {
 	IEnumerator ResetCheck(){
 		// Wait 0.3 seconds, then remove checkmark/X
 		yield return new WaitForSeconds (0.3f);
+		check.enabled = false;
 		check.sprite = Resources.Load<Sprite> ("None"); 
 	}
 	

@@ -10,8 +10,8 @@ public class AppControl : MonoBehaviour {
 	public static AppControl control;
 
 	// Storage for word recog start and end
-	public int word_Recog_Target = 10;
-	public float word_Last_Test = 0f;
+	public int word_Recog_Target = 10; // Should be stored
+	public float word_Last_Test = 0f; // Should be stored
 	public string[] words;
 	public string[] chosenWords;
 	public int identifiedWords = 0;
@@ -19,22 +19,22 @@ public class AppControl : MonoBehaviour {
 	public bool success = false;
 
 	// Storage for N-Back
-	public int N = 2;
-	public float N_percentage_last = 0f;
+	public int N = 2; // Should be stored
+	public float N_percentage_last = 0f; // Should be stored
 
 	// Storage for Digit Span
-	public int digitSpan_DigitLength = 3;
+	public int digitSpan_DigitLength = 3; // Should be stored
 
 	// Boolean for a first time start up settings screen
-	public bool first_Time_Start = true;
+	public bool first_Time_Start = true; // Should be stored
 
 	// String used to store logged data
 	public string dataString = "";
 
 	// Variables to control time settings
-	public float wordRecogStart_WordTimer = 1f;
-	public float digitSpan_SequenceTimer = 1f;
-
+	public float wordRecogStart_WordTimer = 1.0f; // Should be stored
+	public float digitSpan_SequenceTimer = 1.0f; // Should be stored
+	public float NBack_Timer = 1.0f;
 
 
 	void Awake () {
@@ -53,13 +53,21 @@ public class AppControl : MonoBehaviour {
 		// Data to store
 		AppData data = new AppData();
 
+		// Word Recog data
 		data.word_Recog_Target = word_Recog_Target;
 		data.word_Last_Test = word_Last_Test;
 
+		// N-back data
 		data.N = N;
 		data.N_percentage_last = N_percentage_last;
 
+		// Digit Span data
 		data.digitSpan_DigitLength = digitSpan_DigitLength;
+
+		// Timer variables for settings - data
+		data.wordRecogStart_WordTimer = wordRecogStart_WordTimer;
+		data.digitSpan_SequenceTimer = digitSpan_SequenceTimer;
+		data.NBack_Timer = NBack_Timer;
 
 		// Store data
 		bf.Serialize (file, data);
@@ -81,6 +89,10 @@ public class AppControl : MonoBehaviour {
 			N_percentage_last = data.N_percentage_last;
 
 			digitSpan_DigitLength = data.digitSpan_DigitLength;
+
+			wordRecogStart_WordTimer = data.wordRecogStart_WordTimer;
+			digitSpan_SequenceTimer = data.digitSpan_SequenceTimer;
+			NBack_Timer = data.NBack_Timer;
 		}
 	}
 
@@ -94,6 +106,7 @@ public class AppControl : MonoBehaviour {
 
 	public void ClearData(){
 		File.Delete (Application.persistentDataPath + "/saveData.txt");
+		File.Delete (Application.persistentDataPath + "/appData.dat");
 	}
 }
 
@@ -105,5 +118,9 @@ class AppData {
 	public int N = 2;
 	public float N_percentage_last = 0f;
 
-	public int digitSpan_DigitLength;
+	public int digitSpan_DigitLength = 3;
+
+	public float wordRecogStart_WordTimer = 1.0f;
+	public float digitSpan_SequenceTimer = 1.0f;
+	public float NBack_Timer = 1.0f;
 }
