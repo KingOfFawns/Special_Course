@@ -33,6 +33,8 @@ public class NBack_Controller : MonoBehaviour {
 
 	private int numOfShown = -1;
 
+	private int randomizer = 0;
+
 
 	void Start(){
 		// Get N from storage
@@ -120,14 +122,37 @@ public class NBack_Controller : MonoBehaviour {
 			messageBox.text = "";
 			messageBox.color = Color.white;
 
+			// Increase index
+			sequenceIndex++;
+
 			// Calculate random number
 			int ran = (int)Random.Range (0, 10);
+
+			if (sequenceIndex - N >= 0) {
+				// When not maching -N image, increase chance
+				if (ran != sequence [sequenceIndex - N]) {
+					randomizer++;
+				} else {
+					randomizer = 0;
+				}
+
+				// if randomizer is active, increase chance of matching -N image
+				if (randomizer > 0) {
+					int ran2 = (int)Random.Range (0, 10 - randomizer);
+					if (ran2 == 0) {
+						ran = sequence[sequenceIndex - N];
+						randomizer = 0;
+					}
+				}
+
+			}
+
+			Debug.Log (randomizer);
 
 			// Change image according to random number
 			shownImage.image.sprite = images[ran];
 
 			// Store sequence
-			sequenceIndex++;
 			sequence [sequenceIndex] = ran;
 
 			imageActive = true;
@@ -138,9 +163,6 @@ public class NBack_Controller : MonoBehaviour {
 
 	void checkSelection(){
 		if (sequenceIndex - N >= 0) {
-
-			Debug.Log (sequence [sequenceIndex - N]);
-			Debug.Log (sequence [sequenceIndex]);
 
 			if ((sequence [sequenceIndex - N] != sequence [sequenceIndex]) && !pushed) {
 				// True negative
@@ -177,6 +199,5 @@ public class NBack_Controller : MonoBehaviour {
 		if (imageActive) {
 			pushed = true;
 		}
-		Debug.Log (pushed);
 	}
 }

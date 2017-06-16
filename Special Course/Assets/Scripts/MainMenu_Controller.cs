@@ -10,11 +10,11 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 	public void GoToSettings(){
-		SceneManager.LoadScene ("Settings");
+		SceneManager.LoadScene ("Settings_Login");
 	}
 
 	public void GoToHelp(){
-		AppControl.control.ClearData ();
+		SceneManager.LoadScene ("Help");
 	}
 
 	public void Skip(){

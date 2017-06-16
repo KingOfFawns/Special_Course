@@ -36,6 +36,15 @@ public class AppControl : MonoBehaviour {
 	public float digitSpan_SequenceTimer = 1.0f; // Should be stored
 	public float NBack_Timer = 1.0f;
 
+	// Variables for notification settings
+	public int notificationId = 0;
+	public DateTime notificationTime;
+	public DateTime sleepZoneStart;
+	public DateTime sleepZoneEnd;
+
+	// Settings Login Password
+	public string password = "RootAdmin";
+
 
 	void Awake () {
 		if (control == null) {
@@ -69,6 +78,15 @@ public class AppControl : MonoBehaviour {
 		data.digitSpan_SequenceTimer = digitSpan_SequenceTimer;
 		data.NBack_Timer = NBack_Timer;
 
+		// Notification and sleepzone data
+		data.notificationId = notificationId;
+		data.notificationTime = notificationTime;
+		data.sleepZoneStart = sleepZoneStart;
+		data.sleepZoneEnd = sleepZoneEnd;
+
+		// Store settings login password
+		data.password = password;
+
 		// Store data
 		bf.Serialize (file, data);
 		file.Close();
@@ -93,6 +111,13 @@ public class AppControl : MonoBehaviour {
 			wordRecogStart_WordTimer = data.wordRecogStart_WordTimer;
 			digitSpan_SequenceTimer = data.digitSpan_SequenceTimer;
 			NBack_Timer = data.NBack_Timer;
+
+			notificationId = data.notificationId;
+			notificationTime = data.notificationTime;
+			sleepZoneStart = data.sleepZoneStart;
+			sleepZoneEnd = data.sleepZoneEnd;
+
+			password = data.password;
 		}
 	}
 
@@ -123,4 +148,11 @@ class AppData {
 	public float wordRecogStart_WordTimer = 1.0f;
 	public float digitSpan_SequenceTimer = 1.0f;
 	public float NBack_Timer = 1.0f;
+
+	public int notificationId = 0;
+	public DateTime notificationTime;
+	public DateTime sleepZoneStart;
+	public DateTime sleepZoneEnd;
+
+	public string password = "RootAdmin";
 }
