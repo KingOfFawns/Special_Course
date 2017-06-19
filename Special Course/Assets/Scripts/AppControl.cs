@@ -42,6 +42,9 @@ public class AppControl : MonoBehaviour {
 	public DateTime sleepZoneStart;
 	public DateTime sleepZoneEnd;
 
+	// Variables for random notification
+	public int randomNotificationId = 0;
+
 	// Settings Login Password
 	public string password = "RootAdmin";
 
@@ -84,6 +87,9 @@ public class AppControl : MonoBehaviour {
 		data.sleepZoneStart = sleepZoneStart;
 		data.sleepZoneEnd = sleepZoneEnd;
 
+		// Random notification data
+		data.randomNotificationId = randomNotificationId;
+
 		// Store settings login password
 		data.password = password;
 
@@ -117,16 +123,14 @@ public class AppControl : MonoBehaviour {
 			sleepZoneStart = data.sleepZoneStart;
 			sleepZoneEnd = data.sleepZoneEnd;
 
+			randomNotificationId = data.randomNotificationId;
+
 			password = data.password;
 		}
 	}
 
 	public void SaveData(){
 		File.AppendAllText (Application.persistentDataPath + "/saveData.txt", dataString + Environment.NewLine);
-	}
-
-	public void SendData(){
-
 	}
 
 	public void ClearData(){
@@ -153,6 +157,8 @@ class AppData {
 	public DateTime notificationTime;
 	public DateTime sleepZoneStart;
 	public DateTime sleepZoneEnd;
+
+	public int randomNotificationId = 0;
 
 	public string password = "RootAdmin";
 }

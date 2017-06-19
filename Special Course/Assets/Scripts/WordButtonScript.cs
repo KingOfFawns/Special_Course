@@ -6,11 +6,7 @@ using UnityEngine.UI;
 public class WordButtonScript : MonoBehaviour {
 
 	private bool active = false;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+
 	public void OnClick(){
 
 		Button b = this.GetComponent<Button> ();

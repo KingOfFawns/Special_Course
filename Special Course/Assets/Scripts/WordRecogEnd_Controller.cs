@@ -26,6 +26,11 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+		// Reset values
+		AppControl.control.success = false;
+		AppControl.control.identifiedWords = 0;
+		AppControl.control.falseWords = 0;
+
 		// Load needed data from storage
 		wordLength = AppControl.control.words.Length;
 		numOFWords = AppControl.control.word_Recog_Target;
@@ -123,7 +128,12 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		string numOfTargets = numOFWords.ToString ();
 
 		// Calculate data
-		float ratio = AppControl.control.identifiedWords / AppControl.control.falseWords;
+		float ratio = 0f;
+		if (AppControl.control.falseWords > 0) {
+			ratio = AppControl.control.identifiedWords / AppControl.control.falseWords;
+		} else {
+			ratio = AppControl.control.identifiedWords;
+		}
 
 		if (AppControl.control.word_Last_Test >= 6 && ratio >= 6) {
 			numOFWords++;

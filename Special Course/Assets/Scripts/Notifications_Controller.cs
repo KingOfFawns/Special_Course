@@ -103,8 +103,6 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	public void SetNotification(){
-
-
 		string hour = notificationHour.text;
 		string minutes = notificationMinutes.text;
 		string year = DateTime.Now.Year.ToString ();
@@ -155,14 +153,11 @@ public class Notifications_Controller : MonoBehaviour {
 
 		if (isInSleepZone) {
 			isInSleepZone = false;
-			Debug.Log ("Is in sleep zone");
 
 			inSleepZoneText.text = "I sove zonen";
 
 			StartCoroutine (TimeOut ());
 		} else {
-			Debug.Log ("Is good");
-
 			// Stop existing notification
 			AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.notificationId);
 
@@ -183,16 +178,14 @@ public class Notifications_Controller : MonoBehaviour {
 			int startFirstNotification = 0;
 
 			if (diff.TotalMinutes < 0) {
-				Debug.Log ("Negative");
-				startFirstNotification = 10;
+				// First notification is the next day
+				startFirstNotification = (int)(24 * 60 * 60 + diff.TotalMinutes * 60); 
 			} else {
-				Debug.Log ("Positive");
-				startFirstNotification = ((diff.Hours * 360) + (diff.Minutes) * 60);
+				// First notification is on the same day
+				startFirstNotification = (int)(diff.TotalMinutes * 60);
 			}
 
-			Debug.Log (startFirstNotification);
-
-			// Start notification
+			// Create first
 			AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.notificationId, "Scheduled test", "Time for a test", startFirstNotification);
 
 			// Schedule daily repeating notification
@@ -200,6 +193,7 @@ public class Notifications_Controller : MonoBehaviour {
 			TimeSpan delay = notificationTime.AddDays(1.0f) - notificationTime;
 			builder.SetRepeatDelay ((int)delay.TotalSeconds);
 
+			// Launch notifications
 			AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
 
 			// Notify
@@ -211,12 +205,12 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	IEnumerator TimeOut(){
+		// Resets displayed text
 		yield return new WaitForSeconds (1f);
 		inSleepZoneText.text = "";
 	}
 
 	public void SetSleepZone(){
-
 		string hour = sleepZoneHour1.text;
 		string minutes = sleepZoneMinutes1.text;
 
