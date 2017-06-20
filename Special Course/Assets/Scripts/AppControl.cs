@@ -30,6 +30,7 @@ public class AppControl : MonoBehaviour {
 
 	// String used to store logged data
 	public string dataString = "";
+	public string csvString = "";
 
 	// Variables to control time settings
 	public float wordRecogStart_WordTimer = 1.0f; // Should be stored
@@ -131,6 +132,7 @@ public class AppControl : MonoBehaviour {
 
 	public void SaveData(){
 		File.AppendAllText (Application.persistentDataPath + "/saveData.txt", dataString + Environment.NewLine);
+		File.AppendAllText (Application.persistentDataPath + "/saveData.csv", csvString + Environment.NewLine);
 	}
 
 	public void ClearData(){

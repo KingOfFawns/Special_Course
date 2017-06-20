@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.IO;
 
 public class StartUp_Manager : MonoBehaviour {
 
@@ -9,6 +11,14 @@ public class StartUp_Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// Check if storage file exists
+		if (!File.Exists (Application.persistentDataPath + "/saveData.csv")) {
+			string header = "Name;Time;Target words;Identified words;Falsely identified words;Time used in seconds;False negatives;" +
+				"True positives;False positives;Length of sequences;Number of sequences;Words displayed;Grids showed;" +
+				"Correct matches";
+			File.AppendAllText (Application.persistentDataPath + "/saveData.csv", header + Environment.NewLine);
+		}
+
 		// Load local stored data
 		AppControl.control.Load ();
 		AppControl.control.Save (); // This creates file if not existing

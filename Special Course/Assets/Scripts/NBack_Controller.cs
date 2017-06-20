@@ -56,7 +56,6 @@ public class NBack_Controller : MonoBehaviour {
 
 	IEnumerator Timer(){
 		yield return new WaitForSeconds (90);
-
 		runImages = false;
 
 		// Activate canvas representing the end of the test
@@ -98,7 +97,8 @@ public class NBack_Controller : MonoBehaviour {
 
 		// Store data
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
-			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP + "\n"; 
+			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP; 
+		AppControl.control.csvString = name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;";
 		AppControl.control.SaveData ();
 
 		// test end

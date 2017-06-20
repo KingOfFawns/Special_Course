@@ -24,6 +24,8 @@ public class DigitSpan_Controller : MonoBehaviour {
 	private int correctSequences = 0;
 	private int numOfSequences = 0;
 
+	private bool end = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -48,6 +50,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 	IEnumerator Timer(){
 		// The timer waits for 60 seconds
 		yield return new WaitForSeconds (60f);
+		end = true;
 
 		// Activate canvas representiong the end of the test
 		// plus show motivation scores
@@ -59,7 +62,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		string sLength = sequenceLength.ToString ();
 
 		// Calculate data to be stored
-		float percentage = correctSequences/numOfSequences * 100;
+		float percentage = (correctSequences/numOfSequences) * 100;
 		if (percentage >= 90) {
 			sequenceLength++;
 		} else if(percentage < 60) {
@@ -88,7 +91,8 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 		// Store data
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
-			", Num. of Sequences: " + totalSequences + ", Correct Matches: " + cSequences + "\n"; 
+			", Num. of Sequences: " + totalSequences + ", Correct Matches: " + cSequences; 
+		AppControl.control.csvString = name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences;
 		AppControl.control.SaveData ();
 
 		// Go to next test
@@ -133,8 +137,9 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	void UpdateNumber(){
-		numOfSequences++;
-
+		if (!end) {
+			numOfSequences++;
+		}
 		// Calculate number
 		digitNumber = "";
 

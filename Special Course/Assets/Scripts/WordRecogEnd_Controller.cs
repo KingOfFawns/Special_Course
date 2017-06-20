@@ -156,15 +156,17 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		string name = "Word Recognition";
 		string time = System.DateTime.Now.ToString();
 
-		string numOfIndentified = AppControl.control.identifiedWords.ToString ();
+		string numOfIdentified = AppControl.control.identifiedWords.ToString ();
 		string numOfFalse = AppControl.control.falseWords.ToString ();
 		string timerTime = timer.ToString ();
 
 
 		// Store data
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
-			", Target words: " + numOfTargets + ", Identified words: " + numOfIndentified + ", Falsely identified words: " 
-			+ numOfFalse + ", Time used: " + timerTime + " seconds" + "\n"; 
+			", Target words: " + numOfTargets + ", Identified words: " + numOfIdentified + ", Falsely identified words: " 
+			+ numOfFalse + ", Time used: " + timerTime + " seconds"; 
+		AppControl.control.csvString = name + ";" + time + ";" + numOfTargets + ";" + numOfIdentified + ";" + numOfFalse + ";" + timerTime + ";;;;;;;;";
+
 		AppControl.control.SaveData ();
 
 		// test end

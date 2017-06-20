@@ -28,6 +28,9 @@ public class Stroop_Controller : MonoBehaviour {
 
 	private bool active = false;
 
+	private bool end = false;
+
+
 	public void StartButton(){
 		check.enabled = false;
 
@@ -55,6 +58,7 @@ public class Stroop_Controller : MonoBehaviour {
 		// Activate canvas representing the end of the test
 		// plus show motivation scores
 		endCanvas.SetActive (true);
+		end = true;
 		shownText.text = shownWords.ToString();
 		correctText.text = correctMatches.ToString ();
 
@@ -68,7 +72,8 @@ public class Stroop_Controller : MonoBehaviour {
 
 		// Store data
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
-			", Words displayed: " + numOfWordDisp + ", Correct matches: " + cMatches + "\n"; 
+			", Words displayed: " + numOfWordDisp + ", Correct matches: " + cMatches; 
+		AppControl.control.csvString = name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches;
 		AppControl.control.SaveData ();
 
 		// test end
@@ -119,7 +124,9 @@ public class Stroop_Controller : MonoBehaviour {
 	
 	public void UpdateWordAndColor(){
 
-		shownWords++;
+		if (!end) {
+			shownWords++;
+		}
 
 		ranColor = Random.Range (0, 6);
 		ranWord = Random.Range (0, 6);
