@@ -130,8 +130,9 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	IEnumerator NextNumber(){
-
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
+		digitText.text = "";
+		yield return new WaitForSeconds (0.2f);
 
 		UpdateNumber ();
 	}
@@ -179,7 +180,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		*/
 
 		digitText.text = number;
-		yield return new WaitForSeconds (AppControl.control.digitSpan_SequenceTimer);
+		yield return new WaitForSeconds ((float)AppControl.control.digitSpan_SequenceTimer);
 		digitText.text = "";
 
 		active = false;

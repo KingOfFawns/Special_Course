@@ -66,10 +66,9 @@ public class WordRecogStart_Controller : MonoBehaviour {
 
 			// Show word
 			word.text = chosenWords[i];
-			Debug.Log (chosenWords [i]);
 
-			Debug.Log (AppControl.control.wordRecogStart_WordTimer);
-			yield return new WaitForSeconds (AppControl.control.wordRecogStart_WordTimer);
+			// Wait designated time
+			yield return new WaitForSeconds ((float)AppControl.control.wordRecogStart_WordTimer);
 
 			// Show blank
 			word.text = "";

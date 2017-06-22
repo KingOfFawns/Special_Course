@@ -33,9 +33,9 @@ public class AppControl : MonoBehaviour {
 	public string csvString = "";
 
 	// Variables to control time settings
-	public float wordRecogStart_WordTimer = 1.0f; // Should be stored
-	public float digitSpan_SequenceTimer = 1.0f; // Should be stored
-	public float NBack_Timer = 1.0f;
+	public double wordRecogStart_WordTimer = 1.0f; // Should be stored
+	public double digitSpan_SequenceTimer = 1.0f; // Should be stored
+	public double NBack_Timer = 1.0f;
 
 	// Variables for notification settings
 	public int notificationId = 0;
@@ -151,9 +151,9 @@ class AppData {
 
 	public int digitSpan_DigitLength = 3;
 
-	public float wordRecogStart_WordTimer = 1.0f;
-	public float digitSpan_SequenceTimer = 1.0f;
-	public float NBack_Timer = 1.0f;
+	public double wordRecogStart_WordTimer = 1.0f;
+	public double digitSpan_SequenceTimer = 1.0f;
+	public double NBack_Timer = 1.0f;
 
 	public int notificationId = 0;
 	public DateTime notificationTime;
