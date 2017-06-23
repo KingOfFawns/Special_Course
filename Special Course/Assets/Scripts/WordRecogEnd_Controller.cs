@@ -59,6 +59,15 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 						break;
 					}
 				}
+
+				foreach (string d in distractorWords) {
+					if (d == word) {
+						check = false;
+						ran = Random.Range (0, wordLength);
+						word = AppControl.control.words [ran];
+						break;
+					}
+				}
 			}
 
 			// Store distractor word
@@ -107,7 +116,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 	IEnumerator Timer(){
 
 		// Timer runs 1 second per word to guess (minimum is 30)
-		int timeEnd = numOFWords;
+		int timeEnd = numOFWords * 2;
 
 		if (timeEnd < 30) {
 			timeEnd = 30;
@@ -165,7 +174,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
 			", Target words: " + numOfTargets + ", Identified words: " + numOfIdentified + ", Falsely identified words: " 
 			+ numOfFalse + ", Time used: " + timerTime + " seconds"; 
-		AppControl.control.csvString = name + ";" + time + ";" + numOfTargets + ";" + numOfIdentified + ";" + numOfFalse + ";" + timerTime + ";;;;;;;;";
+		AppControl.control.csvString = name + ";" + time + ";" + numOfTargets + ";" + numOfIdentified + ";" + numOfFalse + ";" + timerTime + ";;;;;;;;;;";
 
 		AppControl.control.SaveData ();
 

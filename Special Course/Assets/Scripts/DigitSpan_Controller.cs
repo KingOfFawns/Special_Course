@@ -92,7 +92,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Store data
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
 			", Num. of Sequences: " + totalSequences + ", Correct Matches: " + cSequences; 
-		AppControl.control.csvString = name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences;
+		AppControl.control.csvString = name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences + ";;";
 		AppControl.control.SaveData ();
 
 		// Go to next test

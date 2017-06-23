@@ -15,7 +15,7 @@ public class StartUp_Manager : MonoBehaviour {
 		if (!File.Exists (Application.persistentDataPath + "/saveData.csv")) {
 			string header = "Name;Time;Target words;Identified words;Falsely identified words;Time used in seconds;False negatives;" +
 				"True positives;False positives;Length of sequences;Number of sequences;Words displayed;Grids showed;" +
-				"Correct matches";
+				"Correct matches; N; Images shown";
 			File.AppendAllText (Application.persistentDataPath + "/saveData.csv", header + Environment.NewLine);
 		}
 

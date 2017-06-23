@@ -73,7 +73,7 @@ public class Stroop_Controller : MonoBehaviour {
 		// Store data
 		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
 			", Words displayed: " + numOfWordDisp + ", Correct matches: " + cMatches; 
-		AppControl.control.csvString = name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches;
+		AppControl.control.csvString = name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches + ";;";
 		AppControl.control.SaveData ();
 
 		// test end

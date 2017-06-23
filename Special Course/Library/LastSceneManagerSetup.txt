@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/MainMenu.unity
+- path: Assets/Scenes/The_Tests/Stroop_Effect.unity
   isLoaded: 1
   isActive: 1

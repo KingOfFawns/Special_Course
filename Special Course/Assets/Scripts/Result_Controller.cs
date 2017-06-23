@@ -10,13 +10,15 @@ public class Result_Controller : MonoBehaviour {
 
 	public GameObject resultLine;
 	public GameObject compareLine;
-
 	public Text[] dateText;
+	public Text RLegend;
+	public Text CLegend;
 
 	private float x = 2.16f;
 	private float y = -3f;
-
 	private string[] fileLines;
+	private LineRenderer resultGraph;
+	private LineRenderer compareGraph;
 
 
 	public void ReturnToStart(){
@@ -24,54 +26,117 @@ public class Result_Controller : MonoBehaviour {
 	}
 
 	void Awake(){
+		// Read data file into string array fileLines
 		fileLines = File.ReadAllLines (Application.persistentDataPath + "/saveData.csv");
 
-		EriksenFlankerGraph ();
+		resultGraph = resultLine.GetComponent<LineRenderer> ();
+		compareGraph = compareLine.GetComponent<LineRenderer> ();
+	}
+
+	public void WordRecognitionGraph(){
+		RLegend.text = "Korrekte kontra falske viste";
+		CLegend.text = "Ord vist i del 1";
+
+
+	}
+
+	public void NBackGraph(){
+		RLegend.text = "Korrekte valgte af viste";
+		CLegend.text = "Billeder vist af 67";
+
+		GraphIt (67, "N-Back", 15, 7);
+	}
+
+	public void DigitSpanGraph(){
+		RLegend.text = "Korrekte valgte af viste";
+		CLegend.text = "Sequencer vist af 60";
+
+		GraphIt (60, "Digit Span", 10, 13);
 	}
 
 	public void EriksenFlankerGraph(){
-		LineRenderer eFR = resultLine.GetComponent<LineRenderer> ();
-		LineRenderer eFC = compareLine.GetComponent<LineRenderer> ();
+		RLegend.text = "Korrekte valgte af viste";
+		CLegend.text = "Pile sæt vist af 60";
 
+		GraphIt (60, "Eriksen Flanker", 12, 13);
+	}
+
+	public void StroopEffectGraph(){
+		RLegend.text = "Korrekte valgte af viste";
+		CLegend.text = "Ord vist af 50";
+
+		GraphIt (50, "Stroop Effect", 11, 13);
+	}
+
+	void GraphIt (int maxCompare, string test, int shownThings, int correctOfShown){
+		clearGraph ();
+
+		// Counter to select the amount of dates needed
 		int count = -1;
 
-		for(int i = fileLines.Length - 1; i > 0; i--){
+		// Go through data from latest date
+		for (int i = fileLines.Length - 1; i > 0; i--) {
+
+			// If 10 dates found
 			if (count > 8) {
 				break;
 			}
 
-			if (fileLines [i].Contains ("Eriksen Flanker")) {
+			// Is the line one that can be used
+			if (fileLines [i].Contains (test)) {
 				count++;
 
+				// Extract date
 				string[] current = fileLines [i].Split (';');
-
-				string[] date = current [1].Split(' ');
+				string[] date = current [1].Split (' ');
 				date = date [0].Split ('/');
 
-				if (date [0].Length < 2) {
+				// Fix date
+				if (date [0].Length < 2 && date [1].Length < 2) {
+					dateText [count].text = "0" + date [0] + "- 0" + date [1] + "-" + date [2];
+				} 
+				else if (date [0].Length < 2) {
 					dateText [count].text = "0" + date [0] + "-" + date [1] + "-" + date [2];
-				} else {
+				} 
+				else if (date [1].Length < 2) {
+					dateText [count].text = date [0] + "- 0" + date [1] + "-" + date [2];
+				} 
+				else {
 					dateText [count].text = date [0] + "-" + date [1] + "-" + date [2];
 				}
 
+				// Get relevant data
+				float shown, corrects, ratio, compare = 0f;
+				float.TryParse (current [shownThings], out shown);
+				float.TryParse (current [correctOfShown], out corrects);
 
-				float shownGrids, corrects, ratio, compare = 0f;
+				Debug.Log (corrects + " : " + shown);
+				// Set first legend
 
-				float.TryParse (current [12], out shownGrids);
-				float.TryParse (current [13], out corrects);
+				// Calculate ratio and compare
+				ratio = 2.5f * (corrects / shown);
+				compare = 2.5f * (shown / maxCompare);
 
-				ratio = 2*(corrects / shownGrids);
-				eFR.SetPosition (count, new Vector3 (x, y + ratio, 0f));
+				// Create graph points
+				resultGraph.SetPosition (count, new Vector3 (x, y + ratio, 0f));
+				compareGraph.SetPosition (count, new Vector3 (x, y + compare, 0f));
 
-				compare = 2 * (shownGrids / 100);
-				eFC.SetPosition(count, new Vector3 (x, y + compare, 0f));
-
-				Debug.Log (compare);
-
+				// Increment x position in graph
 				x = x - 0.48f;
 			}
 		}
+		// Reset x
 		x = 2.16f;
 	}
 
+	void clearGraph(){
+		// Reset all the points in the graph.
+		for (int i = 0; i < 10; i++) {
+			resultGraph.SetPosition (i, new Vector3 (x, y, 0f));
+			compareGraph.SetPosition (i, new Vector3 (x, y, 0));
+			x = x - 0.48f;
+		}
+
+		x = 2.16f;
+	}
 }

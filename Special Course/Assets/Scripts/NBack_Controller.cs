@@ -65,6 +65,9 @@ public class NBack_Controller : MonoBehaviour {
 		textTP.text = numOfTP.ToString ();
 		textFP.text = numOfFP.ToString ();
 
+		// Special data save
+		string Nsave = N.ToString();
+
 		// Calculate data to be stored
 		float percentage = numOfTP/numOfShown * 100f;
 
@@ -96,10 +99,11 @@ public class NBack_Controller : MonoBehaviour {
 		string FP = numOfFP.ToString ();
 
 		// Store data
-		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
+		AppControl.control.dataString = "Name: " + name + ", Time: " + time + ", N: " + Nsave +
 			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP; 
-		AppControl.control.csvString = name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;";
+		AppControl.control.csvString = name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;;" + Nsave + ";" + numOfShown.ToString();
 		AppControl.control.SaveData ();
+		Debug.Log (numOfShown.ToString ());
 
 		// test end
 		SceneManager.LoadScene("MainMenu");
