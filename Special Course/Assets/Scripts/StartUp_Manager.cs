@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.IO;
 
 public class StartUp_Manager : MonoBehaviour {
 
 	public TextAsset textFile;
-
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +18,7 @@ public class StartUp_Manager : MonoBehaviour {
 				"Correct matches; N; Images shown";
 			File.AppendAllText (Application.persistentDataPath + "/saveData.csv", header + Environment.NewLine);
 		}
-
+			
 		// Load local stored data
 		AppControl.control.Load ();
 		AppControl.control.Save (); // This creates file if not existing
@@ -27,8 +27,5 @@ public class StartUp_Manager : MonoBehaviour {
 		string text = textFile.text;
 		string[] words = text.Split ("\n" [0]);
 		AppControl.control.words = words;
-
-		// Start new Random notification if app is launched from random notification
-				
 	}
 }

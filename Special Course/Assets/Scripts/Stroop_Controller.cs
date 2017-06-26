@@ -15,19 +15,15 @@ public class Stroop_Controller : MonoBehaviour {
 	public Text shownText;
 	public Text correctText;
 
-	private int phase = 1;
+	private int phase = 0;
 	private Color[] colors = {Color.green,Color.red,Color.blue,new Color(180f/255f,0,1f),
 		new Color(1f,140f/255f,0), Color.yellow};
 	private string[] words = {"Grøn", "Rød", "Blå", "Lilla", "Orange", "Gul"};
-
 	private int ranColor = 0;
 	private int ranWord = 0;
-
 	private int correctMatches = 0;
 	private int shownWords = 0;
-
 	private bool active = false;
-
 	private bool end = false;
 
 
@@ -40,21 +36,26 @@ public class Stroop_Controller : MonoBehaviour {
 
 		UpdateWordAndColor ();
 
-		taskText.text = "Match farven på bogstaverne";
 		StartCoroutine (PhaseShift ());
 	}
 
 	IEnumerator PhaseShift(){
 
+		// First phase showing
+		taskText.text = "Match farven på bogstaverne";
+		phase = 1;
 		yield return new WaitForSeconds (20);
+
+		// Show second phase
 		taskText.text = "Match farven der skrives";
 		phase = 2;
-
 		yield return new WaitForSeconds (20);
+
+		// Show third phase
 		taskText.text = "Match farven på bogstaverne";
 		phase = 3;
-
 		yield return new WaitForSeconds (20);
+
 		// Activate canvas representing the end of the test
 		// plus show motivation scores
 		endCanvas.SetActive (true);
@@ -128,9 +129,11 @@ public class Stroop_Controller : MonoBehaviour {
 			shownWords++;
 		}
 
+		// Chose color and word
 		ranColor = Random.Range (0, 6);
 		ranWord = Random.Range (0, 6);
 
+		// Show color and word
 		colorText.text = words [ranWord];
 		colorText.color = colors [ranColor];
 	}

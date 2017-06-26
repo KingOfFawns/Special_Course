@@ -38,19 +38,21 @@ public class AppControl : MonoBehaviour {
 	public double NBack_Timer = 1.0f;
 
 	// Variables for notification settings
-	public int notificationId = 0;
-	public DateTime notificationTime;
-	public DateTime sleepZoneStart;
-	public DateTime sleepZoneEnd;
+	public int notificationId = 0; // Should be stored
+	public DateTime notificationTime; // Should be stored
+	public DateTime sleepZoneStart; // Should be stored
+	public DateTime sleepZoneEnd; // Should be stored
 
 	// Variables for random notification
-	public int randomNotificationId = 0;
+	public int randomNotificationId = 0; // Should be stored
+	public DateTime randomNotificationTime; // Should be stored
 
 	// Settings Login Password
-	public string password = "RootAdmin";
+	public string password = "RootAdmin"; // Should be stored
 
 
 	void Awake () {
+		// Make sure that AppControl is a singleton throughout the scenes
 		if (control == null) {
 			DontDestroyOnLoad (gameObject);
 			control = this;
@@ -90,6 +92,7 @@ public class AppControl : MonoBehaviour {
 
 		// Random notification data
 		data.randomNotificationId = randomNotificationId;
+		data.randomNotificationTime = randomNotificationTime;
 
 		// Store settings login password
 		data.password = password;
@@ -125,6 +128,7 @@ public class AppControl : MonoBehaviour {
 			sleepZoneEnd = data.sleepZoneEnd;
 
 			randomNotificationId = data.randomNotificationId;
+			randomNotificationTime = data.randomNotificationTime;
 
 			password = data.password;
 		}
@@ -161,6 +165,7 @@ class AppData {
 	public DateTime sleepZoneEnd;
 
 	public int randomNotificationId = 0;
+	public DateTime randomNotificationTime;
 
 	public string password = "RootAdmin";
 }

@@ -10,21 +10,18 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 	public GameObject canvas;
 	public GameObject endCanvas;
 	public Text startText;
-
 	public Button button;
 	public Text wordText;
 	public GameObject content;
-
 	public Text targetWords;
 	public Text foundWords;
 
 	private int wordLength;
 	private int numOFWords = 10;
 	private string[] chosenWords;
-
 	private string[] distractorWords;
 
-	// Use this for initialization
+
 	void Awake () {
 		// Reset values
 		AppControl.control.success = false;

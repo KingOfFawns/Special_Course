@@ -18,21 +18,15 @@ public class NBack_Controller : MonoBehaviour {
 	public Text textFP;
 
 	private int N = 2;
-
 	private int[] sequence = new int[100];
 	private int sequenceIndex = -1;
-
 	private bool runImages = true;
 	private bool imageActive = false;
-
 	private bool pushed = false;
-
 	private int numOfFN = 0;
 	private int numOfTP = 0;
 	private int numOfFP = 0;
-
 	private int numOfShown = -1;
-
 	private int randomizer = 0;
 
 

@@ -11,6 +11,7 @@ public class StopTest : MonoBehaviour {
 		// Log stop
 		string time = System.DateTime.Now.ToString ();
 		AppControl.control.dataString = "Test Stopped, " + "Time: " + time;
+		AppControl.control.csvString = "Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 		AppControl.control.SaveData ();
 
 		// Go to main menu

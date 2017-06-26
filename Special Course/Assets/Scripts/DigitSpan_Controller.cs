@@ -14,17 +14,17 @@ public class DigitSpan_Controller : MonoBehaviour {
 	public Text sequenceLengthShow;
 	public Text shownText;
 	public Text correctText;
+	public Text notifyText;
 
 	private int sequenceLength = 3;
-
 	private string digitNumber = "";
 	private string inputNumber = "";
 	private bool active = false;
-
 	private int correctSequences = 0;
 	private int numOfSequences = 0;
-
 	private bool end = false;
+	private int counterCorrects = 0;
+	private int counterFails = 0;
 
 
 	// Use this for initialization
@@ -58,24 +58,6 @@ public class DigitSpan_Controller : MonoBehaviour {
 		shownText.text = numOfSequences.ToString();
 		correctText.text = correctSequences.ToString ();
 
-		// Special data setting
-		string sLength = sequenceLength.ToString ();
-
-		// Calculate data to be stored
-		float percentage = (correctSequences/numOfSequences) * 100;
-		if (percentage >= 90) {
-			sequenceLength++;
-		} else if(percentage < 60) {
-			sequenceLength--;
-		}
-
-		// Limit sequence length
-		if (sequenceLength < 2) {
-			sequenceLength = 2;
-		} else if (sequenceLength > 15) {
-			sequenceLength = 15;
-		}
-
 		// Store local data
 		AppControl.control.digitSpan_DigitLength = sequenceLength;
 		AppControl.control.Save ();
@@ -86,6 +68,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Data to be stored
 		string name = "Digit Span";
 		string time = System.DateTime.Now.ToString();
+		string sLength = sequenceLength.ToString ();
 		string totalSequences = numOfSequences.ToString ();
 		string cSequences = correctSequences.ToString ();
 
@@ -102,22 +85,53 @@ public class DigitSpan_Controller : MonoBehaviour {
 	public void InputDigit(string digit){
 		if (!active) {
 
+			// Add input to sequence
 			inputNumber = inputNumber + digit;
 
+			// Show sequence
 			digitText.text = inputNumber;
 
+			// Check sequence when it is long enough
 			if (inputNumber.Length == digitNumber.Length) {
 
+				// Correct sequence inputtet
 				if (inputNumber == digitNumber) {
 					check.sprite = Resources.Load<Sprite>("checkmark");
 					correctSequences++;
-				} else {
+					counterCorrects++;
+					counterFails = 0;
+				} 
+				// Wrong sequence inputtet
+				else {
 					check.sprite = Resources.Load<Sprite>("failure");
+					counterCorrects = 0;
+					counterFails++;
 				}
+
+				// Update sequence length if 3 fails or 3 corrects in a row 
+				if (counterCorrects > 2) {
+					counterCorrects = 0;
+					sequenceLength++;
+					StartCoroutine(notify (0));
+				}
+				if (counterFails > 2) {
+					counterFails = 0;
+					sequenceLength--;
+					StartCoroutine(notify (1));
+				}
+
+				// Limit sequence length
+				if (sequenceLength < 2) {
+					sequenceLength = 2;
+				} else if (sequenceLength > 15) {
+					sequenceLength = 15;
+				}
+
+				// Reset input
+				inputNumber = "";
 
 				StartCoroutine (ResetCheck ());
 
-				inputNumber = "";
 				StartCoroutine(NextNumber ());
 			}
 		}
@@ -130,6 +144,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	IEnumerator NextNumber(){
+		// Wait and remove shown sequence
 		yield return new WaitForSeconds (0.1f);
 		digitText.text = "";
 		yield return new WaitForSeconds (0.2f);
@@ -138,9 +153,11 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	void UpdateNumber(){
+		// If the test is over
 		if (!end) {
 			numOfSequences++;
 		}
+
 		// Calculate number
 		digitNumber = "";
 
@@ -150,39 +167,32 @@ public class DigitSpan_Controller : MonoBehaviour {
 			digitNumber = digitNumber + ran.ToString ();
 		}
 
-		Debug.Log (digitNumber);
-
 		// Start showing digits
 		StartCoroutine (ShowDigits (digitNumber));
 
 	}
 
 	IEnumerator ShowDigits(string number){
+		// Show the sequence the specified amount of time, then remove it
+
 		active = true;
-
-		int length = number.Length;
-
-		/*
-		// Cut string in chars and show in text field
-		for (int i = 0; i < length; i++) {
-			char digit = number [i];
-
-			digitText.text = digit.ToString();
-
-			yield return new WaitForSeconds (1);
-
-			digitText.text = "";
-
-			if (i != length - 1) {
-				yield return new WaitForSeconds (0.3f);
-			}
-		}
-		*/
 
 		digitText.text = number;
 		yield return new WaitForSeconds ((float)AppControl.control.digitSpan_SequenceTimer);
 		digitText.text = "";
 
 		active = false;
+	}
+
+	IEnumerator notify(int adjust){
+		if (adjust == 0) {
+			notifyText.text = "3 korrekte i træk. Øger sekvens længde.";
+		} else {
+			notifyText.text = "3 forkerte i træk. Nedsætter sekvens længde.";
+		}
+
+		yield return new WaitForSeconds (1f);
+
+		notifyText.text = "";
 	}
 }

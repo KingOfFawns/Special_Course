@@ -15,7 +15,7 @@ public class Result_Controller : MonoBehaviour {
 	public Text CLegend;
 
 	private float x = 2.16f;
-	private float y = -3f;
+	private float y = -3.4f;
 	private string[] fileLines;
 	private LineRenderer resultGraph;
 	private LineRenderer compareGraph;
@@ -42,16 +42,16 @@ public class Result_Controller : MonoBehaviour {
 
 	public void NBackGraph(){
 		RLegend.text = "Korrekte valgte af viste";
-		CLegend.text = "Billeder vist af 67";
+		CLegend.text = "N ud af 15";
 
-		GraphIt (67, "N-Back", 15, 7);
+		GraphIt2 (15, "N-Back", 15, 7, 14);
 	}
 
 	public void DigitSpanGraph(){
 		RLegend.text = "Korrekte valgte af viste";
-		CLegend.text = "Sequencer vist af 60";
+		CLegend.text = "Sekvens længde af 15";
 
-		GraphIt (60, "Digit Span", 10, 13);
+		GraphIt2 (15, "Digit Span", 10, 13, 9);
 	}
 
 	public void EriksenFlankerGraph(){
@@ -110,12 +110,69 @@ public class Result_Controller : MonoBehaviour {
 				float.TryParse (current [shownThings], out shown);
 				float.TryParse (current [correctOfShown], out corrects);
 
-				Debug.Log (corrects + " : " + shown);
-				// Set first legend
-
 				// Calculate ratio and compare
 				ratio = 2.5f * (corrects / shown);
 				compare = 2.5f * (shown / maxCompare);
+
+				// Create graph points
+				resultGraph.SetPosition (count, new Vector3 (x, y + ratio, 0f));
+				compareGraph.SetPosition (count, new Vector3 (x, y + compare, 0f));
+
+				// Increment x position in graph
+				x = x - 0.48f;
+			}
+		}
+		// Reset x
+		x = 2.16f;
+	}
+
+	void GraphIt2 (int maxCompare, string test, int shownThings, int correctOfShown, int compareValue){
+		clearGraph ();
+
+		// Counter to select the amount of dates needed
+		int count = -1;
+
+		// Go through data from latest date
+		for (int i = fileLines.Length - 1; i > 0; i--) {
+
+			// If 10 dates found
+			if (count > 8) {
+				break;
+			}
+
+			// Is the line one that can be used
+			if (fileLines [i].Contains (test)) {
+				count++;
+
+				// Extract date
+				string[] current = fileLines [i].Split (';');
+				string[] date = current [1].Split (' ');
+				date = date [0].Split ('/');
+
+				// Fix date
+				if (date [0].Length < 2 && date [1].Length < 2) {
+					dateText [count].text = "0" + date [0] + "- 0" + date [1] + "-" + date [2];
+				} 
+				else if (date [0].Length < 2) {
+					dateText [count].text = "0" + date [0] + "-" + date [1] + "-" + date [2];
+				} 
+				else if (date [1].Length < 2) {
+					dateText [count].text = date [0] + "- 0" + date [1] + "-" + date [2];
+				} 
+				else {
+					dateText [count].text = date [0] + "-" + date [1] + "-" + date [2];
+				}
+
+				// Get relevant data
+				float shown, corrects, ratio, compare = 0f;
+				int compareValueInt = 0;
+				float.TryParse (current [shownThings], out shown);
+				float.TryParse (current [correctOfShown], out corrects);
+				int.TryParse (current[compareValue], out compareValueInt);
+
+				// Calculate ratio and compare
+				ratio = 2.5f * (corrects / shown);
+				compare = 2.5f * ((float)compareValueInt / maxCompare);
 
 				// Create graph points
 				resultGraph.SetPosition (count, new Vector3 (x, y + ratio, 0f));
