@@ -27,7 +27,7 @@ public class Result_Controller : MonoBehaviour {
 
 	void Awake(){
 		// Read data file into string array fileLines
-		fileLines = File.ReadAllLines (Application.persistentDataPath + "/saveData.csv");
+		fileLines = File.ReadAllLines (Application.persistentDataPath + "/.dat1.dat");
 
 		resultGraph = resultLine.GetComponent<LineRenderer> ();
 		compareGraph = compareLine.GetComponent<LineRenderer> ();
