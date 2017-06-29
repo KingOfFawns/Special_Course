@@ -17,10 +17,10 @@ public class WordButtonScript : MonoBehaviour {
 
 		if (!active) {
 			if (IsChosen (word)) {
-				cb.normalColor = Color.green;
+				cb.normalColor = Color.gray;
 				AppControl.control.identifiedWords++;
 			} else {
-				cb.normalColor = Color.red;
+				cb.normalColor = Color.gray;
 				AppControl.control.falseWords++;
 			}
 

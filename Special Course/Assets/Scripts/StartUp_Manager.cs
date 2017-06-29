@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class StartUp_Manager : MonoBehaviour {
 
@@ -11,12 +12,14 @@ public class StartUp_Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		// Check if storage file exists
-		if (!File.Exists (Application.persistentDataPath + "/saveData.csv")) {
+		if (!File.Exists (Application.persistentDataPath + "/.dat1.dat")) {
 			string header = "Name;Time;Target words;Identified words;Falsely identified words;Time used in seconds;False negatives;" +
 				"True positives;False positives;Length of sequences;Number of sequences;Words displayed;Grids showed;" +
 				"Correct matches; N; Images shown";
-			File.AppendAllText (Application.persistentDataPath + "/saveData.csv", header + Environment.NewLine);
+			File.AppendAllText (Application.persistentDataPath + "/.dat1.dat", header + Environment.NewLine);
+			File.SetAttributes (Application.persistentDataPath + "/.dat1.dat", FileAttributes.Hidden);
 		}
 			
 		// Load local stored data

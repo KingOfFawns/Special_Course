@@ -137,6 +137,13 @@ public class DigitSpan_Controller : MonoBehaviour {
 		}
 	}
 
+	public void Backspace(){
+		if (inputNumber.Length > 0 && !active) {
+			inputNumber = inputNumber.Substring (0, inputNumber.Length - 1);
+			digitText.text = inputNumber;
+		}
+	}
+
 	IEnumerator ResetCheck(){
 		// Wait 0.3 seconds, then remove checkmark/X
 		yield return new WaitForSeconds (0.3f);

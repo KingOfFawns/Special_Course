@@ -14,6 +14,8 @@ public class Stroop_Controller : MonoBehaviour {
 	public GameObject endCanvas;
 	public Text shownText;
 	public Text correctText;
+	public GameObject transitionCanvas;
+	public Text phaseText;
 
 	private int phase = 0;
 	private Color[] colors = {Color.green,Color.red,Color.blue,new Color(180f/255f,0,1f),
@@ -46,10 +48,22 @@ public class Stroop_Controller : MonoBehaviour {
 		phase = 1;
 		yield return new WaitForSeconds (20);
 
+		// Transition canvas
+		transitionCanvas.SetActive(true);
+		phaseText.text = "Match farven der skrives";
+		yield return new WaitForSeconds (2);
+		transitionCanvas.SetActive(false);
+
 		// Show second phase
 		taskText.text = "Match farven der skrives";
 		phase = 2;
 		yield return new WaitForSeconds (20);
+
+		// Transition canvas
+		transitionCanvas.SetActive(true);
+		phaseText.text = "Match farven på bogstaverne";
+		yield return new WaitForSeconds (2);
+		transitionCanvas.SetActive(false);
 
 		// Show third phase
 		taskText.text = "Match farven på bogstaverne";
@@ -109,6 +123,7 @@ public class Stroop_Controller : MonoBehaviour {
 	IEnumerator NextWord(){
 		active = true; // Spawning in progress
 
+		colorText.text = "";
 		// Wait half a second
 		yield return new WaitForSeconds (0.5f);
 

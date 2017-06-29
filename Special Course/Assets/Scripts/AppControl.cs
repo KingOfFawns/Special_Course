@@ -48,7 +48,7 @@ public class AppControl : MonoBehaviour {
 	public DateTime randomNotificationTime; // Should be stored
 
 	// Settings Login Password
-	public string password = "RootAdmin"; // Should be stored
+	public string password = "52 6F 6F 74 41 64 6D 69 6E"; // Should be stored
 
 
 	void Awake () {
@@ -62,8 +62,11 @@ public class AppControl : MonoBehaviour {
 	}
 
 	public void Save(){
+		if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
+			File.SetAttributes (Application.persistentDataPath + "/.appData.dat", FileAttributes.Normal);
+		}
 		BinaryFormatter bf = new BinaryFormatter ();
-		FileStream file = File.Create (Application.persistentDataPath + "/appData.dat");
+		FileStream file = File.Create (Application.persistentDataPath + "/.appData.dat");
 
 		// Data to store
 		AppData data = new AppData();
@@ -100,12 +103,14 @@ public class AppControl : MonoBehaviour {
 		// Store data
 		bf.Serialize (file, data);
 		file.Close();
+
+		File.SetAttributes (Application.persistentDataPath + "/.appData.dat", FileAttributes.Hidden);
 	}
 
 	public void Load(){
-		if (File.Exists (Application.persistentDataPath + "/appData.dat")) {
+		if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
 			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.persistentDataPath + "/appData.dat", FileMode.Open);
+			FileStream file = File.Open (Application.persistentDataPath + "/.appData.dat", FileMode.Open);
 			AppData data = (AppData)bf.Deserialize (file);
 			file.Close ();
 
@@ -135,13 +140,16 @@ public class AppControl : MonoBehaviour {
 	}
 
 	public void SaveData(){
-		File.AppendAllText (Application.persistentDataPath + "/saveData.txt", dataString + Environment.NewLine);
-		File.AppendAllText (Application.persistentDataPath + "/saveData.csv", csvString + Environment.NewLine);
+		File.AppendAllText (Application.persistentDataPath + "/.dat2.dat", dataString + Environment.NewLine);
+		File.AppendAllText (Application.persistentDataPath + "/.dat1.dat", csvString + Environment.NewLine);
+
+		File.SetAttributes (Application.persistentDataPath + "/.dat2.dat", FileAttributes.Hidden);
+		File.SetAttributes (Application.persistentDataPath + "/.dat1.dat", FileAttributes.Hidden);
 	}
 
 	public void ClearData(){
-		File.Delete (Application.persistentDataPath + "/saveData.txt");
-		File.Delete (Application.persistentDataPath + "/appData.dat");
+		File.Delete (Application.persistentDataPath + "/.dat2.dat");
+		File.Delete (Application.persistentDataPath + "/.appData.dat");
 	}
 }
 
@@ -167,5 +175,5 @@ class AppData {
 	public int randomNotificationId = 0;
 	public DateTime randomNotificationTime;
 
-	public string password = "RootAdmin";
+	public string password = "52 6F 6F 74 41 64 6D 69 6E";
 }
