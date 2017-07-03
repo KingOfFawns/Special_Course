@@ -14,6 +14,11 @@ public class StopTest : MonoBehaviour {
 		AppControl.control.csvString = "Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 		AppControl.control.SaveData ();
 
+
+		// Reset AchieveCounter
+		AppControl.control.achieveCounter = 0;
+		AppControl.control.Save ();
+
 		// Go to main menu
 		SceneManager.LoadScene ("MainMenu");
 	}

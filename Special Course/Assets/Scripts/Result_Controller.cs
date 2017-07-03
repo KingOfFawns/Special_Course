@@ -22,7 +22,7 @@ public class Result_Controller : MonoBehaviour {
 
 
 	public void ReturnToStart(){
-		SceneManager.LoadScene ("MainMenu");
+		SceneManager.LoadScene ("ResultOverview");
 	}
 
 	void Awake(){

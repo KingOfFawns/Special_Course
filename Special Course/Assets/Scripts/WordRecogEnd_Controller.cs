@@ -151,6 +151,30 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			numOFWords = 2;
 		}
 			
+		// Achievement calculations
+		AppControl.control.achieveCounter = AppControl.control.achieveCounter + 1;
+
+		if (!AppControl.control.firstTestCleared) {
+			AppControl.control.firstTestCleared = true;
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+		}
+
+		if (AppControl.control.achieveCounter == 5) {
+			AppControl.control.fiveTestsCleared++;
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+		} else if (AppControl.control.achieveCounter == 10) {
+			AppControl.control.tenTestsCleared++;
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+		} else if (AppControl.control.achieveCounter == 20) {
+			AppControl.control.twentyTestsCleared++;
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+		} else if (AppControl.control.achieveCounter == 50) {
+			AppControl.control.fiftyTestsCleared++;
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+		}
+
+		AppControl.control.Save ();
+
 		//Store local data
 		AppControl.control.word_Recog_Target = numOFWords;
 		AppControl.control.word_Last_Test = ratio;

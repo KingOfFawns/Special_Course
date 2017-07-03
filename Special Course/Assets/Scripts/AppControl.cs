@@ -50,6 +50,14 @@ public class AppControl : MonoBehaviour {
 	// Settings Login Password
 	public string password = "52 6F 6F 74 41 64 6D 69 6E"; // Should be stored
 
+	// Achievements data
+	public int achieveCounter = 0;
+	public bool firstTestCleared = false; // Should be stored
+	public int fiveTestsCleared = 0; // Should be stored
+	public int tenTestsCleared = 0; // Should be stored
+	public int twentyTestsCleared = 0; // Should be stored
+	public int fiftyTestsCleared = 0; // Should be stored
+
 
 	void Awake () {
 		// Make sure that AppControl is a singleton throughout the scenes
@@ -100,6 +108,14 @@ public class AppControl : MonoBehaviour {
 		// Store settings login password
 		data.password = password;
 
+		// Store achievement data
+		data.achieveCounter = achieveCounter;
+		data.firstTestCleared = firstTestCleared;
+		data.fiveTestsCleared = fiveTestsCleared;
+		data.tenTestsCleared = tenTestsCleared;
+		data.twentyTestsCleared = twentyTestsCleared;
+		data.fiftyTestsCleared = fiftyTestsCleared;
+
 		// Store data
 		bf.Serialize (file, data);
 		file.Close();
@@ -136,6 +152,13 @@ public class AppControl : MonoBehaviour {
 			randomNotificationTime = data.randomNotificationTime;
 
 			password = data.password;
+
+			achieveCounter = data.achieveCounter;
+			firstTestCleared = data.firstTestCleared;
+			fiveTestsCleared = data.fiveTestsCleared;
+			tenTestsCleared = data.tenTestsCleared;
+			twentyTestsCleared = data.twentyTestsCleared;
+			fiftyTestsCleared = data.fiftyTestsCleared;
 		}
 	}
 
@@ -176,4 +199,11 @@ class AppData {
 	public DateTime randomNotificationTime;
 
 	public string password = "52 6F 6F 74 41 64 6D 69 6E";
+
+	public bool firstTestCleared = false;
+	public int fiveTestsCleared = 0;
+	public int tenTestsCleared = 0;
+	public int twentyTestsCleared = 0;
+	public int fiftyTestsCleared = 0;
+	public int achieveCounter = 0;
 }

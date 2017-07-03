@@ -66,6 +66,10 @@ public class MainMenu_Controller : MonoBehaviour {
 		AppControl.control.csvString = "Skipped;" + time + ";;;;;;;;;;;;;;;;";
 		AppControl.control.SaveData ();
 
+		// Reset AchieveCounter
+		AppControl.control.achieveCounter = 0;
+		AppControl.control.Save ();
+
 		Application.Quit ();
 	}
 
