@@ -16,6 +16,7 @@ public class Stroop_Controller : MonoBehaviour {
 	public Text correctText;
 	public GameObject transitionCanvas;
 	public Text phaseText;
+	public Scrollbar timeBar;
 
 	private int phase = 0;
 	private Color[] colors = {Color.green,Color.red,Color.blue,new Color(180f/255f,0,1f),
@@ -46,7 +47,12 @@ public class Stroop_Controller : MonoBehaviour {
 		// First phase showing
 		taskText.text = "Match farven på bogstaverne";
 		phase = 1;
-		yield return new WaitForSeconds (20);
+		// Timer waits for 20 seconds
+		for (int i = 1; i < 21; i++) {
+			yield return new WaitForSeconds(1);
+			timeBar.size = i / 60f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (60 - i).ToString ();
+		}
 
 		// Transition canvas
 		transitionCanvas.SetActive(true);
@@ -57,7 +63,12 @@ public class Stroop_Controller : MonoBehaviour {
 		// Show second phase
 		taskText.text = "Match farven der skrives";
 		phase = 2;
-		yield return new WaitForSeconds (20);
+		// Timer waits for 20 seconds
+		for (int i = 21; i < 41; i++) {
+			yield return new WaitForSeconds(1);
+			timeBar.size = i / 60f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (60 - i).ToString ();
+		}
 
 		// Transition canvas
 		transitionCanvas.SetActive(true);
@@ -68,7 +79,12 @@ public class Stroop_Controller : MonoBehaviour {
 		// Show third phase
 		taskText.text = "Match farven på bogstaverne";
 		phase = 3;
-		yield return new WaitForSeconds (20);
+		// Timer waits for 20 seconds
+		for (int i = 41; i < 61; i++) {
+			yield return new WaitForSeconds(1);
+			timeBar.size = i / 60f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (60 - i).ToString ();
+		}
 
 		// Activate canvas representing the end of the test
 		// plus show motivation scores
@@ -80,15 +96,16 @@ public class Stroop_Controller : MonoBehaviour {
 		yield return new WaitForSeconds(3);
 
 		// Data to be stored
+		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
 		string name = "Stroop Effect";
 		string time = System.DateTime.Now.ToString();
 		string numOfWordDisp = shownWords.ToString ();
 		string cMatches = correctMatches.ToString ();
 
 		// Store data
-		AppControl.control.dataString = "Name: " + name + ", Time: " + time + 
+		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + 
 			", Words displayed: " + numOfWordDisp + ", Correct matches: " + cMatches; 
-		AppControl.control.csvString = name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches + ";;";
+		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches + ";;";
 		AppControl.control.SaveData ();
 
 		// test end

@@ -14,9 +14,12 @@ public class DigitSpan_Controller : MonoBehaviour {
 	public Text sequenceLengthShow;
 	public Text shownText;
 	public Text correctText;
+	public Text sequeceLengthEnd;
 	public Text notifyText;
+	public Scrollbar timeBar;
 
 	private int sequenceLength = 3;
+	private int maxSequence = 0;
 	private string digitNumber = "";
 	private string inputNumber = "";
 	private bool active = false;
@@ -49,7 +52,11 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 	IEnumerator Timer(){
 		// The timer waits for 60 seconds
-		yield return new WaitForSeconds (60f);
+		for (int i = 1; i < 61; i++) {
+			yield return new WaitForSeconds(1);
+			timeBar.size = i / 60f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (60 - i).ToString ();
+		}
 		end = true;
 
 		// Activate canvas representiong the end of the test
@@ -57,15 +64,18 @@ public class DigitSpan_Controller : MonoBehaviour {
 		endCanvas.SetActive (true);
 		shownText.text = numOfSequences.ToString();
 		correctText.text = correctSequences.ToString ();
+		sequeceLengthEnd.text = sequenceLength.ToString ();
 
 		// Store local data
 		AppControl.control.digitSpan_DigitLength = sequenceLength;
+		AppControl.control.maxSequenceLength = maxSequence;
 		AppControl.control.Save ();
 
 		// Wait for 3 seconds before transitioning to the next test
 		yield return new WaitForSeconds (3f);
 
 		// Data to be stored
+		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
 		string name = "Digit Span";
 		string time = System.DateTime.Now.ToString();
 		string sLength = sequenceLength.ToString ();
@@ -73,9 +83,9 @@ public class DigitSpan_Controller : MonoBehaviour {
 		string cSequences = correctSequences.ToString ();
 
 		// Store data
-		AppControl.control.dataString = "Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
+		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
 			", Num. of Sequences: " + totalSequences + ", Correct Matches: " + cSequences; 
-		AppControl.control.csvString = name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences + ";;";
+		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences + ";;";
 		AppControl.control.SaveData ();
 
 		// Go to next test
@@ -127,6 +137,10 @@ public class DigitSpan_Controller : MonoBehaviour {
 					sequenceLength = 15;
 				}
 
+				if (maxSequence < sequenceLength) {
+					maxSequence = sequenceLength;
+				}
+
 				// Reset input
 				inputNumber = "";
 
@@ -154,7 +168,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Wait and remove shown sequence
 		yield return new WaitForSeconds (0.1f);
 		digitText.text = "";
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.4f);
 
 		UpdateNumber ();
 	}

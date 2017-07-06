@@ -9,6 +9,8 @@ public class WordButtonScript : MonoBehaviour {
 
 	public void OnClick(){
 
+		Text wordsLeft = GameObject.Find ("WordsText").GetComponent<Text>();
+
 		Button b = this.GetComponent<Button> ();
 
 		string word = b.GetComponentInChildren<Text>().text;
@@ -38,6 +40,12 @@ public class WordButtonScript : MonoBehaviour {
 			}
 
 			active = false;
+		}
+
+		if ((AppControl.control.identifiedWords + AppControl.control.falseWords) > AppControl.control.word_Recog_Target) {
+			wordsLeft.text = "0 ord";
+		} else {
+			wordsLeft.text = (AppControl.control.word_Recog_Target - (AppControl.control.identifiedWords + AppControl.control.falseWords)) + " ord";
 		}
 
 		b.colors = cb;

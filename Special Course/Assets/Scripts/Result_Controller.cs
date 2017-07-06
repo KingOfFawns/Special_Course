@@ -44,28 +44,28 @@ public class Result_Controller : MonoBehaviour {
 		RLegend.text = "Korrekte valgte af viste";
 		CLegend.text = "N ud af 15";
 
-		GraphIt2 (15, "N-Back", 15, 7, 14);
+		GraphIt2 (15, "N-Back", 16, 8, 15);
 	}
 
 	public void DigitSpanGraph(){
 		RLegend.text = "Korrekte valgte af viste";
 		CLegend.text = "Sekvens længde af 15";
 
-		GraphIt2 (15, "Digit Span", 10, 13, 9);
+		GraphIt2 (15, "Digit Span", 11, 14, 10);
 	}
 
 	public void EriksenFlankerGraph(){
 		RLegend.text = "Korrekte valgte af viste";
 		CLegend.text = "Pile sæt vist af 60";
 
-		GraphIt (60, "Eriksen Flanker", 12, 13);
+		GraphIt (60, "Eriksen Flanker", 13, 14);
 	}
 
 	public void StroopEffectGraph(){
 		RLegend.text = "Korrekte valgte af viste";
 		CLegend.text = "Ord vist af 50";
 
-		GraphIt (50, "Stroop Effect", 11, 13);
+		GraphIt (50, "Stroop Effect", 12, 14);
 	}
 
 	void GraphIt (int maxCompare, string test, int shownThings, int correctOfShown){
@@ -88,7 +88,7 @@ public class Result_Controller : MonoBehaviour {
 
 				// Extract date
 				string[] current = fileLines [i].Split (';');
-				string[] date = current [1].Split (' ');
+				string[] date = current [2].Split (' ');
 				date = date [0].Split ('/');
 
 				// Fix date
@@ -146,7 +146,7 @@ public class Result_Controller : MonoBehaviour {
 
 				// Extract date
 				string[] current = fileLines [i].Split (';');
-				string[] date = current [1].Split (' ');
+				string[] date = current [2].Split (' ');
 				date = date [0].Split ('/');
 
 				// Fix date

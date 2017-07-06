@@ -61,9 +61,11 @@ public class MainMenu_Controller : MonoBehaviour {
 
 	public void Skip(){
 		// Log skip
+		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
 		string time = System.DateTime.Now.ToString ();
-		AppControl.control.dataString = "Skipped, " + "Time: " + time;
-		AppControl.control.csvString = "Skipped;" + time + ";;;;;;;;;;;;;;;;";
+
+		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Skipped" + ", Time: " + time;
+		AppControl.control.csvString = patientNumber + ";Skipped;" + time + ";;;;;;;;;;;;;;;;";
 		AppControl.control.SaveData ();
 
 		// Reset AchieveCounter

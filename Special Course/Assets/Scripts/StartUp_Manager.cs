@@ -15,7 +15,7 @@ public class StartUp_Manager : MonoBehaviour {
 
 		// Check if storage file exists
 		if (!File.Exists (Application.persistentDataPath + "/.dat1.dat")) {
-			string header = "Name;Time;Target words;Identified words;Falsely identified words;Time used in seconds;False negatives;" +
+			string header = "PatientNumber;Name;Time;Target words;Identified words;Falsely identified words;Time used in seconds;False negatives;" +
 				"True positives;False positives;Length of sequences;Number of sequences;Words displayed;Grids showed;" +
 				"Correct matches; N; Images shown";
 			File.AppendAllText (Application.persistentDataPath + "/.dat1.dat", header + Environment.NewLine);

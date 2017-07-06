@@ -10,6 +10,7 @@ public class WordRecogStart_Controller : MonoBehaviour {
 	public GameObject canvas;
 	public GameObject endCanvas;
 	public Text word;
+	public Text wordsLeft;
 
 	private int numOFWords = 10;
 	private string[] chosenWords;
@@ -61,9 +62,14 @@ public class WordRecogStart_Controller : MonoBehaviour {
 
 	IEnumerator ShowWords(){
 
+		// Set start of info text
+		wordsLeft.text = "Ord 1 af " + numOFWords.ToString();
+
 		for (int i = 0; i < numOFWords; i++) {
 			yield return new WaitForSeconds (0.3f);
 
+			// Show info text
+			wordsLeft.text = "Ord " + (i+1).ToString() + " af " + numOFWords.ToString();
 			// Show word
 			word.text = chosenWords[i];
 

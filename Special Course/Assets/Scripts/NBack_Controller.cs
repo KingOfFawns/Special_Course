@@ -16,6 +16,7 @@ public class NBack_Controller : MonoBehaviour {
 	public Text textFN;
 	public Text textTP;
 	public Text textFP;
+	public Scrollbar timeBar;
 
 	private int N = 2;
 	private int[] sequence = new int[100];
@@ -49,7 +50,12 @@ public class NBack_Controller : MonoBehaviour {
 	}
 
 	IEnumerator Timer(){
-		yield return new WaitForSeconds (90);
+		// The timer waits for 90 seconds
+		for (int i = 1; i < 91; i++) {
+			yield return new WaitForSeconds(1);
+			timeBar.size = i / 90f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (90 - i).ToString ();
+		}
 		runImages = false;
 
 		// Activate canvas representing the end of the test
@@ -72,8 +78,8 @@ public class NBack_Controller : MonoBehaviour {
 		}
 
 		// Limit N
-		if (N < 1) {
-			N = 1;
+		if (N < 2) {
+			N = 2;
 		} else if (N > 9) {
 			N = 9;
 		}
@@ -86,6 +92,7 @@ public class NBack_Controller : MonoBehaviour {
 		yield return new WaitForSeconds(3);
 
 		// Data to be stored
+		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
 		string name = "N-Back";
 		string time = System.DateTime.Now.ToString();
 		string FN = numOfFN.ToString();
@@ -93,9 +100,9 @@ public class NBack_Controller : MonoBehaviour {
 		string FP = numOfFP.ToString ();
 
 		// Store data
-		AppControl.control.dataString = "Name: " + name + ", Time: " + time + ", N: " + Nsave +
+		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + ", N: " + Nsave +
 			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP; 
-		AppControl.control.csvString = name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;;" + Nsave + ";" + numOfShown.ToString();
+		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;;" + Nsave + ";" + numOfShown.ToString();
 		AppControl.control.SaveData ();
 		Debug.Log (numOfShown.ToString ());
 

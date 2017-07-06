@@ -11,7 +11,8 @@ public class AppControl : MonoBehaviour {
 
 	// Storage for word recog start and end
 	public int word_Recog_Target = 10; // Should be stored
-	public float word_Last_Test = 0f; // Should be stored
+	public int word_Last_Test = -1; // Should be stored
+	public int word_previous_Test = -1; // Should be stored
 	public string[] words;
 	public string[] chosenWords;
 	public int identifiedWords = 0;
@@ -35,7 +36,7 @@ public class AppControl : MonoBehaviour {
 	// Variables to control time settings
 	public double wordRecogStart_WordTimer = 1.0f; // Should be stored
 	public double digitSpan_SequenceTimer = 1.0f; // Should be stored
-	public double NBack_Timer = 1.0f;
+	public double NBack_Timer = 1.0f; // Should be stored
 
 	// Variables for notification settings
 	public int notificationId = 0; // Should be stored
@@ -50,13 +51,19 @@ public class AppControl : MonoBehaviour {
 	// Settings Login Password
 	public string password = "52 6F 6F 74 41 64 6D 69 6E"; // Should be stored
 
+	// Highscore data
+	public int maxSequenceLength = 0; // Should be stored
+
 	// Achievements data
-	public int achieveCounter = 0;
+	public int achieveCounter = 0; // Should be stored
 	public bool firstTestCleared = false; // Should be stored
 	public int fiveTestsCleared = 0; // Should be stored
 	public int tenTestsCleared = 0; // Should be stored
 	public int twentyTestsCleared = 0; // Should be stored
 	public int fiftyTestsCleared = 0; // Should be stored
+
+	// Patient data
+	public int patientNumber = 0;
 
 
 	void Awake () {
@@ -82,6 +89,7 @@ public class AppControl : MonoBehaviour {
 		// Word Recog data
 		data.word_Recog_Target = word_Recog_Target;
 		data.word_Last_Test = word_Last_Test;
+		data.word_previous_Test = word_previous_Test;
 
 		// N-back data
 		data.N = N;
@@ -108,6 +116,9 @@ public class AppControl : MonoBehaviour {
 		// Store settings login password
 		data.password = password;
 
+		// Store highscore data
+		data.maxSequenceLength = maxSequenceLength;
+
 		// Store achievement data
 		data.achieveCounter = achieveCounter;
 		data.firstTestCleared = firstTestCleared;
@@ -115,6 +126,9 @@ public class AppControl : MonoBehaviour {
 		data.tenTestsCleared = tenTestsCleared;
 		data.twentyTestsCleared = twentyTestsCleared;
 		data.fiftyTestsCleared = fiftyTestsCleared;
+
+		// Store patient number
+		data.patientNumber = patientNumber;
 
 		// Store data
 		bf.Serialize (file, data);
@@ -133,6 +147,7 @@ public class AppControl : MonoBehaviour {
 			// Load data
 			word_Recog_Target = data.word_Recog_Target;
 			word_Last_Test = data.word_Last_Test;
+			word_previous_Test = data.word_previous_Test;
 
 			N = data.N;
 			N_percentage_last = data.N_percentage_last;
@@ -153,12 +168,16 @@ public class AppControl : MonoBehaviour {
 
 			password = data.password;
 
+			maxSequenceLength = data.maxSequenceLength;
+
 			achieveCounter = data.achieveCounter;
 			firstTestCleared = data.firstTestCleared;
 			fiveTestsCleared = data.fiveTestsCleared;
 			tenTestsCleared = data.tenTestsCleared;
 			twentyTestsCleared = data.twentyTestsCleared;
 			fiftyTestsCleared = data.fiftyTestsCleared;
+
+			patientNumber = data.patientNumber;
 		}
 	}
 
@@ -169,17 +188,13 @@ public class AppControl : MonoBehaviour {
 		File.SetAttributes (Application.persistentDataPath + "/.dat2.dat", FileAttributes.Hidden);
 		File.SetAttributes (Application.persistentDataPath + "/.dat1.dat", FileAttributes.Hidden);
 	}
-
-	public void ClearData(){
-		File.Delete (Application.persistentDataPath + "/.dat2.dat");
-		File.Delete (Application.persistentDataPath + "/.appData.dat");
-	}
 }
 
 [Serializable]
 class AppData {
 	public int word_Recog_Target = 10;
-	public float word_Last_Test = 0f;
+	public int word_Last_Test = -1;
+	public int word_previous_Test = -1;
 
 	public int N = 2;
 	public float N_percentage_last = 0f;
@@ -200,10 +215,14 @@ class AppData {
 
 	public string password = "52 6F 6F 74 41 64 6D 69 6E";
 
+	public int maxSequenceLength = 0;
+
 	public bool firstTestCleared = false;
 	public int fiveTestsCleared = 0;
 	public int tenTestsCleared = 0;
 	public int twentyTestsCleared = 0;
 	public int fiftyTestsCleared = 0;
 	public int achieveCounter = 0;
+
+	public int patientNumber = 0;
 }

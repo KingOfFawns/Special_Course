@@ -22,6 +22,10 @@ public class Settings_Controller : MonoBehaviour {
 		SceneManager.LoadScene ("AdjustSettingsLogin");
 	}
 
+	public void GoToPatientNumber(){
+		SceneManager.LoadScene ("AdjustPatientNumber");
+	}
+
 	public void SendData(){
 		if (!Directory.Exists ("/storage/emulated/0/Download/SEE-COG")) {
 			Directory.CreateDirectory ("/storage/emulated/0/Download/SEE-COG");
@@ -39,5 +43,54 @@ public class Settings_Controller : MonoBehaviour {
 		File.Copy (Application.persistentDataPath + "/.dat1.dat", "/storage/emulated/0/Download/SEE-COG/SaveData.csv");
 
 		AndroidToast.ShowToastNotification ("Filer downloadet", AndroidToast.LENGTH_SHORT);
+	}
+
+	public void ResetResultData(){
+		if (Directory.Exists ("/storage/emulated/0/Download/SEE-COG")) {
+			Directory.Delete ("/storage/emulated/0/Download/SEE-COG");
+		}
+
+		if (File.Exists (Application.persistentDataPath + "/.dat2.dat")) {
+			File.Delete (Application.persistentDataPath + "/.dat2.dat");
+		}
+		if (File.Exists (Application.persistentDataPath + "/.dat1.dat")) {
+			File.Delete (Application.persistentDataPath + "/.dat1.dat");
+		}
+	}
+
+	public void ResetAppData(){
+		AppControl.control.word_Recog_Target = 10;
+		AppControl.control.word_Last_Test = -1;
+		AppControl.control.word_Last_Test = -1;
+
+		AppControl.control.N = 2;
+		AppControl.control.N_percentage_last = 0f;
+
+		AppControl.control.digitSpan_DigitLength = 3;
+
+		AppControl.control.wordRecogStart_WordTimer = 1.0f;
+		AppControl.control.digitSpan_SequenceTimer = 1.0f;
+		AppControl.control.NBack_Timer = 1.0f;
+
+		AppControl.control.notificationId = 0;
+		AppControl.control.notificationTime = new System.DateTime();
+		AppControl.control.sleepZoneStart = new System.DateTime();
+		AppControl.control.sleepZoneEnd = new System.DateTime();
+
+		AppControl.control.randomNotificationId = 0;
+		AppControl.control.randomNotificationTime = new System.DateTime();
+
+		AppControl.control.password = "52 6F 6F 74 41 64 6D 69 6E";
+
+		AppControl.control.maxSequenceLength = 0;
+
+		AppControl.control.firstTestCleared = false;
+		AppControl.control.fiveTestsCleared = 0;
+		AppControl.control.tenTestsCleared = 0;
+		AppControl.control.twentyTestsCleared = 0;
+		AppControl.control.fiftyTestsCleared = 0;
+		AppControl.control.achieveCounter = 0;
+
+		AppControl.control.Save ();
 	}
 }
