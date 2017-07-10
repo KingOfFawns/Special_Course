@@ -11,7 +11,7 @@ public class StartUp_Manager : MonoBehaviour {
 	public TextAsset textFile;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		// Check if storage file exists
 		if (!File.Exists (Application.persistentDataPath + "/.dat1.dat")) {

@@ -15,9 +15,20 @@ public class Notifications_Controller : MonoBehaviour {
 	public InputField sleepZoneMinutes2;
 	public Text inSleepZoneText;
 	public Text sleepZoneSave;
+	public GameObject back;
+	public GameObject next;
+	public Text notifyText;
+
+	private bool notiSet = false;
+	private bool sleepSet = false;
 
 
-	public void Awake(){
+	void Start(){
+		if (AppControl.control.first_Time_Start) {
+			back.SetActive (false);
+			next.SetActive (true);
+		}
+
 		// Set notification time from memory
 		DateTime notificationTime = AppControl.control.notificationTime;
 
@@ -102,7 +113,35 @@ public class Notifications_Controller : MonoBehaviour {
 		SceneManager.LoadScene ("Settings");
 	}
 
+	public void NextButton(){
+		if (!notiSet) {
+			notifyText.text = "Notifikation mangler";
+			StartCoroutine (ResetNotifyText ());
+		} else if (!sleepSet) {
+			notifyText.text = "Sove zone mangler";
+			StartCoroutine (ResetNotifyText ());
+		}
+		else {
+			AppControl.control.first_Time_Start = false;
+			AppControl.control.Save ();
+
+			SceneManager.LoadScene ("MainMenu");
+		}
+	}
+
+	IEnumerator ResetNotifyText(){
+		yield return new WaitForSeconds (1);
+		notifyText.text = "";
+	}
+
 	public void SetNotification(){
+
+		if (!sleepSet && AppControl.control.first_Time_Start) {
+			notifyText.text = "Indtast sove zone først";
+			StartCoroutine (ResetNotifyText ());
+			return;
+		}
+
 		string hour = notificationHour.text;
 		string minutes = notificationMinutes.text;
 		string year = DateTime.Now.Year.ToString ();
@@ -198,6 +237,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 			// Notify
 			inSleepZoneText.text = "Gemt";
+			notiSet = true;
 
 			StartCoroutine (TimeOut ());
 		}
@@ -235,6 +275,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 		// Notify
 		sleepZoneSave.text = "Gemt";
+		sleepSet = true;
 
 		StartCoroutine (TimeOut2 ());
 	}

@@ -7,9 +7,16 @@ using System;
 
 public class MainMenu_Controller : MonoBehaviour {
 
+	public GameObject MainCamera;
 	public Button startTest;
 	public Button skip;
 	public Text test;
+
+	void Start(){
+		if (AppControl.control.first_Time_Start) {
+			SceneManager.LoadScene ("AdjustPatientNumber");
+		}
+	}
 
 	void Update(){
 		// Get current time
@@ -78,5 +85,4 @@ public class MainMenu_Controller : MonoBehaviour {
 	public void Exit(){
 		Application.Quit ();
 	}
-
 }

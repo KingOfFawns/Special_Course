@@ -187,21 +187,21 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 		if (!AppControl.control.firstTestCleared) {
 			AppControl.control.firstTestCleared = true;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
 		}
 
 		if (AppControl.control.achieveCounter == 5) {
 			AppControl.control.fiveTestsCleared++;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
 		} else if (AppControl.control.achieveCounter == 10) {
 			AppControl.control.tenTestsCleared++;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
 		} else if (AppControl.control.achieveCounter == 20) {
 			AppControl.control.twentyTestsCleared++;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
 		} else if (AppControl.control.achieveCounter == 50) {
 			AppControl.control.fiftyTestsCleared++;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_SHORT);
+			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
 		}
 
 		//Store local data

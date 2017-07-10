@@ -91,6 +91,8 @@ public class Settings_Controller : MonoBehaviour {
 		AppControl.control.fiftyTestsCleared = 0;
 		AppControl.control.achieveCounter = 0;
 
+		AppControl.control.patientNumber = 0;
+
 		AppControl.control.Save ();
 	}
 }

@@ -98,6 +98,9 @@ public class AppControl : MonoBehaviour {
 		// Digit Span data
 		data.digitSpan_DigitLength = digitSpan_DigitLength;
 
+		// First time boolean
+		data.first_Time_Start = first_Time_Start;
+
 		// Timer variables for settings - data
 		data.wordRecogStart_WordTimer = wordRecogStart_WordTimer;
 		data.digitSpan_SequenceTimer = digitSpan_SequenceTimer;
@@ -154,6 +157,8 @@ public class AppControl : MonoBehaviour {
 
 			digitSpan_DigitLength = data.digitSpan_DigitLength;
 
+			first_Time_Start = data.first_Time_Start;
+
 			wordRecogStart_WordTimer = data.wordRecogStart_WordTimer;
 			digitSpan_SequenceTimer = data.digitSpan_SequenceTimer;
 			NBack_Timer = data.NBack_Timer;
@@ -200,6 +205,8 @@ class AppData {
 	public float N_percentage_last = 0f;
 
 	public int digitSpan_DigitLength = 3;
+
+	public bool first_Time_Start = true;
 
 	public double wordRecogStart_WordTimer = 1.0f;
 	public double digitSpan_SequenceTimer = 1.0f;

@@ -6,8 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class Help_Controller : MonoBehaviour {
 
+	public GameObject content;
 	public Text header;
-	public Text description;
+	public GameObject textStart;
+	public GameObject textWord;
+	public GameObject textNBack;
+	public GameObject textDSpan;
+	public GameObject textSEffect;
+	public GameObject textFlanker;
+
+	private GameObject objectText;
 
 
 	public void ReturnToStart(){
@@ -15,38 +23,63 @@ public class Help_Controller : MonoBehaviour {
 	}
 
 	void Start(){
-		header.text = "Oversigt over de forskellige tests.";
+		header.text = "Introduktion";
 
-		description.text = "Tryk på en af overstående knapper for at se en beskrivelse af en test.";
+		objectText = Instantiate (textStart, content.transform);
+	}
+
+	public void ShowIntroduction(){
+		header.text = "Introduktion";
+
+		Destroy (objectText);
+
+		StartCoroutine (WaitALittle (textStart));
 	}
 
 	public void ShowWordRecogText(){
-		header.text = "Word Recognition Test";
+		header.text = "Ord Testen";
 
-		description.text = "Word Recognition testen består af 2 dele...";
+		Destroy (objectText);
+
+		StartCoroutine (WaitALittle (textWord));
 	}
 
 	public void ShowNBackText(){
-		header.text = "N-Back Test";
+		header.text = "Billed Testen";
 
-		description.text = "I N-Back testen skal du genkende billeder du har set for N billeder siden...";
+		Destroy (objectText);
+
+		StartCoroutine (WaitALittle (textNBack));
 	}
 
 	public void ShowDigitSpanText(){
-		header.text = "Digit Span Test";
+		header.text = "Tal Testen";
 
-		description.text = "I Digit Span testen vises du en sekvens af tal...";
+		Destroy (objectText);
+
+		StartCoroutine (WaitALittle (textDSpan));
 	}
 
 	public void ShowStroopEffectText(){
-		header.text = "Stroop Effect Test";
+		header.text = "Farve Testen";
 
-		description.text = "I Stroop Effect testen skal du identificere enten farven af...";
+		Destroy (objectText);
+
+		StartCoroutine (WaitALittle (textSEffect));
 	}
 
 	public void ShowEriksenFlankerText(){
-		header.text = "Eriksen Flanker Test";
+		header.text = "Pile Testen";
 
-		description.text = "I Eriksen Flanker testen skal du identificere retningen af...";
+		Destroy (objectText);
+
+		StartCoroutine (WaitALittle (textFlanker));
+	}
+
+	IEnumerator WaitALittle(GameObject text){
+
+		yield return new WaitForSeconds (0.1f);
+
+		objectText = Instantiate (text, content.transform);
 	}
 }
