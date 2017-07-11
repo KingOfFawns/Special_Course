@@ -11,11 +11,12 @@ public class DigitSpan_Controller : MonoBehaviour {
 	public GameObject startCanvas;
 	public GameObject canvas;
 	public GameObject endCanvas;
+	public GameObject transitionCanvas;
+	public Text transitionText;
 	public Text sequenceLengthShow;
 	public Text shownText;
 	public Text correctText;
 	public Text sequeceLengthEnd;
-	public Text notifyText;
 	public Scrollbar timeBar;
 
 	private int sequenceLength = 3;
@@ -28,6 +29,8 @@ public class DigitSpan_Controller : MonoBehaviour {
 	private bool end = false;
 	private int counterCorrects = 0;
 	private int counterFails = 0;
+	private int timer = 61;
+	private float extraTime = 0f;
 
 
 	// Use this for initialization
@@ -52,10 +55,13 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 	IEnumerator Timer(){
 		// The timer waits for 60 seconds
-		for (int i = 1; i < 61; i++) {
+
+		int i = 1;
+		while (i < timer) {
 			yield return new WaitForSeconds(1);
-			timeBar.size = i / 60f;
-			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (60 - i).ToString ();
+			timeBar.size = i / (float)(timer-1);
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = ((timer-1) - i).ToString ();
+			i++;
 		}
 		end = true;
 
@@ -89,7 +95,12 @@ public class DigitSpan_Controller : MonoBehaviour {
 		AppControl.control.SaveData ();
 
 		// Go to next test
-		SceneManager.LoadScene("MainMenu");
+		int ran = Random.Range (0, 2);
+		if (ran == 0) {
+			SceneManager.LoadScene ("Stroop_Effect");	
+		} else {
+			SceneManager.LoadScene ("Eriksen_Flanker");
+		}
 	}
 
 	public void InputDigit(string digit){
@@ -168,7 +179,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Wait and remove shown sequence
 		yield return new WaitForSeconds (0.1f);
 		digitText.text = "";
-		yield return new WaitForSeconds (0.4f);
+		yield return new WaitForSeconds (0.4f + extraTime);
 
 		UpdateNumber ();
 	}
@@ -206,14 +217,19 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	IEnumerator notify(int adjust){
+		timer += 3;
+
+		// Show notification cancas
 		if (adjust == 0) {
-			notifyText.text = "3 korrekte i træk. Øger sekvens længde.";
+			transitionText.text = "3 rigtige i træk.\nSekvenslængde øges med 1.";
 		} else {
-			notifyText.text = "3 forkerte i træk. Nedsætter sekvens længde.";
+			transitionText.text = "3 forkerte i træk.\nNedsætter sekvens længden med 1.";
 		}
 
-		yield return new WaitForSeconds (1f);
-
-		notifyText.text = "";
+		extraTime = 3f;
+		transitionCanvas.SetActive (true);
+		yield return new WaitForSeconds (3f);
+		transitionCanvas.SetActive (false);
+		extraTime = 0f;
 	}
 }

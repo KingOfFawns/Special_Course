@@ -142,11 +142,11 @@ public class Notifications_Controller : MonoBehaviour {
 		int.TryParse (notificationMinutes.text, out notiMinutes);
 
 		// Generate Random time
-		int intHour = UnityEngine.Random.Range (0, 24);
-		int intMinutes = UnityEngine.Random.Range (0, 60);
+		int intHour = UnityEngine.Random.Range (0, 23);
+		int intMinutes = UnityEngine.Random.Range (0, 59);
 
-		DateTime noti = new DateTime (0000, 1, 1, notiHour, notiMinutes, 0);
-		DateTime rando = new DateTime (0000, 1, 1, intHour, intMinutes, 0);
+		DateTime noti = new DateTime (0001, 1, 1, notiHour, notiMinutes, 0);
+		DateTime rando = new DateTime (0001, 1, 1, intHour, intMinutes, 0);
 
 		double minutes = (noti - rando).TotalMinutes;
 
@@ -157,9 +157,9 @@ public class Notifications_Controller : MonoBehaviour {
 				onNoti = false;
 			} else {
 				// Generate Random time
-				intHour = UnityEngine.Random.Range (0, 24);
-				intMinutes = UnityEngine.Random.Range (0, 60);
-				rando = new DateTime (0000, 1, 1, intHour, intMinutes, 0);
+				intHour = UnityEngine.Random.Range (0, 23);
+				intMinutes = UnityEngine.Random.Range (0, 59);
+				rando = new DateTime (0001, 1, 1, intHour, intMinutes, 0);
 
 				minutes = (noti - rando).TotalMinutes;
 			}
@@ -315,7 +315,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 			for (int i = 0; i < 5; i++) {
 				AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
-				StartRandomNotification (i);
+				//StartRandomNotification (i);
 			}
 
 			StartCoroutine (TimeOut ());

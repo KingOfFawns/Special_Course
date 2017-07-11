@@ -7,10 +7,9 @@ using System;
 
 public class MainMenu_Controller : MonoBehaviour {
 
-	public GameObject MainCamera;
-	public Button startTest;
-	public Button skip;
-	public Text test;
+	public GameObject startTest;
+	public GameObject skip;
+	public GameObject exit;
 
 	void Start(){
 		if (AppControl.control.first_Time_Start) {
@@ -22,8 +21,7 @@ public class MainMenu_Controller : MonoBehaviour {
 			foreach (LocalNotificationTemplate s in scheduled) {
 				ids.Add (s.id);
 			}
-
-
+				
 			for (int i = 0; i < 5; i++) {
 				if(!ids.Contains(AppControl.control.randomNotificationId[i])) {
 					AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
@@ -47,26 +45,18 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// Activate 'Start test' button and 'Skip' Button
 		if (secondsFromNotification < 360 || secondsFromRandom < 360) {
-
-			test.text = "Active";
-
-			/*
-			startTest.enabled = true;
-			skip.enabled = true;
-			*/
+			startTest.SetActive(true);
+			skip.SetActive(true);
+			exit.SetActive(false);
 		} else {
-
-			test.text = "Inactive";
-
-			/*
-			startTest.enabled = false;
-			skip.enabled = false;
-			*/
+			startTest.SetActive(false);
+			skip.SetActive(false);
+			exit.SetActive(true);
 		}
 	}
 
 	public void StartTest(){
-		SceneManager.LoadScene ("Temp_Test_Selector");
+		SceneManager.LoadScene ("Word_Recog_Start");
 	}
 
 	public void GoToSettings(){
@@ -111,8 +101,8 @@ public class MainMenu_Controller : MonoBehaviour {
 		int intHour = UnityEngine.Random.Range (0, 24);
 		int intMinutes = UnityEngine.Random.Range (0, 60);
 
-		DateTime noti = new DateTime (0000, 1, 1, notiHour, notiMinutes, 0);
-		DateTime rando = new DateTime (0000, 1, 1, intHour, intMinutes, 0);
+		DateTime noti = DateTime.Parse("0001-01-01 " + notiHour + ":" + notiMinutes);
+		DateTime rando = DateTime.Parse("0001-01-01 " + intHour + ":" + intMinutes);
 
 		double minutes = (noti - rando).TotalMinutes;
 
@@ -125,11 +115,12 @@ public class MainMenu_Controller : MonoBehaviour {
 				// Generate Random time
 				intHour = UnityEngine.Random.Range (0, 24);
 				intMinutes = UnityEngine.Random.Range (0, 60);
-				rando = new DateTime (0000, 1, 1, intHour, intMinutes, 0);
+				rando = new DateTime (0001, 1, 1, intHour, intMinutes, 0);
 
 				minutes = (noti - rando).TotalMinutes;
 			}
 		}
+
 
 		// Check if selected time is in the sleep zone
 		bool isInSleepZone = false;
@@ -165,7 +156,6 @@ public class MainMenu_Controller : MonoBehaviour {
 			// Launch notifications
 			AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
 		}
-
 	}
 
 	void CheckSleepZone (int intHour, int intMinutes, ref bool isInSleepZone)
@@ -178,7 +168,6 @@ public class MainMenu_Controller : MonoBehaviour {
 		for (int i = 0; i < 24; i++) {
 			if (intHour == currentHour) {
 				hourIsInSleep = true;
-				Debug.Log ("Is same hour");
 				break;
 			}
 			else if (currentHour == end) {

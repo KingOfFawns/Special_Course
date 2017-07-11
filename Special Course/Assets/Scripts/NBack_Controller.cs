@@ -16,6 +16,7 @@ public class NBack_Controller : MonoBehaviour {
 	public Text textFN;
 	public Text textTP;
 	public Text textFP;
+	public Text textN;
 	public Scrollbar timeBar;
 
 	private int N = 2;
@@ -84,6 +85,8 @@ public class NBack_Controller : MonoBehaviour {
 			N = 9;
 		}
 
+		textN.text = N.ToString ();
+
 		// Store local data
 		AppControl.control.N = N;
 		AppControl.control.N_percentage_last = percentage;
@@ -107,7 +110,12 @@ public class NBack_Controller : MonoBehaviour {
 		Debug.Log (numOfShown.ToString ());
 
 		// test end
-		SceneManager.LoadScene("MainMenu");
+		int ran = Random.Range (0, 2);
+		if (ran == 0) {
+			SceneManager.LoadScene ("Stroop_Effect");	
+		} else {
+			SceneManager.LoadScene ("Eriksen_Flanker");
+		}
 
 	}
 	

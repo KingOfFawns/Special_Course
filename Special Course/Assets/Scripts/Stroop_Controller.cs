@@ -109,7 +109,7 @@ public class Stroop_Controller : MonoBehaviour {
 		AppControl.control.SaveData ();
 
 		// test end
-		SceneManager.LoadScene("MainMenu");
+		SceneManager.LoadScene("Word_Recog_End");
 	}
 
 	public void CheckSelected(int col){

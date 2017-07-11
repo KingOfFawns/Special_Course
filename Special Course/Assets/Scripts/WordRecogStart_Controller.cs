@@ -88,7 +88,12 @@ public class WordRecogStart_Controller : MonoBehaviour {
 		//Store chosen words
 		AppControl.control.chosenWords = chosenWords;
 
-		SceneManager.LoadScene ("MainMenu");
+		int ran = Random.Range (0, 2);
+		if (ran == 0) {
+			SceneManager.LoadScene ("N_Back");	
+		} else {
+			SceneManager.LoadScene ("Digit_Span");
+		}
 
 	}
 

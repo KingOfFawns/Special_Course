@@ -15,6 +15,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 	public GameObject content;
 	public Text targetWords;
 	public Text foundWords;
+	public Text textWord;
 	public Scrollbar timeBar;
 	public Text wordsLeft;
 
@@ -128,8 +129,8 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			timer++;
 
 			// Timer bar
-			timeBar.size = timer / 30f;
-			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (30 - timer).ToString ();
+			timeBar.size = timer / (float)timeEnd;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (timeEnd - timer).ToString ();
 		}
 			
 		// Activate end canvas ansd set visual data
@@ -181,6 +182,8 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		if (numOFWords < 2) {
 			numOFWords = 2;
 		}
+
+		textWord.text = numOFWords.ToString ();
 			
 		// Achievement calculations
 		AppControl.control.achieveCounter = AppControl.control.achieveCounter + 1;
