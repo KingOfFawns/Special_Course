@@ -45,7 +45,7 @@ public class AppControl : MonoBehaviour {
 	public DateTime sleepZoneEnd; // Should be stored
 
 	// Variables for random notification
-	public int randomNotificationId = 0; // Should be stored
+	public int[] randomNotificationId = {0,0,0,0,0}; // Should be stored
 	public DateTime randomNotificationTime; // Should be stored
 
 	// Settings Login Password
@@ -217,7 +217,7 @@ class AppData {
 	public DateTime sleepZoneStart;
 	public DateTime sleepZoneEnd;
 
-	public int randomNotificationId = 0;
+	public int[] randomNotificationId = {0,0,0,0,0};
 	public DateTime randomNotificationTime;
 
 	public string password = "52 6F 6F 74 41 64 6D 69 6E";

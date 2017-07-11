@@ -72,12 +72,10 @@ public class Settings_Controller : MonoBehaviour {
 		AppControl.control.digitSpan_SequenceTimer = 1.0f;
 		AppControl.control.NBack_Timer = 1.0f;
 
-		AppControl.control.notificationId = 0;
 		AppControl.control.notificationTime = new System.DateTime();
 		AppControl.control.sleepZoneStart = new System.DateTime();
 		AppControl.control.sleepZoneEnd = new System.DateTime();
 
-		AppControl.control.randomNotificationId = 0;
 		AppControl.control.randomNotificationTime = new System.DateTime();
 
 		AppControl.control.password = "52 6F 6F 74 41 64 6D 69 6E";
@@ -94,5 +92,7 @@ public class Settings_Controller : MonoBehaviour {
 		AppControl.control.patientNumber = 0;
 
 		AppControl.control.Save ();
+
+		SceneManager.LoadScene ("MainMenu");
 	}
 }
