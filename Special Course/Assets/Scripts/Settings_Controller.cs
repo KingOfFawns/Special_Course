@@ -59,24 +59,31 @@ public class Settings_Controller : MonoBehaviour {
 	}
 
 	public void ResetAppData(){
+		if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
+			File.Delete (Application.persistentDataPath + "/.appData.dat");
+		}
+
+		AndroidNotificationManager.Instance.CancelLocalNotification (AppControl.control.notificationId);
+
 		AppControl.control.word_Recog_Target = 10;
 		AppControl.control.word_Last_Test = -1;
-		AppControl.control.word_Last_Test = -1;
+		AppControl.control.word_previous_Test = -1;
 
 		AppControl.control.N = 2;
 		AppControl.control.N_percentage_last = 0f;
 
 		AppControl.control.digitSpan_DigitLength = 3;
 
+		AppControl.control.first_Time_Start = true;
+
+		AppControl.control.notificationId = 0;
+		AppControl.control.notificationTime = new System.DateTime ();
+		AppControl.control.sleepZoneStart = new System.DateTime ();
+		AppControl.control.sleepZoneEnd = new System.DateTime ();
+
 		AppControl.control.wordRecogStart_WordTimer = 1.0f;
 		AppControl.control.digitSpan_SequenceTimer = 1.0f;
 		AppControl.control.NBack_Timer = 1.0f;
-
-		AppControl.control.notificationTime = new System.DateTime();
-		AppControl.control.sleepZoneStart = new System.DateTime();
-		AppControl.control.sleepZoneEnd = new System.DateTime();
-
-		AppControl.control.randomNotificationTime = new System.DateTime();
 
 		AppControl.control.password = "52 6F 6F 74 41 64 6D 69 6E";
 
