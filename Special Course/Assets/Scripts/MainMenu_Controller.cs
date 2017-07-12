@@ -12,6 +12,10 @@ public class MainMenu_Controller : MonoBehaviour {
 	public GameObject exit;
 
 	void Start(){
+		// Load local stored data
+		AppControl.control.Load ();
+		AppControl.control.Save (); // This creates file if not existing
+
 		if (AppControl.control.first_Time_Start) {
 			SceneManager.LoadScene ("AdjustPatientNumber");
 		} else {
@@ -106,6 +110,10 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		double minutes = (noti - rando).TotalMinutes;
 
+		// Check if selected time is in the sleep zone
+		bool isInSleepZone = false;
+		CheckSleepZone (intHour, intMinutes, ref isInSleepZone);
+
 		// Check if random notification is too close to the set notification
 		bool onNoti = true;
 		while (onNoti) {
@@ -120,11 +128,6 @@ public class MainMenu_Controller : MonoBehaviour {
 				minutes = (noti - rando).TotalMinutes;
 			}
 		}
-
-
-		// Check if selected time is in the sleep zone
-		bool isInSleepZone = false;
-		CheckSleepZone (intHour, intMinutes, ref isInSleepZone);
 
 		if (isInSleepZone) {
 			StartRandomNotification (days);

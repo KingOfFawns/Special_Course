@@ -134,74 +134,6 @@ public class Notifications_Controller : MonoBehaviour {
 		notifyText.text = "";
 	}
 
-	void StartRandomNotification(int days){
-		// Get set notification
-		int notiHour;
-		int notiMinutes;
-		int.TryParse (notificationHour.text, out notiHour);
-		int.TryParse (notificationMinutes.text, out notiMinutes);
-
-		// Generate Random time
-		int intHour = UnityEngine.Random.Range (0, 23);
-		int intMinutes = UnityEngine.Random.Range (0, 59);
-
-		DateTime noti = new DateTime (0001, 1, 1, notiHour, notiMinutes, 0);
-		DateTime rando = new DateTime (0001, 1, 1, intHour, intMinutes, 0);
-
-		double minutes = (noti - rando).TotalMinutes;
-
-		// Check if random notification is too close to the set notification
-		bool onNoti = true;
-		while (onNoti) {
-			if (minutes >= 60) {
-				onNoti = false;
-			} else {
-				// Generate Random time
-				intHour = UnityEngine.Random.Range (0, 23);
-				intMinutes = UnityEngine.Random.Range (0, 59);
-				rando = new DateTime (0001, 1, 1, intHour, intMinutes, 0);
-
-				minutes = (noti - rando).TotalMinutes;
-			}
-		}
-
-		// Check if selected time is in the sleep zone
-		bool isInSleepZone = false;
-		CheckSleepZone (intHour, intMinutes, ref isInSleepZone);
-
-		if (isInSleepZone) {
-			StartRandomNotification (days);
-		} else {
-			// Store notification id
-			AppControl.control.randomNotificationId[days] = SA.Common.Util.IdFactory.NextId;
-			AppControl.control.Save ();
-
-			//First notification if available on day of fire
-			DateTime now = DateTime.Now;
-
-			DateTime notificationTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, intHour, intMinutes, 0);
-
-			TimeSpan diff = notificationTime - now;
-
-			int startFirstNotification = 0;
-
-			if (diff.TotalMinutes < 0) {
-				// First notification is the next day
-				startFirstNotification = (int)(24 * 60 * 60 + diff.TotalMinutes * 60) + (days * 24*60*60); 
-			} else {
-				// First notification is on the same day
-				startFirstNotification = (int)(diff.TotalMinutes * 60) + (days * 24*60*60);
-			}
-
-			// Create notification
-			AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.randomNotificationId[days], "Tilfældig Test", "Det er tid til at teste dig selv.", startFirstNotification);
-
-			// Launch notifications
-			AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
-		}
-
-	}
-
 	void CheckSleepZone (int intHour, int intMinutes, ref bool isInSleepZone)
 	{
 		int start = AppControl.control.sleepZoneStart.Hour;
@@ -315,7 +247,6 @@ public class Notifications_Controller : MonoBehaviour {
 
 			for (int i = 0; i < 5; i++) {
 				AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
-				//StartRandomNotification (i);
 			}
 
 			StartCoroutine (TimeOut ());

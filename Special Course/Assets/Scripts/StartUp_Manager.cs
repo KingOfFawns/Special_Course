@@ -21,10 +21,6 @@ public class StartUp_Manager : MonoBehaviour {
 			File.AppendAllText (Application.persistentDataPath + "/.dat1.dat", header + Environment.NewLine);
 			File.SetAttributes (Application.persistentDataPath + "/.dat1.dat", FileAttributes.Hidden);
 		}
-			
-		// Load local stored data
-		AppControl.control.Load ();
-		AppControl.control.Save (); // This creates file if not existing
 
 		// Load textFile with words for word_recog tests
 		string text = textFile.text;
