@@ -17,21 +17,35 @@ public class MainMenu_Controller : MonoBehaviour {
 		AppControl.control.Save (); // This creates file if not existing
 
 		if (AppControl.control.first_Time_Start) {
+			// Set DateTime array
+			AppControl.control.randomNotification = new DateTime[10];
+			AppControl.control.Save ();
+
 			SceneManager.LoadScene ("AdjustPatientNumber");
 		} else {
+			// Get list of pending notifications
 			List<LocalNotificationTemplate> scheduled = AndroidNotificationManager.Instance.LoadPendingNotifications (true);
+			// Get the ids.
 			List<int> ids = new List<int>();
-
 			foreach (LocalNotificationTemplate s in scheduled) {
 				ids.Add (s.id);
 			}
+
+			// Find the latest date in which a notification is set
+			DateTime max = DateTime.Now;
+			foreach (DateTime d in AppControl.control.randomNotification) {
+				max = d > max ? d : max; 
+			}
 				
-			for (int i = 0; i < 5; i++) {
+			// Set random notification
+			for (int i = 0; i < 10; i++) {
 				if(!ids.Contains(AppControl.control.randomNotificationId[i])) {
 					AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
+					max = StartRandomNotification(max,i);
+					AppControl.control.randomNotification [i] = max;
 				}
-				StartRandomNotification (i);
 			}
+			AppControl.control.Save ();
 		}
 	}
 
@@ -39,16 +53,30 @@ public class MainMenu_Controller : MonoBehaviour {
 		// Get current time
 		DateTime now = DateTime.Now;
 
-		// Compare to controlled notification
-		TimeSpan diff = now - AppControl.control.notificationTime;
-		int secondsFromNotification = (diff.Hours * 60 + diff.Minutes) * 60 + diff.Seconds + 360;
+		// Get set notification time
+		DateTime notiTime = AppControl.control.notificationTime;
+		TimeSpan diff = now.Subtract(notiTime);
 
-		// Compare to random notification
-		diff = now - AppControl.control.randomNotificationTime;
-		int secondsFromRandom = (diff.Hours * 60 + diff.Minutes) * 60 + diff.Seconds + 360;
+		// Calculate seconds from set notification
+		double secondsFromNotification = diff.TotalSeconds;
+
+		// Get all random notification
+		DateTime[] randoms = AppControl.control.randomNotification;
+
+		// Check if any random notification is active
+		bool isInRandom = false;
+		foreach (DateTime r in randoms) {
+			diff = now.Subtract (r);
+			double secondsFromRandom = diff.TotalSeconds;
+
+			if (secondsFromRandom >= 0 && secondsFromRandom < 3600) {
+				isInRandom = true;
+				break;
+			}
+		}
 
 		// Activate 'Start test' button and 'Skip' Button
-		if (secondsFromNotification < 360 || secondsFromRandom < 360) {
+		if ((secondsFromNotification >= 0 && secondsFromNotification < 3600) || isInRandom) {
 			startTest.SetActive(true);
 			skip.SetActive(true);
 			exit.SetActive(false);
@@ -96,7 +124,7 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 
-	void StartRandomNotification(int days){
+	DateTime StartRandomNotification(DateTime max, int randomNotificationNumber){
 		// Get set notification
 		int notiHour = AppControl.control.notificationTime.Hour;
 		int notiMinutes = AppControl.control.notificationTime.Minute;
@@ -105,95 +133,131 @@ public class MainMenu_Controller : MonoBehaviour {
 		int intHour = UnityEngine.Random.Range (0, 24);
 		int intMinutes = UnityEngine.Random.Range (0, 60);
 
-		DateTime noti = DateTime.Parse("0001-01-01 " + notiHour + ":" + notiMinutes);
-		DateTime rando = DateTime.Parse("0001-01-01 " + intHour + ":" + intMinutes);
+		// Start and end hour of the sleep zone
+		int sleepStart = AppControl.control.sleepZoneStart.Hour;
+		int sleepEnd = AppControl.control.sleepZoneEnd.Hour;
 
-		double minutes = (noti - rando).TotalMinutes;
+		// list to contain hours that are acceptable for notifications
+		List<int> goodHours = new List<int> ();
 
-		// Check if selected time is in the sleep zone
-		bool isInSleepZone = false;
-		CheckSleepZone (intHour, intMinutes, ref isInSleepZone);
-
-		// Check if random notification is too close to the set notification
-		bool onNoti = true;
-		while (onNoti) {
-			if (minutes >= 60) {
-				onNoti = false;
-			} else {
-				// Generate Random time
-				intHour = UnityEngine.Random.Range (0, 24);
-				intMinutes = UnityEngine.Random.Range (0, 60);
-				rando = new DateTime (0001, 1, 1, intHour, intMinutes, 0);
-
-				minutes = (noti - rando).TotalMinutes;
-			}
-		}
-
-		if (isInSleepZone) {
-			StartRandomNotification (days);
-		} else {
-			// Store notification id
-			AppControl.control.randomNotificationId[days] = SA.Common.Util.IdFactory.NextId;
-			AppControl.control.Save ();
-
-			//First notification if available on day of fire
-			DateTime now = DateTime.Now;
-
-			DateTime notificationTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, intHour, intMinutes, 0);
-
-			TimeSpan diff = notificationTime - now;
-
-			int startFirstNotification = 0;
-
-			if (diff.TotalMinutes < 0) {
-				// First notification is the next day
-				startFirstNotification = (int)(24 * 60 * 60 + diff.TotalMinutes * 60) + (days * 24*60*60); 
-			} else {
-				// First notification is on the same day
-				startFirstNotification = (int)(diff.TotalMinutes * 60) + (days * 24*60*60);
-			}
-
-			// Create notification
-			AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.randomNotificationId[days], "Tilfældig Test", "Det er tid til at teste dig selv.", startFirstNotification);
-
-			// Launch notifications
-			AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
-		}
-	}
-
-	void CheckSleepZone (int intHour, int intMinutes, ref bool isInSleepZone)
-	{
-		int start = AppControl.control.sleepZoneStart.Hour;
-		int end = AppControl.control.sleepZoneEnd.Hour;
-		int currentHour = start;
-		bool hourIsInSleep = false;
-
-		for (int i = 0; i < 24; i++) {
-			if (intHour == currentHour) {
-				hourIsInSleep = true;
-				break;
-			}
-			else if (currentHour == end) {
-				hourIsInSleep = false;
-				break;
-			}
+		// Calculate the good hours
+		int currentHour = sleepEnd;
+		while (currentHour != sleepStart + 1) {
+			goodHours.Add (currentHour);
 			currentHour++;
 			if (currentHour > 23) {
 				currentHour = 0;
 			}
 		}
-		if (hourIsInSleep && (intHour == start || intHour == end)) {
-			hourIsInSleep = false;
-			if (intHour == start && intMinutes > AppControl.control.sleepZoneStart.Minute) {
-				isInSleepZone = true;
-			}
-			else if (intMinutes < AppControl.control.sleepZoneEnd.Minute) {
-				isInSleepZone = true;
-			}
-		}
-		else if (hourIsInSleep) {
-			hourIsInSleep = false;
+
+		// Boolean to keep track of when the notification is in the sleep zone
+		bool isInSleepZone = false;
+
+		// The notification is in between the sleep zone hours
+		if (!goodHours.Contains(intHour)){
 			isInSleepZone = true;
 		}
+
+		// Cases when the notification is the same hour as the sleep zone start or end
+		if (!isInSleepZone) {
+			int diffStart = intMinutes - AppControl.control.sleepZoneStart.Minute;
+			int diffEnd = intMinutes - AppControl.control.sleepZoneEnd.Minute;
+
+			// Same hour as sleep zone start
+			if(intHour == sleepStart){
+				// If the notification time is after or on the sleep zone start time
+				if (diffStart >= 0) {
+					isInSleepZone = true;
+				}
+			} 
+			// Same hour as sleep zone end
+			else if(intHour == sleepEnd){
+				// If the notification time is before or on the sleep zone end time
+				if (diffEnd <= 0) {
+					isInSleepZone = true;
+				}
+			}
+		}
+
+		while (isInSleepZone) {
+			isInSleepZone = false;
+
+			intHour = UnityEngine.Random.Range (0, 24);
+			intMinutes = UnityEngine.Random.Range (0, 60);
+
+			// The notification is in between the sleep zone hours
+			if (!goodHours.Contains(intHour)){
+				isInSleepZone = true;
+			}
+
+			// Cases when the notification is the same hour as the sleep zone start or end
+			if (!isInSleepZone) {
+				int diffStart = intMinutes - AppControl.control.sleepZoneStart.Minute;
+				int diffEnd = intMinutes - AppControl.control.sleepZoneEnd.Minute;
+
+				// Same hour as sleep zone start
+				if(intHour == sleepStart){
+					// If the notification time is after or on the sleep zone start time
+					if (diffStart >= 0) {
+						isInSleepZone = true;
+					}
+				} 
+				// Same hour as sleep zone end
+				else if(intHour == sleepEnd){
+					// If the notification time is before or on the sleep zone end time
+					if (diffEnd <= 0) {
+						isInSleepZone = true;
+					}
+				}
+			}
+		}
+
+		int day = max.Day;
+
+		if (max.Month == 1 || max.Month == 3 || max.Month == 5 || max.Month == 7 || max.Month == 8 || max.Month == 10 || max.Month == 12) {
+			if (max.Day + 1 > 31)
+				day = 0;
+		} else if (max.Month == 4 || max.Month == 6 || max.Month == 9 || max.Month == 11) {
+			if (max.Day + 1 > 30)
+				day = 0;
+		} else {
+			if (max.Day + 1 > 28) {
+				day = 0;
+			}
+		}
+
+		DateTime randomTime = new DateTime (max.Year, max.Month, day + 1, intHour, intMinutes, 0);
+
+		// Store notification id
+		AppControl.control.randomNotificationId[randomNotificationNumber] = SA.Common.Util.IdFactory.NextId;
+		AppControl.control.Save ();
+
+		//First notification if available on day of fire
+		DateTime now = DateTime.Now;
+
+		DateTime notificationTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, intHour, intMinutes, 0);
+
+		TimeSpan diff = notificationTime - now;
+
+		int startFirstNotification = 0;
+
+		if (diff.TotalMinutes < 0) {
+			// First notification is the next day
+			startFirstNotification = (int)(24 * 60 * 60 + diff.TotalMinutes * 60); 
+		} else {
+			// First notification is on the same day
+			startFirstNotification = (int)(diff.TotalMinutes * 60);
+		}
+
+		// Create notification
+		AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.randomNotificationId[randomNotificationNumber], "Tilfældig Test", "Det er tid til at teste dig selv. Testen er aktiv i 1 time fra nu.", startFirstNotification);
+
+		// Launch notifications
+		AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
+
+		return randomTime;
+
 	}
+
+
 }

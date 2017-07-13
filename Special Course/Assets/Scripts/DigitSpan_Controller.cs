@@ -38,6 +38,10 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Get digit length from storage
 		sequenceLength = AppControl.control.digitSpan_DigitLength;
 
+		if (sequenceLength > 2) {
+			sequenceLength -= 1;
+		}
+
 		// Set sequenceLength in startCanvas
 		sequenceLengthShow.text = sequenceLength.ToString();
 	}

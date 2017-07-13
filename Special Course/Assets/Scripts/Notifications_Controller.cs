@@ -134,43 +134,6 @@ public class Notifications_Controller : MonoBehaviour {
 		notifyText.text = "";
 	}
 
-	void CheckSleepZone (int intHour, int intMinutes, ref bool isInSleepZone)
-	{
-		int start = AppControl.control.sleepZoneStart.Hour;
-		int end = AppControl.control.sleepZoneEnd.Hour;
-		int currentHour = start;
-		bool hourIsInSleep = false;
-
-		for (int i = 0; i < 24; i++) {
-			if (intHour == currentHour) {
-				hourIsInSleep = true;
-				Debug.Log ("Is same hour");
-				break;
-			}
-			else if (currentHour == end) {
-					hourIsInSleep = false;
-					break;
-				}
-			currentHour++;
-			if (currentHour > 23) {
-				currentHour = 0;
-			}
-		}
-		if (hourIsInSleep && (intHour == start || intHour == end)) {
-			hourIsInSleep = false;
-			if (intHour == start && intMinutes > AppControl.control.sleepZoneStart.Minute) {
-				isInSleepZone = true;
-			}
-			else if (intMinutes < AppControl.control.sleepZoneEnd.Minute) {
-					isInSleepZone = true;
-				}
-		}
-		else if (hourIsInSleep) {
-				hourIsInSleep = false;
-				isInSleepZone = true;
-			}
-	}
-
 	public void SetNotification(){
 
 		if (!sleepSet && AppControl.control.first_Time_Start) {
@@ -181,9 +144,6 @@ public class Notifications_Controller : MonoBehaviour {
 
 		string hour = notificationHour.text;
 		string minutes = notificationMinutes.text;
-		string year = DateTime.Now.Year.ToString ();
-		string month = DateTime.Now.Month.ToString();
-		string day = DateTime.Now.Day.ToString ();
 
 		int intHour = 0;
 		int intMinutes = 0;
@@ -191,10 +151,52 @@ public class Notifications_Controller : MonoBehaviour {
 		int.TryParse (hour, out intHour);
 		int.TryParse(minutes, out intMinutes);
 
+		// Start and end hour of the sleep zone
+		int sleepStart = AppControl.control.sleepZoneStart.Hour;
+		int sleepEnd = AppControl.control.sleepZoneEnd.Hour;
 
-		// Check if selected time is in the sleep zone
+		// list to contain hours that are acceptable for notifications
+		List<int> goodHours = new List<int> ();
+
+		// Calculate the good hours
+		int currentHour = sleepEnd;
+		while (currentHour != sleepStart + 1) {
+			goodHours.Add (currentHour);
+			currentHour++;
+			if (currentHour > 23) {
+				currentHour = 0;
+			}
+		}
+
+		// Boolean to keep track of when the notification is in the sleep zone
 		bool isInSleepZone = false;
-		CheckSleepZone (intHour, intMinutes, ref isInSleepZone);
+
+		// The notification is in between the sleep zone hours
+		if (!goodHours.Contains(intHour)){
+			isInSleepZone = true;
+			Debug.Log ("In sleep zone");
+		}
+
+		// Cases when the notification is the same hour as the sleep zone start or end
+		if (!isInSleepZone) {
+			int diffStart = intMinutes - AppControl.control.sleepZoneStart.Minute;
+			int diffEnd = intMinutes - AppControl.control.sleepZoneEnd.Minute;
+
+			// Same hour as sleep zone start
+			if(intHour == sleepStart){
+				// If the notification time is after or on the sleep zone start time
+				if (diffStart >= 0) {
+					isInSleepZone = true;
+				}
+			} 
+			// Same hour as sleep zone end
+			else if(intHour == sleepEnd){
+				// If the notification time is before or on the sleep zone end time
+				if (diffEnd <= 0) {
+					isInSleepZone = true;
+				}
+			}
+		}
 
 		if (isInSleepZone) {
 			isInSleepZone = false;
@@ -207,6 +209,9 @@ public class Notifications_Controller : MonoBehaviour {
 			AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.notificationId);
 
 			// Create DateTime format
+			string year = DateTime.Now.Year.ToString ();
+			string month = DateTime.Now.Month.ToString();
+			string day = DateTime.Now.Day.ToString ();
 			string date = year + "-" + month + "-" + day + " " + hour + ":" + minutes;
 			DateTime notificationTime = DateTime.Parse (date);
 
@@ -231,11 +236,11 @@ public class Notifications_Controller : MonoBehaviour {
 			}
 
 			// Create first
-			AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.notificationId, "Planlagt Test", "Det er tid til at teste dig selv.", startFirstNotification);
+			AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.notificationId, "Planlagt Test", "Det er tid til at teste dig selv. Testen er aktiv i 1 time fra nu.", startFirstNotification);
 
 			// Schedule daily repeating notification
 			builder.SetRepeating(true);
-			TimeSpan delay = notificationTime.AddDays(1.0f) - notificationTime;
+			TimeSpan delay = DateTime.Now.AddDays(1.0f) - DateTime.Now;
 			builder.SetRepeatDelay ((int)delay.TotalSeconds);
 
 			// Launch notifications
@@ -245,12 +250,16 @@ public class Notifications_Controller : MonoBehaviour {
 			inSleepZoneText.text = "Gemt";
 			notiSet = true;
 
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 10; i++) {
 				AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
 			}
 
+			AppControl.control.randomNotification = new DateTime[10];
+			AppControl.control.Save ();
+
 			StartCoroutine (TimeOut ());
 		}
+
 
 	}
 

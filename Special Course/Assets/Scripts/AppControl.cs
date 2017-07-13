@@ -45,8 +45,8 @@ public class AppControl : MonoBehaviour {
 	public DateTime sleepZoneEnd; // Should be stored
 
 	// Variables for random notification
-	public int[] randomNotificationId = {0,0,0,0,0}; // Should be stored
-	public DateTime randomNotificationTime; // Should be stored
+	public int[] randomNotificationId = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Should be stored
+	public DateTime[] randomNotification;
 
 	// Settings Login Password
 	public string password = "52 6F 6F 74 41 64 6D 69 6E"; // Should be stored
@@ -114,7 +114,7 @@ public class AppControl : MonoBehaviour {
 
 		// Random notification data
 		data.randomNotificationId = randomNotificationId;
-		data.randomNotificationTime = randomNotificationTime;
+		data.randomNotification = randomNotification;
 
 		// Store settings login password
 		data.password = password;
@@ -169,7 +169,7 @@ public class AppControl : MonoBehaviour {
 			sleepZoneEnd = data.sleepZoneEnd;
 
 			randomNotificationId = data.randomNotificationId;
-			randomNotificationTime = data.randomNotificationTime;
+			randomNotification = data.randomNotification;
 
 			password = data.password;
 
@@ -217,8 +217,9 @@ class AppData {
 	public DateTime sleepZoneStart;
 	public DateTime sleepZoneEnd;
 
-	public int[] randomNotificationId = {0,0,0,0,0};
-	public DateTime randomNotificationTime;
+	// Variables for random notification
+	public int[] randomNotificationId = {0 ,0 ,0 ,0 ,0 , 0, 0, 0, 0, 0}; // Should be stored
+	public DateTime[] randomNotification;
 
 	public string password = "52 6F 6F 74 41 64 6D 69 6E";
 

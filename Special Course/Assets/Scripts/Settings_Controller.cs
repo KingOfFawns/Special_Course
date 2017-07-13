@@ -76,11 +76,6 @@ public class Settings_Controller : MonoBehaviour {
 
 		AppControl.control.first_Time_Start = true;
 
-		AppControl.control.notificationId = 0;
-		AppControl.control.notificationTime = new System.DateTime ();
-		AppControl.control.sleepZoneStart = new System.DateTime ();
-		AppControl.control.sleepZoneEnd = new System.DateTime ();
-
 		AppControl.control.wordRecogStart_WordTimer = 1.0f;
 		AppControl.control.digitSpan_SequenceTimer = 1.0f;
 		AppControl.control.NBack_Timer = 1.0f;
