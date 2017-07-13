@@ -44,6 +44,7 @@ public class MainMenu_Controller : MonoBehaviour {
 					AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
 					max = StartRandomNotification(max,i);
 					AppControl.control.randomNotification [i] = max;
+					Debug.Log ("Max: " + max);
 				}
 			}
 			AppControl.control.Save ();
@@ -67,7 +68,6 @@ public class MainMenu_Controller : MonoBehaviour {
 		// Check if any random notification is active
 		bool isInRandom = false;
 		foreach (DateTime r in randoms) {
-			Debug.Log (r);
 			diff = now.Subtract (r);
 			double secondsFromRandom = diff.TotalSeconds;
 
@@ -247,24 +247,22 @@ public class MainMenu_Controller : MonoBehaviour {
 		AppControl.control.Save ();
 
 		//First notification if available on day of fire
-		DateTime now = DateTime.Now;
+		TimeSpan diff = randomTime - DateTime.Now;
 
-		DateTime notificationTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, intHour, intMinutes, 0);
+		Debug.Log (diff.TotalSeconds);
 
-		TimeSpan diff = notificationTime - now;
-
-		int startFirstNotification = 0;
+		int startNotification = 0;
 
 		if (diff.TotalMinutes < 0) {
 			// First notification is the next day
-			startFirstNotification = (int)(24 * 60 * 60 + diff.TotalMinutes * 60); 
+			startNotification = (int)(24 * 60 * 60 + diff.TotalSeconds); 
 		} else {
 			// First notification is on the same day
-			startFirstNotification = (int)(diff.TotalMinutes * 60);
+			startNotification = (int)(diff.TotalSeconds);
 		}
 
 		// Create notification
-		AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.randomNotificationId[randomNotificationNumber], "Tilfældig Test", "Det er tid til at teste dig selv. Testen er aktiv i 1 time fra nu.", startFirstNotification);
+		AndroidNotificationBuilder builder = new AndroidNotificationBuilder(AppControl.control.randomNotificationId[randomNotificationNumber], "Tilfældig Test", "Det er tid til at teste dig selv. Testen er aktiv i 1 time fra nu.", startNotification);
 
 		// Launch notifications
 		AndroidNotificationManager.Instance.ScheduleLocalNotification (builder);
