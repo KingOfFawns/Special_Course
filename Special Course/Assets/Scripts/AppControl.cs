@@ -57,10 +57,10 @@ public class AppControl : MonoBehaviour {
 	// Achievements data
 	public int achieveCounter = 0; // Should be stored
 	public bool firstTestCleared = false; // Should be stored
-	public int fiveTestsCleared = 0; // Should be stored
-	public int tenTestsCleared = 0; // Should be stored
-	public int twentyTestsCleared = 0; // Should be stored
-	public int fiftyTestsCleared = 0; // Should be stored
+	public bool tenTestsCleared = false; // Should be stored
+	public bool fiftyTestsCleared = false; // Should be stored
+	public bool hundredTestsCleared = false; // Should be stored
+	public bool hundredfiftyTestsCleared = false; // Should be stored
 
 	// Patient data
 	public int patientNumber = 0;
@@ -125,10 +125,10 @@ public class AppControl : MonoBehaviour {
 		// Store achievement data
 		data.achieveCounter = achieveCounter;
 		data.firstTestCleared = firstTestCleared;
-		data.fiveTestsCleared = fiveTestsCleared;
 		data.tenTestsCleared = tenTestsCleared;
-		data.twentyTestsCleared = twentyTestsCleared;
 		data.fiftyTestsCleared = fiftyTestsCleared;
+		data.hundredTestsCleared = hundredTestsCleared;
+		data.hundredfiftyTestsCleared = hundredfiftyTestsCleared;
 
 		// Store patient number
 		data.patientNumber = patientNumber;
@@ -177,10 +177,10 @@ public class AppControl : MonoBehaviour {
 
 			achieveCounter = data.achieveCounter;
 			firstTestCleared = data.firstTestCleared;
-			fiveTestsCleared = data.fiveTestsCleared;
 			tenTestsCleared = data.tenTestsCleared;
-			twentyTestsCleared = data.twentyTestsCleared;
 			fiftyTestsCleared = data.fiftyTestsCleared;
+			hundredTestsCleared = data.hundredTestsCleared;
+			hundredfiftyTestsCleared = data.hundredfiftyTestsCleared;
 
 			patientNumber = data.patientNumber;
 		}
@@ -226,10 +226,10 @@ class AppData {
 	public int maxSequenceLength = 0;
 
 	public bool firstTestCleared = false;
-	public int fiveTestsCleared = 0;
-	public int tenTestsCleared = 0;
-	public int twentyTestsCleared = 0;
-	public int fiftyTestsCleared = 0;
+	public bool tenTestsCleared = false; // Should be stored
+	public bool fiftyTestsCleared = false; // Should be stored
+	public bool hundredTestsCleared = false; // Should be stored
+	public bool hundredfiftyTestsCleared = false; // Should be stored
 	public int achieveCounter = 0;
 
 	public int patientNumber = 0;

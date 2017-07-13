@@ -26,7 +26,7 @@ public class WordButtonScript : MonoBehaviour {
 				AppControl.control.falseWords++;
 			}
 
-			if (AppControl.control.identifiedWords >= AppControl.control.word_Recog_Target) {
+			if (AppControl.control.identifiedWords + AppControl.control.falseWords >= AppControl.control.word_Recog_Target) {
 				AppControl.control.success = true;
 			}
 

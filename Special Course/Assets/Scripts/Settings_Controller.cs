@@ -85,10 +85,10 @@ public class Settings_Controller : MonoBehaviour {
 		AppControl.control.maxSequenceLength = 0;
 
 		AppControl.control.firstTestCleared = false;
-		AppControl.control.fiveTestsCleared = 0;
-		AppControl.control.tenTestsCleared = 0;
-		AppControl.control.twentyTestsCleared = 0;
-		AppControl.control.fiftyTestsCleared = 0;
+		AppControl.control.tenTestsCleared = false;
+		AppControl.control.fiftyTestsCleared = false;
+		AppControl.control.hundredTestsCleared = false;
+		AppControl.control.hundredfiftyTestsCleared = false;
 		AppControl.control.achieveCounter = 0;
 
 		AppControl.control.patientNumber = 0;

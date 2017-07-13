@@ -123,6 +123,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			timeEnd = 30;
 		}
 
+		// Run the timer + Update the timer bar alongside it
 		int timer = 0;
 		while (timer < timeEnd && !AppControl.control.success) {
 			yield return new WaitForSeconds (1);
@@ -131,6 +132,18 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			// Timer bar
 			timeBar.size = timer / (float)timeEnd;
 			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (timeEnd - timer).ToString ();
+		}
+
+		// If the user has selected 10 words before end time, give them 5 last seconds
+		// Change time bare accordingly
+		timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5).ToString ();
+		if(timer < timeEnd){
+			for (int i = 0; i < 5; i++) {
+				yield return new WaitForSeconds (1);
+				// Timer bar
+				timeBar.size = i / (float)5;
+				timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5 - i).ToString ();
+			}
 		}
 			
 		// Activate end canvas ansd set visual data
@@ -191,19 +204,17 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		if (!AppControl.control.firstTestCleared) {
 			AppControl.control.firstTestCleared = true;
 			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		}
-
-		if (AppControl.control.achieveCounter == 5) {
-			AppControl.control.fiveTestsCleared++;
+		} else if (AppControl.control.achieveCounter == 10 && !AppControl.control.tenTestsCleared) {
+			AppControl.control.tenTestsCleared = true;
 			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 10) {
-			AppControl.control.tenTestsCleared++;
+		} else if (AppControl.control.achieveCounter == 50  && !AppControl.control.fiftyTestsCleared) {
+			AppControl.control.firstTestCleared = true;
 			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 20) {
-			AppControl.control.twentyTestsCleared++;
+		} else if (AppControl.control.achieveCounter == 100  && !AppControl.control.hundredTestsCleared) {
+			AppControl.control.hundredTestsCleared = true;
 			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 50) {
-			AppControl.control.fiftyTestsCleared++;
+		} else if (AppControl.control.achieveCounter == 150  && !AppControl.control.hundredfiftyTestsCleared) {
+			AppControl.control.hundredfiftyTestsCleared = true;
 			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
 		}
 

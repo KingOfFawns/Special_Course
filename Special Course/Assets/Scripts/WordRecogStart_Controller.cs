@@ -9,6 +9,7 @@ public class WordRecogStart_Controller : MonoBehaviour {
 	public GameObject startCanvas;
 	public GameObject canvas;
 	public GameObject endCanvas;
+	public Text wordsText;
 	public Text word;
 	public Text wordsLeft;
 
@@ -19,6 +20,8 @@ public class WordRecogStart_Controller : MonoBehaviour {
 	void Start () {
 		// Load local data for number of words
 		numOFWords = AppControl.control.word_Recog_Target;
+
+		wordsText.text = "Du skal huske " + numOFWords +" ord.";
 
 		// Setup chosen words
 		chosenWords = new string[numOFWords];

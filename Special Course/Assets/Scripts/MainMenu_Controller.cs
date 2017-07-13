@@ -37,6 +37,7 @@ public class MainMenu_Controller : MonoBehaviour {
 				max = d > max ? d : max; 
 			}
 				
+				
 			// Set random notification
 			for (int i = 0; i < 10; i++) {
 				if(!ids.Contains(AppControl.control.randomNotificationId[i])) {
@@ -213,20 +214,32 @@ public class MainMenu_Controller : MonoBehaviour {
 		}
 
 		int day = max.Day;
+		int month = max.Month;
+		int year = max.Year;
 
 		if (max.Month == 1 || max.Month == 3 || max.Month == 5 || max.Month == 7 || max.Month == 8 || max.Month == 10 || max.Month == 12) {
-			if (max.Day + 1 > 31)
+			if (max.Day + 1 > 31) {
 				day = 0;
+				month += 1;
+			}
 		} else if (max.Month == 4 || max.Month == 6 || max.Month == 9 || max.Month == 11) {
-			if (max.Day + 1 > 30)
+			if (max.Day + 1 > 30) {
 				day = 0;
+				month += 1;
+			}
 		} else {
 			if (max.Day + 1 > 28) {
 				day = 0;
+				month += 1;
 			}
 		}
+		if (month > 12) {
+			month = 1;
+			year += 1;
+		}
 
-		DateTime randomTime = new DateTime (max.Year, max.Month, day + 1, intHour, intMinutes, 0);
+
+		DateTime randomTime = new DateTime (year, month, day + 1, intHour, intMinutes, 0);
 
 		// Store notification id
 		AppControl.control.randomNotificationId[randomNotificationNumber] = SA.Common.Util.IdFactory.NextId;

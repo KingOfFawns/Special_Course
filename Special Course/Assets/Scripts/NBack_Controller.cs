@@ -51,11 +51,11 @@ public class NBack_Controller : MonoBehaviour {
 	}
 
 	IEnumerator Timer(){
-		// The timer waits for 90 seconds
-		for (int i = 1; i < 91; i++) {
+		// The timer waits for 60 seconds
+		for (int i = 1; i < 61; i++) {
 			yield return new WaitForSeconds(1);
-			timeBar.size = i / 90f;
-			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (90 - i).ToString ();
+			timeBar.size = i / 60f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (60 - i).ToString ();
 		}
 		runImages = false;
 
