@@ -206,7 +206,7 @@ public class Notifications_Controller : MonoBehaviour {
 			StartCoroutine (TimeOut ());
 		} else {
 			// Stop existing notification
-			AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.notificationId);
+			AndroidNotificationManager.Instance.CancelAllLocalNotifications();
 
 			// Create DateTime format
 			string year = DateTime.Now.Year.ToString ();
@@ -249,10 +249,6 @@ public class Notifications_Controller : MonoBehaviour {
 			// Notify
 			inSleepZoneText.text = "Gemt";
 			notiSet = true;
-
-			for (int i = 0; i < 10; i++) {
-				AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
-			}
 
 			AppControl.control.randomNotification = new DateTime[10];
 			AppControl.control.Save ();

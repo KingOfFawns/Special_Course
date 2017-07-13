@@ -67,6 +67,7 @@ public class MainMenu_Controller : MonoBehaviour {
 		// Check if any random notification is active
 		bool isInRandom = false;
 		foreach (DateTime r in randoms) {
+			Debug.Log (r);
 			diff = now.Subtract (r);
 			double secondsFromRandom = diff.TotalSeconds;
 
