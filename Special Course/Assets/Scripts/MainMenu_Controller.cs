@@ -144,11 +144,20 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// Calculate the good hours
 		int currentHour = sleepEnd;
-		while (currentHour != sleepStart + 1) {
+
+		int loopEnd = sleepStart + 1;
+		if(loopEnd > 23){
+			loopEnd = 0;
+		}
+		for (int i = 0; i < 24; i++) {
 			goodHours.Add (currentHour);
+			Debug.Log ("Hour = " + currentHour);
 			currentHour++;
 			if (currentHour > 23) {
 				currentHour = 0;
+			}
+			if (currentHour == loopEnd) {
+				break;
 			}
 		}
 

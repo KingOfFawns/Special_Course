@@ -151,20 +151,34 @@ public class Notifications_Controller : MonoBehaviour {
 		int.TryParse (hour, out intHour);
 		int.TryParse(minutes, out intMinutes);
 
+		Debug.Log ("Noti Time: " + intHour + "," + intMinutes); 
+
 		// Start and end hour of the sleep zone
 		int sleepStart = AppControl.control.sleepZoneStart.Hour;
 		int sleepEnd = AppControl.control.sleepZoneEnd.Hour;
+
+		Debug.Log ("Start: " + sleepStart);
+		Debug.Log ("End :" + sleepEnd);
 
 		// list to contain hours that are acceptable for notifications
 		List<int> goodHours = new List<int> ();
 
 		// Calculate the good hours
 		int currentHour = sleepEnd;
-		while (currentHour != sleepStart + 1) {
+
+		int loopEnd = sleepStart + 1;
+		if(loopEnd > 23){
+			loopEnd = 0;
+		}
+		for (int i = 0; i < 24; i++) {
 			goodHours.Add (currentHour);
+			Debug.Log ("Hour = " + currentHour);
 			currentHour++;
 			if (currentHour > 23) {
 				currentHour = 0;
+			}
+			if (currentHour == loopEnd) {
+				break;
 			}
 		}
 
@@ -184,6 +198,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 			// Same hour as sleep zone start
 			if(intHour == sleepStart){
+				Debug.Log ("In same hour as start");
 				// If the notification time is after or on the sleep zone start time
 				if (diffStart >= 0) {
 					isInSleepZone = true;
@@ -191,6 +206,7 @@ public class Notifications_Controller : MonoBehaviour {
 			} 
 			// Same hour as sleep zone end
 			else if(intHour == sleepEnd){
+				Debug.Log ("In same Hour as end");
 				// If the notification time is before or on the sleep zone end time
 				if (diffEnd <= 0) {
 					isInSleepZone = true;
