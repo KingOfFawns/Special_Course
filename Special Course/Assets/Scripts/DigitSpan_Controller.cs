@@ -46,6 +46,25 @@ public class DigitSpan_Controller : MonoBehaviour {
 		sequenceLengthShow.text = sequenceLength.ToString();
 	}
 
+	void Update(){
+		System.DateTime now = System.DateTime.Now;
+		System.DateTime testStart = AppControl.control.testStartDate;
+
+		if (now.Subtract (testStart).TotalSeconds >= 600) {
+			AppControl.control.testStarted = true;
+
+			// Log stop
+			string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
+			string time = System.DateTime.Now.ToString ();
+
+			AppControl.control.dataString = "Patient Number: " + patientNumber + ", Test udløbet" + ", Time: " + time;
+			AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
+			AppControl.control.SaveData ();
+
+			SceneManager.LoadScene ("MainMenu");
+		}
+	}
+
 	public void StartButton(){
 		// Stop start canvas
 		startCanvas.SetActive(false);

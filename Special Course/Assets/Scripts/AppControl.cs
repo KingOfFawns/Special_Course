@@ -48,6 +48,10 @@ public class AppControl : MonoBehaviour {
 	public int[] randomNotificationId = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Should be stored
 	public DateTime[] randomNotification;
 
+	// Variable to control time on test and 1 time per test
+	public DateTime testStartDate;
+	public bool testStarted = false;
+
 	// Settings Login Password
 	public string password = "52 6F 6F 74 41 64 6D 69 6E"; // Should be stored
 
@@ -116,6 +120,10 @@ public class AppControl : MonoBehaviour {
 		data.randomNotificationId = randomNotificationId;
 		data.randomNotification = randomNotification;
 
+		// Test control data
+		data.testStartDate = testStartDate;
+		data.testStarted = testStarted;
+
 		// Store settings login password
 		data.password = password;
 
@@ -171,6 +179,9 @@ public class AppControl : MonoBehaviour {
 			randomNotificationId = data.randomNotificationId;
 			randomNotification = data.randomNotification;
 
+			testStartDate = data.testStartDate;
+			testStarted = data.testStarted;
+
 			password = data.password;
 
 			maxSequenceLength = data.maxSequenceLength;
@@ -217,9 +228,11 @@ class AppData {
 	public DateTime sleepZoneStart;
 	public DateTime sleepZoneEnd;
 
-	// Variables for random notification
 	public int[] randomNotificationId = {0 ,0 ,0 ,0 ,0 , 0, 0, 0, 0, 0}; // Should be stored
 	public DateTime[] randomNotification;
+
+	public DateTime testStartDate;
+	public bool testStarted = false;
 
 	public string password = "52 6F 6F 74 41 64 6D 69 6E";
 

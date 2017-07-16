@@ -16,9 +16,11 @@ public class StopTest : MonoBehaviour {
 		AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 		AppControl.control.SaveData ();
 
-
 		// Reset AchieveCounter
 		AppControl.control.achieveCounter = 0;
+
+		// End Test
+		AppControl.control.testStarted = true;
 		AppControl.control.Save ();
 
 		// Go to main menu

@@ -40,6 +40,25 @@ public class NBack_Controller : MonoBehaviour {
 		nTextStart.text = N.ToString();
 	}
 
+	void Update(){
+		System.DateTime now = System.DateTime.Now;
+		System.DateTime testStart = AppControl.control.testStartDate;
+
+		if (now.Subtract (testStart).TotalSeconds >= 600) {
+			AppControl.control.testStarted = true;
+
+			// Log stop
+			string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
+			string time = System.DateTime.Now.ToString ();
+
+			AppControl.control.dataString = "Patient Number: " + patientNumber + ", Test udløbet" + ", Time: " + time;
+			AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
+			AppControl.control.SaveData ();
+
+			SceneManager.LoadScene ("MainMenu");
+		}
+	}
+
 	public void StartButton(){
 		startCanvas.SetActive(false);
 
@@ -107,7 +126,6 @@ public class NBack_Controller : MonoBehaviour {
 			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP; 
 		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;;" + Nsave + ";" + numOfShown.ToString();
 		AppControl.control.SaveData ();
-		Debug.Log (numOfShown.ToString ());
 
 		// test end
 		int ran = Random.Range (0, 2);
@@ -159,8 +177,6 @@ public class NBack_Controller : MonoBehaviour {
 				}
 
 			}
-
-			Debug.Log (randomizer);
 
 			// Change image according to random number
 			shownImage.image.sprite = images[ran];
