@@ -44,7 +44,6 @@ public class MainMenu_Controller : MonoBehaviour {
 					AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.randomNotificationId[i]);
 					max = StartRandomNotification(max,i);
 					AppControl.control.randomNotification [i] = max;
-					Debug.Log ("Max: " + max);
 				}
 			}
 			AppControl.control.Save ();
@@ -57,14 +56,20 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// Get set notification time
 		DateTime notiTime = AppControl.control.notificationTime;
+		notiTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, notiTime.Hour, notiTime.Minute, notiTime.Second);
+
 		TimeSpan diff = now.Subtract(notiTime);
 
 		// Calculate seconds from set notification
 		double secondsFromNotification = diff.TotalSeconds;
+		bool isInSet = false;
+		if (secondsFromNotification >= 0 && secondsFromNotification < 3600) {
+			isInSet = true;
+		}
 
 		// Get all random notification
 		DateTime[] randoms = AppControl.control.randomNotification;
-
+		DateTime random = new DateTime ();
 		// Check if any random notification is active
 		bool isInRandom = false;
 		foreach (DateTime r in randoms) {
@@ -73,12 +78,31 @@ public class MainMenu_Controller : MonoBehaviour {
 
 			if (secondsFromRandom >= 0 && secondsFromRandom < 3600) {
 				isInRandom = true;
+				random = r;
 				break;
 			}
 		}
 
+		// Set boolean from test
+		bool isStart = AppControl.control.testStarted;
+		DateTime testStart = AppControl.control.testStartDate;
+
+		// Get time from test start until next test can appear
+		TimeSpan timeLeft = new TimeSpan();
+		if (isInSet) {
+			timeLeft = notiTime.AddHours (1).Subtract (testStart);
+		} else if (isInRandom) {
+			timeLeft = random.AddHours (1).Subtract (testStart);
+		}
+
+		// Check if the next test can appear and ready up for the next test
+		if (now.Subtract (testStart).TotalSeconds >= timeLeft.TotalSeconds) {
+			AppControl.control.testStarted = false;
+			isStart = false;
+		}
+
 		// Activate 'Start test' button and 'Skip' Button
-		if ((secondsFromNotification >= 0 && secondsFromNotification < 3600) || isInRandom) {
+		if ((isInSet || isInRandom) && !isStart) {
 			startTest.SetActive(true);
 			skip.SetActive(true);
 			exit.SetActive(false);
@@ -90,6 +114,8 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 	public void StartTest(){
+		AppControl.control.testStartDate = DateTime.Now;
+
 		SceneManager.LoadScene ("Word_Recog_Start");
 	}
 
@@ -151,7 +177,6 @@ public class MainMenu_Controller : MonoBehaviour {
 		}
 		for (int i = 0; i < 24; i++) {
 			goodHours.Add (currentHour);
-			Debug.Log ("Hour = " + currentHour);
 			currentHour++;
 			if (currentHour > 23) {
 				currentHour = 0;
@@ -257,8 +282,6 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		//First notification if available on day of fire
 		TimeSpan diff = randomTime - DateTime.Now;
-
-		Debug.Log (diff.TotalSeconds);
 
 		int startNotification = 0;
 
