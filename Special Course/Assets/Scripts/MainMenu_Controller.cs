@@ -19,6 +19,7 @@ public class MainMenu_Controller : MonoBehaviour {
 		if (AppControl.control.first_Time_Start) {
 			// Set DateTime array
 			AppControl.control.randomNotification = new DateTime[10];
+			AppControl.control.timer = new TimeSpan ();
 			AppControl.control.Save ();
 
 			SceneManager.LoadScene ("AdjustPatientNumber");
@@ -88,14 +89,20 @@ public class MainMenu_Controller : MonoBehaviour {
 		DateTime testStart = AppControl.control.testStartDate;
 
 		// Get time from test start until next test can appear
-		TimeSpan timeLeft = new TimeSpan();
+		TimeSpan timeLeft = AppControl.control.timer;
+
 		if (isInSet) {
 			timeLeft = notiTime.AddHours (1).Subtract (testStart);
 		} else if (isInRandom) {
 			timeLeft = random.AddHours (1).Subtract (testStart);
 		}
+		AppControl.control.timer = timeLeft;
+		AppControl.control.Save ();
 
 		// Check if the next test can appear and ready up for the next test
+		Debug.Log("Time left :" + timeLeft.TotalSeconds);
+		Debug.Log("Timer: " + now.Subtract (testStart).TotalSeconds);
+
 		if (now.Subtract (testStart).TotalSeconds >= timeLeft.TotalSeconds) {
 			AppControl.control.testStarted = false;
 			isStart = false;

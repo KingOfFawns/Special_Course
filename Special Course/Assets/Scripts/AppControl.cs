@@ -51,6 +51,7 @@ public class AppControl : MonoBehaviour {
 	// Variable to control time on test and 1 time per test
 	public DateTime testStartDate;
 	public bool testStarted = false;
+	public TimeSpan timer;
 
 	// Settings Login Password
 	public string password = "52 6F 6F 74 41 64 6D 69 6E"; // Should be stored
@@ -123,6 +124,7 @@ public class AppControl : MonoBehaviour {
 		// Test control data
 		data.testStartDate = testStartDate;
 		data.testStarted = testStarted;
+		data.timer = timer;
 
 		// Store settings login password
 		data.password = password;
@@ -181,6 +183,7 @@ public class AppControl : MonoBehaviour {
 
 			testStartDate = data.testStartDate;
 			testStarted = data.testStarted;
+			timer = data.timer;
 
 			password = data.password;
 
@@ -233,6 +236,7 @@ class AppData {
 
 	public DateTime testStartDate;
 	public bool testStarted = false;
+	public TimeSpan timer;
 
 	public string password = "52 6F 6F 74 41 64 6D 69 6E";
 
