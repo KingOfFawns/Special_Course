@@ -241,6 +241,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		AppControl.control.word_Recog_Target = numOFWords;
 		AppControl.control.word_Last_Test = last;
 		AppControl.control.word_previous_Test = previous;
+		AppControl.control.testStarted = true;
 		AppControl.control.Save ();
 
 		yield return new WaitForSeconds (3);
