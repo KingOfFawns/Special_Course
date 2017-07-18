@@ -114,7 +114,7 @@ public class MainMenu_Controller : MonoBehaviour {
 			skip.SetActive(true);
 			exit.SetActive(false);
 		} else {
-			startTest.SetActive(false);
+			//startTest.SetActive(false);
 			skip.SetActive(false);
 			exit.SetActive(true);
 		}

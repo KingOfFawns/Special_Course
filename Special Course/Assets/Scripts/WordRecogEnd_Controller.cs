@@ -8,6 +8,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 	public GameObject startCanvas;
 	public GameObject canvas;
+	public GameObject choiceCanvas;
 	public GameObject endCanvas;
 	public Text startText;
 	public Button button;
@@ -23,7 +24,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 	private int numOFWords = 10;
 	private string[] chosenWords;
 	private string[] distractorWords;
-
+	private int timer = 0;
 
 	void Awake () {
 		// Reset values
@@ -132,6 +133,13 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		StartCoroutine (Timer ());
 	}
 
+	public void clickGo(){
+		StartCoroutine (More ());
+	}
+	public void clickStop(){
+		StartCoroutine (Stop ());
+	}
+
 	IEnumerator Timer(){
 		wordsLeft.text = numOFWords + " ord";
 
@@ -143,8 +151,11 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		}
 
 		// Run the timer + Update the timer bar alongside it
-		int timer = 0;
-		while (timer < timeEnd && !AppControl.control.success) {
+		while (timer < timeEnd) {
+			if (AppControl.control.success) {
+				choiceCanvas.SetActive (true);
+				break;
+			}
 			yield return new WaitForSeconds (1);
 			timer++;
 
@@ -153,18 +164,28 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (timeEnd - timer).ToString ();
 		}
 
-		// If the user has selected 10 words before end time, give them 5 last seconds
-		// Change time bare accordingly
-		timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5).ToString ();
-		if(timer < timeEnd){
-			for (int i = 0; i < 5; i++) {
-				yield return new WaitForSeconds (1);
-				// Timer bar
-				timeBar.size = i / (float)5;
-				timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5 - i).ToString ();
-			}
+		if (!AppControl.control.success) {
+			StartCoroutine (Stop ());
 		}
-			
+	}
+
+	IEnumerator More(){
+		choiceCanvas.SetActive (false);
+		int timer2 = 0;
+		timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5 - timer2).ToString ();
+		while (timer2 < 5) {
+			yield return new WaitForSeconds (1);
+			timer2++;
+
+			// Timer bar
+			timeBar.size = timer2 / 5f;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5 - timer2).ToString ();
+		}
+		StartCoroutine (Stop ());
+	}
+
+	IEnumerator Stop(){
+		choiceCanvas.SetActive (false);
 		// Activate end canvas ansd set visual data
 		endCanvas.SetActive (true);
 		targetWords.text = numOFWords.ToString ();
@@ -216,7 +237,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		}
 
 		textWord.text = numOFWords.ToString ();
-			
+
 		// Achievement calculations
 		AppControl.control.achieveCounter = AppControl.control.achieveCounter + 1;
 
