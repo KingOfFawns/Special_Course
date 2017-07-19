@@ -19,7 +19,7 @@ public class MainMenu_Controller : MonoBehaviour {
 		if (AppControl.control.first_Time_Start) {
 			// Set DateTime array
 			AppControl.control.randomNotification = new DateTime[10];
-			AppControl.control.timer = new TimeSpan ();
+			AppControl.control.timer = new TimeSpan (0, 0, 0);
 			AppControl.control.Save ();
 
 			SceneManager.LoadScene ("AdjustPatientNumber");
@@ -70,6 +70,60 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// Get all random notification
 		DateTime[] randoms = AppControl.control.randomNotification;
+		// Check if any random notification is active
+		bool isInRandom = false;
+		foreach (DateTime r in randoms) {
+			double secondsFromRandom = diff.TotalSeconds;
+			if (secondsFromRandom >= 0 && secondsFromRandom < 3600) {
+				isInRandom = true;
+				break;
+			}
+		}
+
+		// Set boolean from test
+		bool isStart = AppControl.control.testStarted;
+		DateTime testStart = AppControl.control.testStartDate;
+
+		// Get time from test start until next test can appear
+		TimeSpan timeLeft = AppControl.control.timer;
+
+
+		// Check if the next test can appear and ready up for the next test
+		if (now.Subtract (testStart).TotalSeconds >= timeLeft.TotalSeconds) {
+			AppControl.control.testStarted = false;
+			isStart = false;
+		}
+
+		// Activate 'Start test' button and 'Skip' Button
+		if ((isInSet || isInRandom) && !isStart) {
+			startTest.SetActive(true);
+			skip.SetActive(true);
+			exit.SetActive(false);
+		} else {
+			startTest.SetActive(false);
+			skip.SetActive(false);
+			exit.SetActive(true);
+		}
+	}
+
+	public void StartTest(){
+		DateTime now = DateTime.Now;
+
+		// Get set notification time
+		DateTime notiTime = AppControl.control.notificationTime;
+		notiTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, notiTime.Hour, notiTime.Minute, notiTime.Second);
+
+		TimeSpan diff = now.Subtract(notiTime);
+
+		// Calculate seconds from set notification
+		double secondsFromNotification = diff.TotalSeconds;
+		bool isInSet = false;
+		if (secondsFromNotification >= 0 && secondsFromNotification < 3600) {
+			isInSet = true;
+		}
+
+		// Get all random notification
+		DateTime[] randoms = AppControl.control.randomNotification;
 		DateTime random = new DateTime ();
 		// Check if any random notification is active
 		bool isInRandom = false;
@@ -84,44 +138,16 @@ public class MainMenu_Controller : MonoBehaviour {
 			}
 		}
 
-		// Set boolean from test
-		bool isStart = AppControl.control.testStarted;
-		DateTime testStart = AppControl.control.testStartDate;
-
-		// Get time from test start until next test can appear
-		TimeSpan timeLeft = AppControl.control.timer;
-
 		if (isInSet) {
-			timeLeft = notiTime.AddHours (1).Subtract (testStart);
+			AppControl.control.timer = notiTime.AddHours (1).Subtract (now);
 		} else if (isInRandom) {
-			timeLeft = random.AddHours (1).Subtract (testStart);
+			AppControl.control.timer = random.AddHours (1).Subtract (now);
 		}
-		AppControl.control.timer = timeLeft;
+
+		Debug.Log("Time left :" + AppControl.control.timer.TotalSeconds);
+
+		AppControl.control.testStartDate = now;
 		AppControl.control.Save ();
-
-		// Check if the next test can appear and ready up for the next test
-		Debug.Log("Time left :" + timeLeft.TotalSeconds);
-		Debug.Log("Timer: " + now.Subtract (testStart).TotalSeconds);
-
-		if (now.Subtract (testStart).TotalSeconds >= timeLeft.TotalSeconds) {
-			AppControl.control.testStarted = false;
-			isStart = false;
-		}
-
-		// Activate 'Start test' button and 'Skip' Button
-		if ((isInSet || isInRandom) && !isStart) {
-			startTest.SetActive(true);
-			skip.SetActive(true);
-			exit.SetActive(false);
-		} else {
-			//startTest.SetActive(false);
-			skip.SetActive(false);
-			exit.SetActive(true);
-		}
-	}
-
-	public void StartTest(){
-		AppControl.control.testStartDate = DateTime.Now;
 
 		SceneManager.LoadScene ("Word_Recog_Start");
 	}

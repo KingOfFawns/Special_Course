@@ -31,7 +31,7 @@ public class StopTest : MonoBehaviour {
 			SceneManager.LoadScene ("MainMenu");
 		} else {
 			Button back = GameObject.Find ("Button (9)").GetComponent<Button> ();
-			back.transform.GetChild(0).GetComponent<Text>().text = "Tryk igen";
+			back.transform.GetChild(0).GetComponent<Text>().text = "Sikker?";
 			press = true;
 		}
 	}
