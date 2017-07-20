@@ -37,7 +37,7 @@ public class Help_Controller : MonoBehaviour {
 	}
 
 	public void ShowWordRecogText(){
-		header.text = "Ord Testen";
+		header.text = "Ord-testen";
 
 		Destroy (objectText);
 
@@ -45,7 +45,7 @@ public class Help_Controller : MonoBehaviour {
 	}
 
 	public void ShowNBackText(){
-		header.text = "Billed Testen";
+		header.text = "Billed-testen";
 
 		Destroy (objectText);
 
@@ -53,7 +53,7 @@ public class Help_Controller : MonoBehaviour {
 	}
 
 	public void ShowDigitSpanText(){
-		header.text = "Tal Testen";
+		header.text = "Tal-testen";
 
 		Destroy (objectText);
 
@@ -61,7 +61,7 @@ public class Help_Controller : MonoBehaviour {
 	}
 
 	public void ShowStroopEffectText(){
-		header.text = "Farve Testen";
+		header.text = "Farve-testen";
 
 		Destroy (objectText);
 
@@ -69,7 +69,7 @@ public class Help_Controller : MonoBehaviour {
 	}
 
 	public void ShowEriksenFlankerText(){
-		header.text = "Pile Testen";
+		header.text = "Pile-testen";
 
 		Destroy (objectText);
 

@@ -171,16 +171,24 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 	IEnumerator More(){
 		choiceCanvas.SetActive (false);
-		int timer2 = 0;
-		timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5 - timer2).ToString ();
-		while (timer2 < 5) {
+
+		// Timer runs 1 second per word to guess (minimum is 30)
+		int timeEnd = numOFWords * 2;
+
+		if (timeEnd < 30) {
+			timeEnd = 30;
+		}
+
+		// Run the timer + Update the timer bar alongside it
+		while (timer < timeEnd) {
 			yield return new WaitForSeconds (1);
-			timer2++;
+			timer++;
 
 			// Timer bar
-			timeBar.size = timer2 / 5f;
-			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (5 - timer2).ToString ();
+			timeBar.size = timer / (float)timeEnd;
+			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (timeEnd - timer).ToString ();
 		}
+
 		StartCoroutine (Stop ());
 	}
 

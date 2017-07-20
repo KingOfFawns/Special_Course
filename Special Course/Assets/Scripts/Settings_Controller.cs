@@ -42,7 +42,7 @@ public class Settings_Controller : MonoBehaviour {
 		}
 		File.Copy (Application.persistentDataPath + "/.dat1.dat", "/storage/emulated/0/Download/SEE-COG/SaveData.csv");
 
-		AndroidToast.ShowToastNotification ("Filer downloadet", AndroidToast.LENGTH_SHORT);
+		AndroidToast.ShowToastNotification ("Data sendt til 'Download/See-COG'", AndroidToast.LENGTH_SHORT);
 	}
 
 	public void ResetResultData(){

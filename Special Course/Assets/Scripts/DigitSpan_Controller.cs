@@ -244,9 +244,17 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 		// Show notification cancas
 		if (adjust == 0) {
-			transitionText.text = "3 rigtige i træk.\nSekvenslængde øges med 1.";
+			if (sequenceLength >= 15) {
+				transitionText.text = "3 rigtige i træk.\nSekvenslængde har nået max.";
+			} else {
+				transitionText.text = "3 rigtige i træk.\nSekvenslængde øges med 1.";
+			}
 		} else {
-			transitionText.text = "3 forkerte i træk.\nNedsætter sekvens længden med 1.";
+			if (sequenceLength <= 2) {
+				transitionText.text = "3 forkerte i træk.\nPrøv igen.";
+			} else {
+				transitionText.text = "3 forkerte i træk.\nNedsætter sekvens længden med 1.";
+			}
 		}
 
 		extraTime = 3f;

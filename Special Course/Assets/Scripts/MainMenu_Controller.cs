@@ -144,8 +144,6 @@ public class MainMenu_Controller : MonoBehaviour {
 			AppControl.control.timer = random.AddHours (1).Subtract (now);
 		}
 
-		Debug.Log("Time left :" + AppControl.control.timer.TotalSeconds);
-
 		AppControl.control.testStartDate = now;
 		AppControl.control.Save ();
 

@@ -21,6 +21,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 	private bool notiSet = false;
 	private bool sleepSet = false;
+	private bool upDown = false;
 
 
 	void Start(){
@@ -293,8 +294,8 @@ public class Notifications_Controller : MonoBehaviour {
 
 		string endDate = "0001-01-01 " + hour2 + ":" + minutes2;
 
-		Debug.Log (startDate);
-		Debug.Log (endDate);
+		Debug.Log ("Start: " + startDate);
+		Debug.Log ("End: " + endDate);
 
 		DateTime sDate = DateTime.Parse (startDate);
 		DateTime eDate = DateTime.Parse (endDate);
@@ -315,6 +316,80 @@ public class Notifications_Controller : MonoBehaviour {
 		yield return new WaitForSeconds (1f);
 		sleepZoneSave.text = "";
 	}
+		
+	public void UpDown(bool up){
+		upDown = up;
+	}
+
+	public void AdjustHour(int id){
+		string hour = "";
+		if (id == 1) {
+			hour = notificationHour.text;
+		} else if (id == 2) {
+			hour = sleepZoneHour1.text;
+		} else {
+			hour = sleepZoneHour2.text;
+		}
+
+		int intHour;
+		int.TryParse (hour, out intHour);
+
+		if (upDown) {
+			intHour++;
+			if (intHour > 23) {
+				intHour = 23;
+			}
+		} else {
+			intHour--;
+			if (intHour < 0) {
+				intHour = 0;
+			}
+		}
+
+		if (id == 1) {
+			notificationHour.text = intHour.ToString ();
+		} else if (id == 2) {
+			sleepZoneHour1.text = intHour.ToString ();
+		} else {
+			sleepZoneHour2.text = intHour.ToString ();
+		}
+		CleanUpHour (id);
+	}
+
+	public void AdjustMinute(int id){
+		string minutes = "";
+		if (id == 1) {
+			minutes = notificationMinutes.text;
+		} else if (id == 2) {
+			minutes = sleepZoneMinutes1.text;
+		} else {
+			minutes = sleepZoneMinutes2.text;
+		}
+
+		int intMinutes;
+		int.TryParse (minutes, out intMinutes);
+
+		if (upDown) {
+			intMinutes++;
+			if (intMinutes > 59) {
+				intMinutes = 59;
+			}
+		} else {
+			intMinutes--;
+			if (intMinutes < 0) {
+				intMinutes = 0;
+			}
+		}
+
+		if (id == 1) {
+			notificationMinutes.text = intMinutes.ToString ();
+		} else if (id == 2) {
+			sleepZoneMinutes1.text = intMinutes.ToString ();
+		} else {
+			sleepZoneMinutes2.text = intMinutes.ToString ();
+		}
+		CleanUpMinute (id);
+	}
 
 	public void CleanUpHour(int id){
 
@@ -326,17 +401,6 @@ public class Notifications_Controller : MonoBehaviour {
 		} else if (id == 3) {
 			toSet = sleepZoneHour2.text;
 		} 
-
-		int time = -1;
-		int.TryParse (toSet, out time);
-
-		if (time > 23) {
-			time = 23;
-		} else if (time < 0) {
-			time = 0;
-		}
-
-		toSet = time.ToString ();
 
 		if (toSet.Length < 2) {
 			toSet = "0" + toSet;
@@ -351,7 +415,7 @@ public class Notifications_Controller : MonoBehaviour {
 		} 
 	}
 
-	public void CleanUpSeconds(int id){
+	public void CleanUpMinute(int id){
 
 		string toSet = "";
 		if (id == 1) {
@@ -361,17 +425,6 @@ public class Notifications_Controller : MonoBehaviour {
 		} else if (id == 3) {
 			toSet = sleepZoneMinutes2.text;
 		} 
-
-		int time = -1;
-		int.TryParse (toSet, out time);
-
-		if (time > 59) {
-			time = 59;
-		} else if (time < 0) {
-			time = 0;
-		}
-
-		toSet = time.ToString ();
 
 		if (toSet.Length < 2) {
 			toSet = "0" + toSet;

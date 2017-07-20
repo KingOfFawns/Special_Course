@@ -33,6 +33,14 @@ public class StopTest : MonoBehaviour {
 			Button back = GameObject.Find ("Button (9)").GetComponent<Button> ();
 			back.transform.GetChild(0).GetComponent<Text>().text = "Sikker?";
 			press = true;
+			StartCoroutine (Reset ());
 		}
+	}
+
+	IEnumerator Reset(){
+		yield return new WaitForSeconds (3);
+		press = false;
+		Button back = GameObject.Find ("Button (9)").GetComponent<Button> ();
+		back.transform.GetChild(0).GetComponent<Text>().text = "Stop test";
 	}
 }
