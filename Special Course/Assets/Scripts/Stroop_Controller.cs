@@ -48,6 +48,7 @@ public class Stroop_Controller : MonoBehaviour {
 
 		if (now.Subtract (testStart).TotalSeconds >= 600) {
 			AppControl.control.testStarted = true;
+			AppControl.control.Save ();
 
 			// Log stop
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
@@ -64,7 +65,7 @@ public class Stroop_Controller : MonoBehaviour {
 	IEnumerator PhaseShift(){
 
 		// First phase showing
-		taskText.text = "Match farven på bogstaverne";
+		taskText.text = "Tryk på den farve, som bogstaverne er skrevet med.";
 		phase = 1;
 		// Timer waits for 20 seconds
 		for (int i = 1; i < 21; i++) {
@@ -75,12 +76,12 @@ public class Stroop_Controller : MonoBehaviour {
 
 		// Transition canvas
 		transitionCanvas.SetActive(true);
-		phaseText.text = "Match farven der skrives";
+		phaseText.text = "Tryk på den farve, som ordet beksriver.";
 		yield return new WaitForSeconds (2);
 		transitionCanvas.SetActive(false);
 
 		// Show second phase
-		taskText.text = "Match farven der skrives";
+		taskText.text = "Tryk på den farve, som ordet beksriver.";
 		phase = 2;
 		// Timer waits for 20 seconds
 		for (int i = 21; i < 41; i++) {
@@ -91,12 +92,12 @@ public class Stroop_Controller : MonoBehaviour {
 
 		// Transition canvas
 		transitionCanvas.SetActive(true);
-		phaseText.text = "Match farven på bogstaverne";
+		phaseText.text = "Tryk på den farve, som bogstaverne er skrevet med.";
 		yield return new WaitForSeconds (2);
 		transitionCanvas.SetActive(false);
 
 		// Show third phase
-		taskText.text = "Match farven på bogstaverne";
+		taskText.text = "Tryk på den farve, som bogstaverne er skrevet med.";
 		phase = 3;
 		// Timer waits for 20 seconds
 		for (int i = 41; i < 61; i++) {

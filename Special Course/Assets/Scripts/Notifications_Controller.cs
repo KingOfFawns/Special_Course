@@ -337,12 +337,12 @@ public class Notifications_Controller : MonoBehaviour {
 		if (upDown) {
 			intHour++;
 			if (intHour > 23) {
-				intHour = 23;
+				intHour = 0;
 			}
 		} else {
 			intHour--;
 			if (intHour < 0) {
-				intHour = 0;
+				intHour = 23;
 			}
 		}
 
@@ -372,12 +372,12 @@ public class Notifications_Controller : MonoBehaviour {
 		if (upDown) {
 			intMinutes++;
 			if (intMinutes > 59) {
-				intMinutes = 59;
+				intMinutes = 0;
 			}
 		} else {
 			intMinutes--;
 			if (intMinutes < 0) {
-				intMinutes = 0;
+				intMinutes = 59;
 			}
 		}
 

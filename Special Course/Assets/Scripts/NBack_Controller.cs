@@ -46,6 +46,7 @@ public class NBack_Controller : MonoBehaviour {
 
 		if (now.Subtract (testStart).TotalSeconds >= 600) {
 			AppControl.control.testStarted = true;
+			AppControl.control.Save ();
 
 			// Log stop
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
