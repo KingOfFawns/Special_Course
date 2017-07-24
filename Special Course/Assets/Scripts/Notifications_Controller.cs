@@ -223,6 +223,7 @@ public class Notifications_Controller : MonoBehaviour {
 			StartCoroutine (TimeOut ());
 		} else {
 			// Stop existing notification
+			AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.notificationId);
 			AndroidNotificationManager.Instance.CancelAllLocalNotifications();
 
 			// Create DateTime format
