@@ -168,6 +168,24 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 	public void Skip(){
+		// Get notification time
+		DateTime now = DateTime.Now;
+		notiTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, notiTime.Hour, notiTime.Minute, notiTime.Second);
+
+		// Calculate timer for notifications
+		if (isInSet) {
+			AppControl.control.timer = notiTime.AddHours (1).Subtract (now);
+		} else if (isInRandom) {
+			AppControl.control.timer = random.AddHours (1).Subtract (now);
+		}
+
+		// Store start time
+		AppControl.control.testStartDate = now;
+
+		// End test
+		AppControl.control.testStarted = true;
+		AppControl.control.Save ();
+
 		// Log skip
 		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
 		string time = System.DateTime.Now.ToString ();

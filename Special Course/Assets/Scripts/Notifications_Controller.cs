@@ -226,6 +226,16 @@ public class Notifications_Controller : MonoBehaviour {
 			AndroidNotificationManager.Instance.CancelLocalNotification(AppControl.control.notificationId);
 			AndroidNotificationManager.Instance.CancelAllLocalNotifications();
 
+			// Reset Test Start
+			AppControl.control.testStartDate = 
+				new System.DateTime(
+					System.DateTime.Now.Year,
+					System.DateTime.Now.Month,
+					System.DateTime.Now.Day,
+					System.DateTime.Now.Hour - 1, 
+					System.DateTime.Now.Minute, 
+					System.DateTime.Now.Second);
+
 			// Create DateTime format
 			string year = DateTime.Now.Year.ToString ();
 			string month = DateTime.Now.Month.ToString();
