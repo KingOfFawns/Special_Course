@@ -10,7 +10,7 @@ public class AppControl : MonoBehaviour {
 	public static AppControl control;
 
 	// Storage for word recog start and end
-	public int word_Recog_Target = 10; // Should be stored
+	public int word_Recog_Target = 8; // Should be stored
 	public int word_Last_Test = -1; // Should be stored
 	public int word_previous_Test = -1; // Should be stored
 	public string[] words;
@@ -211,7 +211,7 @@ public class AppControl : MonoBehaviour {
 
 [Serializable]
 class AppData {
-	public int word_Recog_Target = 10;
+	public int word_Recog_Target = 8;
 	public int word_Last_Test = -1;
 	public int word_previous_Test = -1;
 

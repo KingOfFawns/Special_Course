@@ -248,13 +248,13 @@ public class DigitSpan_Controller : MonoBehaviour {
 			if (sequenceLength >= 15) {
 				transitionText.text = "3 rigtige i træk.\nTalrække længde har nået max.";
 			} else {
-				transitionText.text = "3 rigtige i træk.\nTalrække længde øges med 1.";
+				transitionText.text = "3 rigtige i træk.\nLængden af talrækken øges.";
 			}
 		} else {
 			if (sequenceLength <= 2) {
 				transitionText.text = "3 forkerte i træk.\nPrøv igen.";
 			} else {
-				transitionText.text = "3 forkerte i træk.\nNedsætter Talrække længden med 1.";
+				transitionText.text = "3 forkerte i træk.\nLængden af reduceres.";
 			}
 		}
 

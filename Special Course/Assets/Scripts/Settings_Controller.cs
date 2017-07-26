@@ -63,7 +63,7 @@ public class Settings_Controller : MonoBehaviour {
 			File.Delete (Application.persistentDataPath + "/.appData.dat");
 		}
 
-		AppControl.control.word_Recog_Target = 10;
+		AppControl.control.word_Recog_Target = 8;
 		AppControl.control.word_Last_Test = -1;
 		AppControl.control.word_previous_Test = -1;
 
