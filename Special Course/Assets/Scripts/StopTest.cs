@@ -9,9 +9,10 @@ public class StopTest : MonoBehaviour {
 
 	private bool press = false;
 
-
 	public void StopTestButton(){
+		// Second press of button
 		if (press) {
+			// If in test mode, go back to help
 			if (AppControl.control.testOfTest) {
 				SceneManager.LoadScene ("Help");
 			} else {
@@ -34,14 +35,18 @@ public class StopTest : MonoBehaviour {
 				SceneManager.LoadScene ("MainMenu");
 			}
 		} else {
+			// First button press
+			// Set the text of the button and ready up for second press
 			Button back = GameObject.Find ("Button (9)").GetComponent<Button> ();
 			back.transform.GetChild(0).GetComponent<Text>().text = "Sikker?";
 			press = true;
+			// Start reset of button
 			StartCoroutine (Reset ());
 		}
 	}
 
 	IEnumerator Reset(){
+		// Reset button
 		yield return new WaitForSeconds (3);
 		press = false;
 		Button back = GameObject.Find ("Button (9)").GetComponent<Button> ();

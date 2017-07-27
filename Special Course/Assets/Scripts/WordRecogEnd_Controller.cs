@@ -52,6 +52,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			bool check = false;
 			while (!check) {
 				check = true;
+				// Check if in chosen words
 				foreach (string w in chosenWords) {
 					if (w == word) {
 						check = false;
@@ -60,7 +61,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 						break;
 					}
 				}
-
+				// Check if in distractor words
 				foreach (string d in distractorWords) {
 					if (d == word) {
 						check = false;
@@ -88,6 +89,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 		Shuffle (allWords);
 
+		// Instatiate all buttons
 		for(int i = 0; i < numOFWords*2; i++) {
 
 			wordText.text = allWords[i];
@@ -96,11 +98,15 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 	}
 
 	void Update(){
+		// Get now and test start time
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
+		// If the test started more than 10 minutes ago and the test is not in help's test mode
 		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
+			// Set the boolean controlling whether or not the test has been finished
 			AppControl.control.testStarted = true;
+			AppControl.control.Save ();
 
 			// Log stop
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
@@ -110,6 +116,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 			AppControl.control.SaveData ();
 
+			// Go to main menu
 			SceneManager.LoadScene ("MainMenu");
 		}
 	}
@@ -126,10 +133,13 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 
 	public void StartButton(){
+		// Deactive start canvas
 		startCanvas.SetActive(false);
 
+		// Activate game canvas
 		canvas.SetActive (true);
 
+		// Start timer
 		StartCoroutine (Timer ());
 	}
 
@@ -164,6 +174,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			timeBar.transform.GetChild (1).GetComponent<Text> ().text = (timeEnd - timer).ToString ();
 		}
 
+		// If not success, stop game
 		if (!AppControl.control.success) {
 			StartCoroutine (Stop ());
 		}
@@ -179,7 +190,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 			timeEnd = 30;
 		}
 
-		// Run the timer + Update the timer bar alongside it
+		// Run the timer from where it is + Update the timer bar alongside it
 		while (timer < timeEnd) {
 			yield return new WaitForSeconds (1);
 			timer++;
@@ -194,7 +205,8 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 	IEnumerator Stop(){
 		choiceCanvas.SetActive (false);
-		// Activate end canvas ansd set visual data
+
+		// Activate end canvas and set visual data
 		endCanvas.SetActive (true);
 		targetWords.text = numOFWords.ToString ();
 		foundWords.text = AppControl.control.identifiedWords.ToString ();
@@ -246,6 +258,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 		textWord.text = numOFWords.ToString ();
 
+		// If help's test mode is not active
 		if (!AppControl.control.testOfTest) {
 			// Achievement calculations
 			AppControl.control.achieveCounter = AppControl.control.achieveCounter + 1;
@@ -277,6 +290,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 		yield return new WaitForSeconds (3);
 
+		// If not in help's test mode
 		if (!AppControl.control.testOfTest) {
 			// Data to be stored
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);

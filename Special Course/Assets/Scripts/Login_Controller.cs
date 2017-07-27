@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -31,10 +30,13 @@ public class Login_Controller : MonoBehaviour {
 	}
 
 	public void confirmButton(){
+		// Check if password is correct
 		if (password.text == code) {
+			// Correct, go to settings
 			password.text = "";
 			SceneManager.LoadScene ("Settings");
 		} else {
+			// Incorrect password, notify
 			password.text = "";
 			loginText.text = "Forkert Kode";
 
@@ -43,6 +45,7 @@ public class Login_Controller : MonoBehaviour {
 	}
 
 	IEnumerator TimeOut(){
+		// Reset notify text
 		yield return new WaitForSeconds (1);
 		loginText.text = "";
 	}

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -70,7 +68,7 @@ public class AppControl : MonoBehaviour {
 	// Patient data
 	public int patientNumber = 0; // Should be stored
 
-	// Variable
+	// Variable for help's test of tests
 	public bool testOfTest = false;
 
 	void Awake () {
@@ -84,9 +82,11 @@ public class AppControl : MonoBehaviour {
 	}
 
 	public void Save(){
+		// If appdata exists, make it visible
 		if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
 			File.SetAttributes (Application.persistentDataPath + "/.appData.dat", FileAttributes.Normal);
 		}
+		// Create a binaryformatter and create a file
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (Application.persistentDataPath + "/.appData.dat");
 
@@ -145,15 +145,18 @@ public class AppControl : MonoBehaviour {
 		// Store patient number
 		data.patientNumber = patientNumber;
 
-		// Store data
+		// Store data and serialize it
 		bf.Serialize (file, data);
 		file.Close();
 
+		// Set file as hidden
 		File.SetAttributes (Application.persistentDataPath + "/.appData.dat", FileAttributes.Hidden);
 	}
 
 	public void Load(){
+		// Load the file if it exists
 		if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
+			// Create a binary formatter and use it to deserialize the file
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (Application.persistentDataPath + "/.appData.dat", FileMode.Open);
 			AppData data = (AppData)bf.Deserialize (file);
@@ -203,14 +206,17 @@ public class AppControl : MonoBehaviour {
 	}
 
 	public void SaveData(){
+		// Store data to txt file and csv file
 		File.AppendAllText (Application.persistentDataPath + "/.dat2.dat", dataString + Environment.NewLine);
 		File.AppendAllText (Application.persistentDataPath + "/.dat1.dat", csvString + Environment.NewLine);
 
+		// Hide the files
 		File.SetAttributes (Application.persistentDataPath + "/.dat2.dat", FileAttributes.Hidden);
 		File.SetAttributes (Application.persistentDataPath + "/.dat1.dat", FileAttributes.Hidden);
 	}
 }
 
+// Structure/Class for the stored data (Used as object to serialize)
 [Serializable]
 class AppData {
 	public int word_Recog_Target = 8;

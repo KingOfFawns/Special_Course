@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.IO;
@@ -17,12 +15,14 @@ public class Overview_Controller : MonoBehaviour {
 		// Read data file into string array fileLines
 		string[] fileLines = File.ReadAllLines (Application.persistentDataPath + "/.dat1.dat");
 
+		// Variables to store needed data
 		int words = 0;
 		int nBack = 0;
 		int dSpan = 0;
 		int eFLanker = 0;
 		int sEffect = 0;
 
+		// Go through all data and find the largest of each type of tests appropiate data
 		foreach (string s in fileLines) {
 			string[] current = s.Split (';');
 
@@ -59,8 +59,10 @@ public class Overview_Controller : MonoBehaviour {
 			}
 		}
 
+		// Get digit spans max sequence length
 		dSpan = AppControl.control.maxSequenceLength;
 
+		// Set text accordingly to data
 		wordRecog.text = words.ToString();
 		NBack.text = nBack.ToString();
 		digitSpan.text = dSpan.ToString();

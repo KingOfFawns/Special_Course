@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -38,6 +37,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Get digit length from storage
 		sequenceLength = AppControl.control.digitSpan_DigitLength;
 
+		// Start sequence as 1 lower that it ended on in the last test
 		if (sequenceLength > 2) {
 			sequenceLength -= 1;
 		}
@@ -47,10 +47,13 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	void Update(){
+		// Get time and time of test start
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
+		// If the test started more than 10 minutes ago and the test is not in help's test mode
 		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
+			// Set the boolean controlling whether or not the test has been finished
 			AppControl.control.testStarted = true;
 			AppControl.control.Save ();
 
@@ -62,6 +65,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 			AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 			AppControl.control.SaveData ();
 
+			// Go to main menu
 			SceneManager.LoadScene ("MainMenu");
 		}
 	}
@@ -70,17 +74,20 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Stop start canvas
 		startCanvas.SetActive(false);
 
+		// Activate game canvas
 		canvas.SetActive (true);
 
+		// Start Game
 		StartCoroutine(NextNumber ());
 
+		// Start Timer
 		StartCoroutine(Timer());
 	}
 
 	IEnumerator Timer(){
-		// The timer waits for 60 seconds
-
+		// The timer waits for 60 seconds (and 3 seconds more each time the sequence length is updated)
 		int i = 1;
+		// Run timer and update time bar
 		while (i < timer) {
 			yield return new WaitForSeconds(1);
 			timeBar.size = i / (float)(timer-1);
@@ -96,6 +103,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		correctText.text = correctSequences.ToString ();
 		sequeceLengthEnd.text = sequenceLength.ToString ();
 
+		// If not in help's test mode, store the updated data
 		if (!AppControl.control.testOfTest) {
 			// Store local data
 			AppControl.control.digitSpan_DigitLength = sequenceLength;
@@ -106,6 +114,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		// Wait for 3 seconds before transitioning to the next test
 		yield return new WaitForSeconds (3f);
 
+		// If not in help's test mode
 		if (!AppControl.control.testOfTest) {
 			// Data to be stored
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
@@ -122,7 +131,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 			AppControl.control.SaveData ();
 		}
 
-		// Go to next test
+		// Go to next test (or return to help if help's test mode is active)
 		int ran = Random.Range (0, 2);
 		if (AppControl.control.testOfTest) {
 			SceneManager.LoadScene ("Help");
@@ -179,6 +188,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 					sequenceLength = 15;
 				}
 
+				// Save max sequence length
 				if (maxSequence < sequenceLength) {
 					maxSequence = sequenceLength;
 				}
@@ -188,12 +198,14 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 				StartCoroutine (ResetCheck ());
 
+				// Continue game
 				StartCoroutine(NextNumber ());
 			}
 		}
 	}
 
 	public void Backspace(){
+		// When backspace button is pressed, delete last char in the string
 		if (inputNumber.Length > 0 && !active) {
 			inputNumber = inputNumber.Substring (0, inputNumber.Length - 1);
 			digitText.text = inputNumber;
@@ -216,20 +228,17 @@ public class DigitSpan_Controller : MonoBehaviour {
 	}
 
 	void UpdateNumber(){
-		// If the test is over
+		// If the test is not over, update number of sequences shown
 		if (!end) {
 			numOfSequences++;
 		}
-
 		// Calculate number
 		digitNumber = "";
-
 		for (int i = 0; i < sequenceLength; i++) {
 			int ran = Random.Range (1, 10);
 
 			digitNumber = digitNumber + ran.ToString ();
 		}
-
 		// Start showing digits
 		StartCoroutine (ShowDigits (digitNumber));
 
@@ -237,20 +246,17 @@ public class DigitSpan_Controller : MonoBehaviour {
 
 	IEnumerator ShowDigits(string number){
 		// Show the sequence the specified amount of time, then remove it
-
 		active = true;
-
 		digitText.text = number;
 		yield return new WaitForSeconds ((float)AppControl.control.digitSpan_SequenceTimer);
 		digitText.text = "";
-
 		active = false;
 	}
 
 	IEnumerator notify(int adjust){
 		timer += 3;
 
-		// Show notification cancas
+		// Show notification/transition canvas
 		if (adjust == 0) {
 			if (sequenceLength >= 15) {
 				transitionText.text = "3 rigtige i træk.\nTalrække længde har nået max.";
@@ -264,7 +270,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 				transitionText.text = "3 forkerte i træk.\nLængden af reduceres.";
 			}
 		}
-
+			
 		extraTime = 3f;
 		transitionCanvas.SetActive (true);
 		yield return new WaitForSeconds (3f);

@@ -27,7 +27,7 @@ public class MainMenu_Controller : MonoBehaviour {
 		AppControl.control.Load ();
 		AppControl.control.Save (); // This creates file if not existing
 
-		// Check if storage file exists
+		// Check if storage file exists, create if not
 		if (!File.Exists (Application.persistentDataPath + "/.dat1.dat")) {
 			string header = "PatientNumber;Name;Time;Target words;Identified words;Falsely identified words;Time used in seconds;False negatives;" +
 				"True positives;False positives;Length of sequences;Number of sequences;Words displayed;Grids showed;" +
@@ -38,7 +38,9 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// Load textFile with words for word_recog tests
 		string text = textFile.text;
+		// Split all words in an array
 		string[] words = text.Split ("\n" [0]);
+		// Store the array
 		AppControl.control.words = words;
 		AppControl.control.Save ();
 	}
@@ -48,12 +50,15 @@ public class MainMenu_Controller : MonoBehaviour {
 		notiTime = AppControl.control.notificationTime;
 		notiTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, notiTime.Hour, notiTime.Minute, notiTime.Second);
 
+		// If first time start up
 		if (AppControl.control.first_Time_Start) {
-			// Set DateTime array
+			// Set DateTime array for random notifications
 			AppControl.control.randomNotification = new DateTime[10];
+			// Set timer to 0
 			AppControl.control.timer = new TimeSpan (0, 0, 0);
 			AppControl.control.Save ();
 
+			// Send to adjust patient number
 			SceneManager.LoadScene ("AdjustPatientNumber");
 		} else {
 			// Get list of pending notifications
@@ -126,7 +131,7 @@ public class MainMenu_Controller : MonoBehaviour {
 			isStart = false;
 		}
 
-		// Activate 'Start test' button and 'Skip' Button
+		// Activate or deactivate 'Start test' button and 'Skip' Button
 		if ((isInSet || isInRandom) && !isStart) {
 			startTest.SetActive(true);
 			skip.SetActive(true);
@@ -139,16 +144,20 @@ public class MainMenu_Controller : MonoBehaviour {
 	}
 
 	public void StartTest(){
+		// Get now
 		DateTime now = DateTime.Now;
 
+		// Create notification time today
 		notiTime = new DateTime (DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, notiTime.Hour, notiTime.Minute, notiTime.Second);
 
+		// Check which kind of notification and set timer accordingly
 		if (isInSet) {
 			AppControl.control.timer = notiTime.AddHours (1).Subtract (now);
 		} else if (isInRandom) {
 			AppControl.control.timer = random.AddHours (1).Subtract (now);
 		}
 
+		// Save test start time
 		AppControl.control.testStartDate = now;
 		AppControl.control.Save ();
 

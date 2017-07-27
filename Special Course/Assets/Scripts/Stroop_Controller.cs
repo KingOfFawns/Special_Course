@@ -43,10 +43,13 @@ public class Stroop_Controller : MonoBehaviour {
 	}
 
 	void Update(){
+		// Get now and test start time
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
+		// If the test started more than 10 minutes ago and the test is not in help's test mode
 		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
+			// Set the boolean controlling whether or not the test has been finished
 			AppControl.control.testStarted = true;
 			AppControl.control.Save ();
 
@@ -58,6 +61,7 @@ public class Stroop_Controller : MonoBehaviour {
 			AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 			AppControl.control.SaveData ();
 
+			// Go to main menu
 			SceneManager.LoadScene ("MainMenu");
 		}
 	}
@@ -115,6 +119,7 @@ public class Stroop_Controller : MonoBehaviour {
 
 		yield return new WaitForSeconds(3);
 
+		// If not in help's test mode
 		if (!AppControl.control.testOfTest) {
 			// Data to be stored
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
@@ -137,7 +142,9 @@ public class Stroop_Controller : MonoBehaviour {
 	}
 
 	public void CheckSelected(int col){
+		// If change is not active
 		if (!active) {
+			// check if selected is correct according to phase
 			if (phase == 1 || phase == 3) {
 				if (col == ranColor) {
 					correctMatches++;

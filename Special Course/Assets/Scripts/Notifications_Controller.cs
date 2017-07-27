@@ -25,6 +25,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 
 	void Start(){
+		// First time use of the app
 		if (AppControl.control.first_Time_Start) {
 			back.SetActive (false);
 			next.SetActive (true);
@@ -71,7 +72,6 @@ public class Notifications_Controller : MonoBehaviour {
 		if(AM_PM == "PM" && hour < 12){
 			hour = hour + 12;
 		} 
-
 		if (hour < 10) {
 			sleepZoneHour1.text = "0" + hour.ToString ();
 		} else {
@@ -94,7 +94,6 @@ public class Notifications_Controller : MonoBehaviour {
 		if(AM_PM == "PM" && hour < 12){
 			hour = hour + 12;
 		} 
-
 		if (hour < 10) {
 			sleepZoneHour2.text = "0" + hour.ToString ();
 		} else {
@@ -115,14 +114,18 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	public void NextButton(){
+		// If no notification set
 		if (!notiSet) {
+			// Inform user that the notification is missing
 			notifyText.text = "Notifikation mangler";
 			StartCoroutine (ResetNotifyText ());
 		} else if (!sleepSet) {
+			// Inform the user that the sleep zone is missing
 			notifyText.text = "Sove zone mangler";
 			StartCoroutine (ResetNotifyText ());
 		}
 		else {
+			// Continue
 			AppControl.control.first_Time_Start = false;
 			AppControl.control.Save ();
 
@@ -131,42 +134,38 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	IEnumerator ResetNotifyText(){
+		// Reset text after 1 second
 		yield return new WaitForSeconds (1);
 		notifyText.text = "";
 	}
 
 	public void SetNotification(){
-
+		// If no sleep zone has been set
 		if (!sleepSet && AppControl.control.first_Time_Start) {
+			// Inform user
 			notifyText.text = "Indtast sove zone først";
 			StartCoroutine (ResetNotifyText ());
+			// Stop function
 			return;
 		}
 
+		// Get time and parse to integer
 		string hour = notificationHour.text;
 		string minutes = notificationMinutes.text;
-
 		int intHour = 0;
 		int intMinutes = 0;
-
 		int.TryParse (hour, out intHour);
 		int.TryParse(minutes, out intMinutes);
 
-		Debug.Log ("Noti Time: " + intHour + "," + intMinutes); 
-
-		// Start and end hour of the sleep zone
+		// Get start and end hour of the sleep zone
 		int sleepStart = AppControl.control.sleepZoneStart.Hour;
 		int sleepEnd = AppControl.control.sleepZoneEnd.Hour;
-
-		Debug.Log ("Start: " + sleepStart);
-		Debug.Log ("End :" + sleepEnd);
 
 		// list to contain hours that are acceptable for notifications
 		List<int> goodHours = new List<int> ();
 
 		// Calculate the good hours
 		int currentHour = sleepEnd;
-
 		int loopEnd = sleepStart + 1;
 		if(loopEnd > 23){
 			loopEnd = 0;
@@ -199,7 +198,6 @@ public class Notifications_Controller : MonoBehaviour {
 
 			// Same hour as sleep zone start
 			if(intHour == sleepStart){
-				Debug.Log ("In same hour as start");
 				// If the notification time is after or on the sleep zone start time
 				if (diffStart >= 0) {
 					isInSleepZone = true;
@@ -207,7 +205,6 @@ public class Notifications_Controller : MonoBehaviour {
 			} 
 			// Same hour as sleep zone end
 			else if(intHour == sleepEnd){
-				Debug.Log ("In same Hour as end");
 				// If the notification time is before or on the sleep zone end time
 				if (diffEnd <= 0) {
 					isInSleepZone = true;
@@ -216,10 +213,9 @@ public class Notifications_Controller : MonoBehaviour {
 		}
 
 		if (isInSleepZone) {
+			// Inform user that the selected time is in the sleep zone
 			isInSleepZone = false;
-
 			inSleepZoneText.text = "I sove zonen";
-
 			StartCoroutine (TimeOut ());
 		} else {
 			// Stop existing notification
@@ -294,20 +290,17 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	public void SetSleepZone(){
+		// Get selected time for sleep zone start
 		string hour = sleepZoneHour1.text;
 		string minutes = sleepZoneMinutes1.text;
-
 		string startDate = "0001-01-01 " + hour + ":" + minutes;
 
-
+		// Get selected time for sleep zone end
 		string hour2 = sleepZoneHour2.text;
 		string minutes2 = sleepZoneMinutes2.text;
-
 		string endDate = "0001-01-01 " + hour2 + ":" + minutes2;
 
-		Debug.Log ("Start: " + startDate);
-		Debug.Log ("End: " + endDate);
-
+		// Parse to dateTime format
 		DateTime sDate = DateTime.Parse (startDate);
 		DateTime eDate = DateTime.Parse (endDate);
 
@@ -324,15 +317,18 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	IEnumerator TimeOut2(){
+		// Reset notification text
 		yield return new WaitForSeconds (1f);
 		sleepZoneSave.text = "";
 	}
 		
 	public void UpDown(bool up){
+		// Set boolean used to adjust hours up or down
 		upDown = up;
 	}
 
 	public void AdjustHour(int id){
+		// Get current hour based on id
 		string hour = "";
 		if (id == 1) {
 			hour = notificationHour.text;
@@ -342,21 +338,28 @@ public class Notifications_Controller : MonoBehaviour {
 			hour = sleepZoneHour2.text;
 		}
 
+		// Parse hour to int
 		int intHour;
 		int.TryParse (hour, out intHour);
 
+		// Increase or decrease hour based on boolean
 		if (upDown) {
 			intHour++;
+
+			// If more than 23, turn to 0
 			if (intHour > 23) {
 				intHour = 0;
 			}
 		} else {
 			intHour--;
+
+			// If less than 0, turn to 23
 			if (intHour < 0) {
 				intHour = 23;
 			}
 		}
 
+		// Set updated hour as text
 		if (id == 1) {
 			notificationHour.text = intHour.ToString ();
 		} else if (id == 2) {
@@ -368,6 +371,7 @@ public class Notifications_Controller : MonoBehaviour {
 	}
 
 	public void AdjustMinute(int id){
+		//Get current minute based on id
 		string minutes = "";
 		if (id == 1) {
 			minutes = notificationMinutes.text;
@@ -377,9 +381,11 @@ public class Notifications_Controller : MonoBehaviour {
 			minutes = sleepZoneMinutes2.text;
 		}
 
+		// Parse minute to int
 		int intMinutes;
 		int.TryParse (minutes, out intMinutes);
 
+		// Increase or decrease minute base on boolean
 		if (upDown) {
 			intMinutes++;
 			if (intMinutes > 59) {
@@ -392,6 +398,7 @@ public class Notifications_Controller : MonoBehaviour {
 			}
 		}
 
+		// Set updated minute as text
 		if (id == 1) {
 			notificationMinutes.text = intMinutes.ToString ();
 		} else if (id == 2) {
@@ -404,6 +411,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 	public void CleanUpHour(int id){
 
+		// Get hour based on id
 		string toSet = "";
 		if (id == 1) {
 			toSet = notificationHour.text;
@@ -413,10 +421,12 @@ public class Notifications_Controller : MonoBehaviour {
 			toSet = sleepZoneHour2.text;
 		} 
 
+		// Adjust hour if needed (0 becomes 00 and 1 becomes 01)
 		if (toSet.Length < 2) {
 			toSet = "0" + toSet;
 		} 
 
+		// Set updated hour as text
 		if (id == 1) {
 			notificationHour.text = toSet;
 		} else if (id == 2) {
@@ -428,6 +438,7 @@ public class Notifications_Controller : MonoBehaviour {
 
 	public void CleanUpMinute(int id){
 
+		// Getminute based on id
 		string toSet = "";
 		if (id == 1) {
 			toSet = notificationMinutes.text;
@@ -437,10 +448,12 @@ public class Notifications_Controller : MonoBehaviour {
 			toSet = sleepZoneMinutes2.text;
 		} 
 
+		// Adjust minute if needed (0 becomes 00 and 1 becomes 01)
 		if (toSet.Length < 2) {
 			toSet = "0" + toSet;
 		} 
 
+		// Set updated minute as text
 		if (id == 1) {
 			notificationMinutes.text = toSet;
 		} else if (id == 2) {

@@ -41,10 +41,13 @@ public class NBack_Controller : MonoBehaviour {
 	}
 
 	void Update(){
+		// Get now and test start time
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
+		// If the test started more than 10 minutes ago and the test is not in help's test mode
 		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
+			// Set the boolean controlling whether or not the test has been finished
 			AppControl.control.testStarted = true;
 			AppControl.control.Save ();
 
@@ -56,17 +59,22 @@ public class NBack_Controller : MonoBehaviour {
 			AppControl.control.csvString = patientNumber + ";Test Stopped;" + time + ";;;;;;;;;;;;;;;;";
 			AppControl.control.SaveData ();
 
+			// Go to main menu
 			SceneManager.LoadScene ("MainMenu");
 		}
 	}
 
 	public void StartButton(){
+		// Deactive start canvas
 		startCanvas.SetActive(false);
 
+		// Activate game canvas
 		canvas.SetActive (true);
 
+		// Start game
 		StartCoroutine (ImagePhases ());
 
+		// Start timer
 		StartCoroutine (Timer ());
 	}
 
@@ -107,6 +115,7 @@ public class NBack_Controller : MonoBehaviour {
 
 		textN.text = N.ToString ();
 
+		// If not in help's test mode
 		if (!AppControl.control.testOfTest) {
 			// Store local data
 			AppControl.control.N = N;
@@ -116,6 +125,7 @@ public class NBack_Controller : MonoBehaviour {
 
 		yield return new WaitForSeconds(3);
 
+		// if not in help's test mode
 		if (!AppControl.control.testOfTest) {
 			// Data to be stored
 			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
@@ -132,8 +142,9 @@ public class NBack_Controller : MonoBehaviour {
 			AppControl.control.SaveData ();
 		}
 
-		// test end
+		// test end, load next scene
 		int ran = Random.Range (0, 2);
+		// If in help's test mode
 		if (AppControl.control.testOfTest) {
 			SceneManager.LoadScene ("Help");
 		}
@@ -149,10 +160,13 @@ public class NBack_Controller : MonoBehaviour {
 
 		while(runImages) {
 
+			// Reset image to nothing
 			shownImage.image.sprite = Resources.Load<Sprite> ("None");
 
+			// Check what the player selected
 			checkSelection ();
 
+			// Update number of images shown
 			numOfShown++;
 
 			yield return new WaitForSeconds (0.3f);
@@ -192,13 +206,16 @@ public class NBack_Controller : MonoBehaviour {
 			// Store sequence
 			sequence [sequenceIndex] = ran;
 
+			// Image is active
 			imageActive = true;
 			yield return new WaitForSeconds ((float)AppControl.control.NBack_Timer);
+			// Image is no longer active
 			imageActive = false;
 		}
 	}
 
 	void checkSelection(){
+		// Check the player input and compare
 		if (sequenceIndex - N >= 0) {
 
 			if ((sequence [sequenceIndex - N] != sequence [sequenceIndex]) && !pushed) {
@@ -233,6 +250,7 @@ public class NBack_Controller : MonoBehaviour {
 	}
 
 	public void pushImage(){
+		// Player input
 		if (imageActive) {
 			pushed = true;
 		}

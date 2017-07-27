@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class achieveButton : MonoBehaviour {
@@ -9,10 +7,13 @@ public class achieveButton : MonoBehaviour {
 	private CanvasGroup cg;
 
 	public void Start(){
+		// Get button
 		b = this.GetComponent<Button> ();
 
+		// Get buttons canvas group
 		cg = b.GetComponent<CanvasGroup> ();
 
+		// Depending on which button it is, set its alpha if achievement achieved
 		if (b.name == "Achievement_Button (1)" && AppControl.control.firstTestCleared) {
 			cg.alpha = 1;
 		}

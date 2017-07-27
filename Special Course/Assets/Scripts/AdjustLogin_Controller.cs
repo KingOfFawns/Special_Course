@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -14,7 +13,9 @@ public class AdjustLogin_Controller : MonoBehaviour {
 
 
 	void Start(){
+		// Get password and split it in spaces
 		string[] hexSplit = AppControl.control.password.Split (' ');
+		// Calculate password
 		string pass = "";
 		foreach (string h in hexSplit) {
 			int value = Convert.ToInt32 (h, 16);
@@ -23,6 +24,7 @@ public class AdjustLogin_Controller : MonoBehaviour {
 			pass = pass + sValue;
 		}
 
+		// Show password
 		showField.text = "Current: " + pass;
 	}
 
@@ -31,11 +33,12 @@ public class AdjustLogin_Controller : MonoBehaviour {
 	}
 
 	public void StorePassword(){
+		// If the input password and input repeat password is the same
 		if (password.text == passwordRepeat.text) {
 
-			Debug.Log (password.text);
-
+			// Turn password into array of chars
 			char[] values = password.text.ToCharArray ();
+			// Calculate hex of each char (smallest cryptation)
 			string hexPass = "";
 			for(int i = 0; i < values.Length; i++) {
 				int value = Convert.ToInt32 (values[i]);
@@ -47,20 +50,25 @@ public class AdjustLogin_Controller : MonoBehaviour {
 				}
 			}
 
-			Debug.Log (hexPass);
-
+			// Store hex version of password
 			AppControl.control.password = hexPass;
 			AppControl.control.Save ();
 
+			// Show user that it is confirmed
 			saveText.text = "Gemt";
-		} else {
+		} 
+		// If the input password and input repeat password is not the same
+		else {
+			// Show user that the passwords are not the same
 			saveText.text = "Passwordsne er ikke ens";
 		}
 
+		// Start reset of text
 		StartCoroutine (TimeOut ());
 	}
 
 	IEnumerator TimeOut(){
+		// Reset the text used to notify the user of fails or confirms in the input of passwords
 		yield return new WaitForSeconds (1);
 		saveText.text = "";
 	}

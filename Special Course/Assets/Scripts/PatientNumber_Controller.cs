@@ -14,10 +14,12 @@ public class PatientNumber_Controller : MonoBehaviour {
 
 
 	void Start(){
+		// If first time app use
 		if (AppControl.control.first_Time_Start) {
 			back.SetActive (false);
 			next.SetActive (true);
 		}
+		// Load patient number as text
 		patientText.text = AppControl.control.patientNumber.ToString ().Substring (1); 
 	}
 
@@ -26,6 +28,7 @@ public class PatientNumber_Controller : MonoBehaviour {
 	}
 
 	public void NextButton(){
+		// Check if patientNumber is not 0
 		if(AppControl.control.patientNumber == 0){
 			notifyText.text = "Indtast patient nummer.";
 			StartCoroutine (ResetNotifyText ());
@@ -35,14 +38,14 @@ public class PatientNumber_Controller : MonoBehaviour {
 	}
 
 	public void StorePatientNumber(){
+		// if patientNumber is not empty
 		if (patientInput.text != "") {
 			notifyText.text = "Patient nummer gemt.";
 
+			// Parse patient number and store it (The extra 1 is for storing purpose)
 			string patientNumber = "1" + patientInput.text;
-
 			int value;
 			int.TryParse (patientNumber, out value);
-
 			AppControl.control.patientNumber = value;
 			AppControl.control.Save ();
 		} else {
@@ -53,6 +56,7 @@ public class PatientNumber_Controller : MonoBehaviour {
 	}
 
 	IEnumerator ResetNotifyText(){
+		// Reset notify text
 		patientText.text = AppControl.control.patientNumber.ToString ().Substring (1); 
 		patientInput.text = "";
 		yield return new WaitForSeconds (1);
