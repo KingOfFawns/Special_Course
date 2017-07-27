@@ -56,6 +56,7 @@ public class Settings_Controller : MonoBehaviour {
 	public void ResetResultData(){
 		// If second press of button
 		if (resetData) {
+			resetData = false;
 			// Delete folder SEE-COG if it exists
 			if (Directory.Exists ("/storage/emulated/0/Download/SEE-COG")) {
 				Directory.Delete ("/storage/emulated/0/Download/SEE-COG");
@@ -90,6 +91,7 @@ public class Settings_Controller : MonoBehaviour {
 	public void ResetAppData(){
 		// If second press of button
 		if (resetAppData) {
+			resetAppData = false;
 			// Reset result data
 			resetData = true;
 			ResetResultData ();
