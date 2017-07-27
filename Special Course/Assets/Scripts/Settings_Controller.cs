@@ -59,6 +59,8 @@ public class Settings_Controller : MonoBehaviour {
 	}
 
 	public void ResetAppData(){
+		ResetResultData ();
+
 		if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
 			File.Delete (Application.persistentDataPath + "/.appData.dat");
 		}
