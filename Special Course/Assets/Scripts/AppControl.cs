@@ -68,8 +68,10 @@ public class AppControl : MonoBehaviour {
 	public bool hundredfiftyTestsCleared = false; // Should be stored
 
 	// Patient data
-	public int patientNumber = 0;
+	public int patientNumber = 0; // Should be stored
 
+	// Variable
+	public bool testOfTest = false;
 
 	void Awake () {
 		// Make sure that AppControl is a singleton throughout the scenes

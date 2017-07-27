@@ -46,7 +46,7 @@ public class Stroop_Controller : MonoBehaviour {
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
-		if (now.Subtract (testStart).TotalSeconds >= 600) {
+		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
 			AppControl.control.testStarted = true;
 			AppControl.control.Save ();
 
@@ -115,21 +115,25 @@ public class Stroop_Controller : MonoBehaviour {
 
 		yield return new WaitForSeconds(3);
 
-		// Data to be stored
-		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
-		string name = "Stroop Effect";
-		string time = System.DateTime.Now.ToString();
-		string numOfWordDisp = shownWords.ToString ();
-		string cMatches = correctMatches.ToString ();
+		if (!AppControl.control.testOfTest) {
+			// Data to be stored
+			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
+			string name = "Stroop Effect";
+			string time = System.DateTime.Now.ToString ();
+			string numOfWordDisp = shownWords.ToString ();
+			string cMatches = correctMatches.ToString ();
 
-		// Store data
-		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + 
+			// Store data
+			AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time +
 			", Words displayed: " + numOfWordDisp + ", Correct matches: " + cMatches; 
-		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches + ";;";
-		AppControl.control.SaveData ();
+			AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;;;;;;" + numOfWordDisp + ";;" + cMatches + ";;";
+			AppControl.control.SaveData ();
 
-		// test end
-		SceneManager.LoadScene("Word_Recog_End");
+			// test end
+			SceneManager.LoadScene ("Word_Recog_End");
+		} else {
+			SceneManager.LoadScene ("Help");
+		}
 	}
 
 	public void CheckSelected(int col){

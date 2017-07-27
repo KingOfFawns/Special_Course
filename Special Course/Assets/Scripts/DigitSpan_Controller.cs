@@ -50,7 +50,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
-		if (now.Subtract (testStart).TotalSeconds >= 600) {
+		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
 			AppControl.control.testStarted = true;
 			AppControl.control.Save ();
 
@@ -96,31 +96,38 @@ public class DigitSpan_Controller : MonoBehaviour {
 		correctText.text = correctSequences.ToString ();
 		sequeceLengthEnd.text = sequenceLength.ToString ();
 
-		// Store local data
-		AppControl.control.digitSpan_DigitLength = sequenceLength;
-		AppControl.control.maxSequenceLength = maxSequence;
-		AppControl.control.Save ();
+		if (!AppControl.control.testOfTest) {
+			// Store local data
+			AppControl.control.digitSpan_DigitLength = sequenceLength;
+			AppControl.control.maxSequenceLength = maxSequence;
+			AppControl.control.Save ();
+		}
 
 		// Wait for 3 seconds before transitioning to the next test
 		yield return new WaitForSeconds (3f);
 
-		// Data to be stored
-		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
-		string name = "Digit Span";
-		string time = System.DateTime.Now.ToString();
-		string sLength = sequenceLength.ToString ();
-		string totalSequences = numOfSequences.ToString ();
-		string cSequences = correctSequences.ToString ();
+		if (!AppControl.control.testOfTest) {
+			// Data to be stored
+			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
+			string name = "Digit Span";
+			string time = System.DateTime.Now.ToString ();
+			string sLength = sequenceLength.ToString ();
+			string totalSequences = numOfSequences.ToString ();
+			string cSequences = correctSequences.ToString ();
 
-		// Store data
-		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
+			// Store data
+			AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + ", Length of Sequences: " + sLength +
 			", Num. of Sequences: " + totalSequences + ", Correct Matches: " + cSequences; 
-		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences + ";;";
-		AppControl.control.SaveData ();
+			AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;;;;" + sLength + ";" + totalSequences + ";;;" + cSequences + ";;";
+			AppControl.control.SaveData ();
+		}
 
 		// Go to next test
 		int ran = Random.Range (0, 2);
-		if (ran == 0) {
+		if (AppControl.control.testOfTest) {
+			SceneManager.LoadScene ("Help");
+		}
+		else if (ran == 0) {
 			SceneManager.LoadScene ("Stroop_Effect");	
 		} else {
 			SceneManager.LoadScene ("Eriksen_Flanker");

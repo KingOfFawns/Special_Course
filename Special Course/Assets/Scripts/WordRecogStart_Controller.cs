@@ -59,7 +59,7 @@ public class WordRecogStart_Controller : MonoBehaviour {
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
-		if (now.Subtract (testStart).TotalSeconds >= 600) {
+		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
 			AppControl.control.testStarted = true;
 
 			// Log stop
@@ -111,7 +111,11 @@ public class WordRecogStart_Controller : MonoBehaviour {
 		AppControl.control.chosenWords = chosenWords;
 
 		int ran = Random.Range (0, 2);
-		if (ran == 0) {
+
+		if (AppControl.control.testOfTest) {
+			SceneManager.LoadScene ("Word_Recog_End");
+		}
+		else if (ran == 0) {
 			SceneManager.LoadScene ("N_Back");	
 		} else {
 			SceneManager.LoadScene ("Digit_Span");

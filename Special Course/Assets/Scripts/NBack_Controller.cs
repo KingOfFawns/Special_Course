@@ -44,7 +44,7 @@ public class NBack_Controller : MonoBehaviour {
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
-		if (now.Subtract (testStart).TotalSeconds >= 600) {
+		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
 			AppControl.control.testStarted = true;
 			AppControl.control.Save ();
 
@@ -107,30 +107,37 @@ public class NBack_Controller : MonoBehaviour {
 
 		textN.text = N.ToString ();
 
-		// Store local data
-		AppControl.control.N = N;
-		AppControl.control.N_percentage_last = percentage;
-		AppControl.control.Save ();
+		if (!AppControl.control.testOfTest) {
+			// Store local data
+			AppControl.control.N = N;
+			AppControl.control.N_percentage_last = percentage;
+			AppControl.control.Save ();
+		}
 
 		yield return new WaitForSeconds(3);
 
-		// Data to be stored
-		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
-		string name = "N-Back";
-		string time = System.DateTime.Now.ToString();
-		string FN = numOfFN.ToString();
-		string TP = numOfTP.ToString();
-		string FP = numOfFP.ToString ();
+		if (!AppControl.control.testOfTest) {
+			// Data to be stored
+			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
+			string name = "N-Back";
+			string time = System.DateTime.Now.ToString ();
+			string FN = numOfFN.ToString ();
+			string TP = numOfTP.ToString ();
+			string FP = numOfFP.ToString ();
 
-		// Store data
-		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + ", N: " + Nsave +
+			// Store data
+			AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + ", N: " + Nsave +
 			", False negatives: " + FN + ", True positives: " + TP + ", False positives: " + FP; 
-		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;;" + Nsave + ";" + numOfShown.ToString();
-		AppControl.control.SaveData ();
+			AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";;;;;" + FN + ";" + TP + ";" + FP + ";;;;;;" + Nsave + ";" + numOfShown.ToString ();
+			AppControl.control.SaveData ();
+		}
 
 		// test end
 		int ran = Random.Range (0, 2);
-		if (ran == 0) {
+		if (AppControl.control.testOfTest) {
+			SceneManager.LoadScene ("Help");
+		}
+		else if (ran == 0) {
 			SceneManager.LoadScene ("Stroop_Effect");	
 		} else {
 			SceneManager.LoadScene ("Eriksen_Flanker");

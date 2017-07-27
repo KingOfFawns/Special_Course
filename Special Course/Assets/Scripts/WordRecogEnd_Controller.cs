@@ -99,7 +99,7 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 		System.DateTime now = System.DateTime.Now;
 		System.DateTime testStart = AppControl.control.testStartDate;
 
-		if (now.Subtract (testStart).TotalSeconds >= 600) {
+		if (now.Subtract (testStart).TotalSeconds >= 600 && !AppControl.control.testOfTest) {
 			AppControl.control.testStarted = true;
 
 			// Log stop
@@ -246,53 +246,61 @@ public class WordRecogEnd_Controller : MonoBehaviour {
 
 		textWord.text = numOFWords.ToString ();
 
-		// Achievement calculations
-		AppControl.control.achieveCounter = AppControl.control.achieveCounter + 1;
+		if (!AppControl.control.testOfTest) {
+			// Achievement calculations
+			AppControl.control.achieveCounter = AppControl.control.achieveCounter + 1;
 
-		if (!AppControl.control.firstTestCleared) {
-			AppControl.control.firstTestCleared = true;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 10 && !AppControl.control.tenTestsCleared) {
-			AppControl.control.tenTestsCleared = true;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 50  && !AppControl.control.fiftyTestsCleared) {
-			AppControl.control.firstTestCleared = true;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 100  && !AppControl.control.hundredTestsCleared) {
-			AppControl.control.hundredTestsCleared = true;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
-		} else if (AppControl.control.achieveCounter == 150  && !AppControl.control.hundredfiftyTestsCleared) {
-			AppControl.control.hundredfiftyTestsCleared = true;
-			AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
+			if (!AppControl.control.firstTestCleared) {
+				AppControl.control.firstTestCleared = true;
+				AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
+			} else if (AppControl.control.achieveCounter == 10 && !AppControl.control.tenTestsCleared) {
+				AppControl.control.tenTestsCleared = true;
+				AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
+			} else if (AppControl.control.achieveCounter == 50  && !AppControl.control.fiftyTestsCleared) {
+				AppControl.control.firstTestCleared = true;
+				AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
+			} else if (AppControl.control.achieveCounter == 100  && !AppControl.control.hundredTestsCleared) {
+				AppControl.control.hundredTestsCleared = true;
+				AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
+			} else if (AppControl.control.achieveCounter == 150  && !AppControl.control.hundredfiftyTestsCleared) {
+				AppControl.control.hundredfiftyTestsCleared = true;
+				AndroidToast.ShowToastNotification ("Achievement opnået", AndroidToast.LENGTH_LONG);
+			}
+					
+				//Store local data
+				AppControl.control.word_Recog_Target = numOFWords;
+				AppControl.control.word_Last_Test = last;
+				AppControl.control.word_previous_Test = previous;
+				AppControl.control.testStarted = true;
+				AppControl.control.Save ();
 		}
-
-		//Store local data
-		AppControl.control.word_Recog_Target = numOFWords;
-		AppControl.control.word_Last_Test = last;
-		AppControl.control.word_previous_Test = previous;
-		AppControl.control.testStarted = true;
-		AppControl.control.Save ();
 
 		yield return new WaitForSeconds (3);
 
-		// Data to be stored
-		string patientNumber = "#" + AppControl.control.patientNumber.ToString().Substring(1);
-		string name = "Word Recognition";
-		string time = System.DateTime.Now.ToString();
-		string numOfIdentified = AppControl.control.identifiedWords.ToString ();
-		string numOfFalse = AppControl.control.falseWords.ToString ();
-		string timerTime = timer.ToString ();
+		if (!AppControl.control.testOfTest) {
+			// Data to be stored
+			string patientNumber = "#" + AppControl.control.patientNumber.ToString ().Substring (1);
+			string name = "Word Recognition";
+			string time = System.DateTime.Now.ToString ();
+			string numOfIdentified = AppControl.control.identifiedWords.ToString ();
+			string numOfFalse = AppControl.control.falseWords.ToString ();
+			string timerTime = timer.ToString ();
 
 
-		// Store data
-		AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time + 
-			", Target words: " + numOfTargets + ", Identified words: " + numOfIdentified + ", Falsely identified words: " 
+			// Store data
+			AppControl.control.dataString = "Patient Number: " + patientNumber + ", Name: " + name + ", Time: " + time +
+			", Target words: " + numOfTargets + ", Identified words: " + numOfIdentified + ", Falsely identified words: "
 			+ numOfFalse + ", Time used: " + timerTime + " seconds"; 
-		AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";" + numOfTargets + ";" + numOfIdentified + ";" + numOfFalse + ";" + timerTime + ";;;;;;;;;;";
+			AppControl.control.csvString = patientNumber + ";" + name + ";" + time + ";" + numOfTargets + ";" + numOfIdentified + ";" + numOfFalse + ";" + timerTime + ";;;;;;;;;;";
 
-		AppControl.control.SaveData ();
+			AppControl.control.SaveData ();
 
-		// test end
-		SceneManager.LoadScene ("MainMenu");
+			// test end
+			SceneManager.LoadScene ("MainMenu");
+		} else {
+			AppControl.control.testOfTest = false;
+
+			SceneManager.LoadScene ("Help");
+		}
 	}
 }

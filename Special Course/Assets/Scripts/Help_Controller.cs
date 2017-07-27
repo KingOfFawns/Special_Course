@@ -26,6 +26,8 @@ public class Help_Controller : MonoBehaviour {
 		header.text = "Introduktion";
 
 		objectText = Instantiate (textStart, content.transform);
+
+		AppControl.control.testOfTest = false;
 	}
 
 	public void ShowIntroduction(){
