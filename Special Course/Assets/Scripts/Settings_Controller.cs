@@ -54,11 +54,17 @@ public class Settings_Controller : MonoBehaviour {
 	}
 
 	public void ResetResultData(){
-		// If second press of button
+
 		if (resetData) {
 			resetData = false;
 			// Delete folder SEE-COG if it exists
 			if (Directory.Exists ("/storage/emulated/0/Download/SEE-COG")) {
+				if (File.Exists ("/storage/emulated/0/Download/SEE-COG/SaveData.txt")) {
+					File.Delete ("/storage/emulated/0/Download/SEE-COG/SaveData.txt");
+				}
+				if (File.Exists ("/storage/emulated/0/Download/SEE-COG/SaveData.csv")) {
+					File.Delete ("/storage/emulated/0/Download/SEE-COG/SaveData.csv");
+				}
 				Directory.Delete ("/storage/emulated/0/Download/SEE-COG");
 			}
 			// Delete txt data file if it exists
@@ -69,10 +75,12 @@ public class Settings_Controller : MonoBehaviour {
 			if (File.Exists (Application.persistentDataPath + "/.dat1.dat")) {
 				File.Delete (Application.persistentDataPath + "/.dat1.dat");
 			}
+			
+			AndroidNotificationManager.Instance.ShowToastNotification ("Resultat data slettet", AndroidToast.LENGTH_LONG);
 		} else {
-			// First press of button
+			// First press of button, ready up for second press
 			resetData = true;
-			// Change button text
+			// Set button text
 			Button rr = GameObject.Find ("Button (5)").GetComponent<Button> ();
 			rr.transform.GetChild(0).GetComponent<Text>().text = "Sikker?";
 			// Start reset of button
@@ -92,10 +100,9 @@ public class Settings_Controller : MonoBehaviour {
 		// If second press of button
 		if (resetAppData) {
 			resetAppData = false;
-			// Reset result data
+
 			resetData = true;
 			ResetResultData ();
-			resetData = false;
 
 			// If appData file exists, delete it
 			if (File.Exists (Application.persistentDataPath + "/.appData.dat")) {
