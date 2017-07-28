@@ -267,7 +267,7 @@ public class DigitSpan_Controller : MonoBehaviour {
 			if (sequenceLength <= 2) {
 				transitionText.text = "3 forkerte i træk.\nPrøv igen.";
 			} else {
-				transitionText.text = "3 forkerte i træk.\nLængden af reduceres.";
+				transitionText.text = "3 forkerte i træk.\nLængden af talrækken reduceres.";
 			}
 		}
 			

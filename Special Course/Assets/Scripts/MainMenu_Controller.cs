@@ -52,6 +52,9 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// If first time start up
 		if (AppControl.control.first_Time_Start) {
+
+			ResetAppData ();
+
 			// Set DateTime array for random notifications
 			AppControl.control.randomNotification = new DateTime[10];
 			// Set timer to 0
@@ -90,6 +93,31 @@ public class MainMenu_Controller : MonoBehaviour {
 
 		// Load the random notifications
 		randoms = AppControl.control.randomNotification;
+	}
+
+	static void ResetAppData ()
+	{
+		// Reset app data
+		AppControl.control.word_Recog_Target = 8;
+		AppControl.control.word_Last_Test = -1;
+		AppControl.control.word_previous_Test = -1;
+		AppControl.control.N = 2;
+		AppControl.control.N_percentage_last = 0f;
+		AppControl.control.digitSpan_DigitLength = 3;
+		AppControl.control.first_Time_Start = true;
+		AppControl.control.wordRecogStart_WordTimer = 1.0f;
+		AppControl.control.digitSpan_SequenceTimer = 1.0f;
+		AppControl.control.NBack_Timer = 1.0f;
+		AppControl.control.testStartDate = new System.DateTime (System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, System.DateTime.Now.Hour - 1, System.DateTime.Now.Minute, System.DateTime.Now.Second);
+		AppControl.control.password = "52 6F 6F 74 41 64 6D 69 6E";
+		AppControl.control.maxSequenceLength = 0;
+		AppControl.control.firstTestCleared = false;
+		AppControl.control.tenTestsCleared = false;
+		AppControl.control.fiftyTestsCleared = false;
+		AppControl.control.hundredTestsCleared = false;
+		AppControl.control.hundredfiftyTestsCleared = false;
+		AppControl.control.achieveCounter = 0;
+		AppControl.control.patientNumber = 0;
 	}
 
 	void Update(){

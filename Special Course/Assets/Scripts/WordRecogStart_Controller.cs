@@ -13,7 +13,7 @@ public class WordRecogStart_Controller : MonoBehaviour {
 	public Text word;
 	public Text wordsLeft;
 
-	private int numOFWords = 10;
+	private int numOFWords = 8;
 	private string[] chosenWords;
 
 	// Use this for initialization
