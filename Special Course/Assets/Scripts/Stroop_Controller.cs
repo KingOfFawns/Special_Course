@@ -68,6 +68,12 @@ public class Stroop_Controller : MonoBehaviour {
 
 	IEnumerator PhaseShift(){
 
+		// Transition canvas
+		transitionCanvas.SetActive(true);
+		phaseText.text = "Tryk på den farve, som bogstaverne er skrevet med.";
+		yield return new WaitForSeconds (2);
+		transitionCanvas.SetActive(false);
+
 		// First phase showing
 		taskText.text = "Tryk på den farve, som bogstaverne er skrevet med.";
 		phase = 1;

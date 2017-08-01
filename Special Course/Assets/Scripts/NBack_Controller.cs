@@ -98,7 +98,7 @@ public class NBack_Controller : MonoBehaviour {
 		string Nsave = N.ToString();
 
 		// Calculate data to be stored
-		float percentage = numOfTP/numOfShown * 100f;
+		float percentage = ((float)numOfTP/(float)numOfShown) * 100f;
 
 		if (percentage >= 80f && AppControl.control.N_percentage_last >= 80f) {
 			N++;
